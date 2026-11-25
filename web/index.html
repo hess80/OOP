@@ -160,12 +160,62 @@
   .material-controls { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
   .material-controls label { display: grid; align-content: start; gap: 3px; font-size: 13px; }
   .materials-output { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+  .question-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .question-grid article { border-top: 3px solid var(--teal); padding-top: 8px; }
+  .question-grid h3 { font-size: 12px; margin-bottom: 4px; }
+  .science-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; align-items: start; }
+  .science-grid .wide { grid-column: 1 / -1; }
+  .science-equation { font: 700 16px var(--mono); background: var(--panel); padding: 8px 10px; margin: 6px 0; }
+  .science-units { color: var(--teal); font-size: 13px; }
+  .science-controls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 10px 0; }
+  .science-controls label { display: grid; gap: 3px; font-size: 12px; font-weight: 700; }
+  .science-controls input, .science-controls select { min-width: 0; font: 13px var(--mono); padding: 6px; border: 1.5px solid var(--navy); background: #fff; color: var(--navy); }
+  .science-state { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .science-state pre { margin: 0; padding: 9px; white-space: pre-wrap; background: #fff; border: 1px solid var(--grid); font: 12px/1.6 var(--mono); }
+  .science-state h4 { margin: 0 0 5px; font-size: 11px; }
+  .science-mapping { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .science-mapping th, .science-mapping td { text-align: left; vertical-align: top; padding: 6px 8px; border-bottom: 1px solid var(--grid); }
+  .science-mapping th { font: 800 11px var(--display); text-transform: uppercase; }
+  .science-mapping td:last-child { font-family: var(--mono); }
+  .trace { margin: 8px 0; padding-left: 28px; }
+  .trace li { padding: 5px 8px; border-left: 3px solid var(--border); margin: 4px 0; transition: background .2s, border-color .2s; }
+  .trace li.active { background: #E4EFEA; border-left-color: var(--teal); font-weight: 700; }
+  .language-tabs { display: flex; gap: 6px; margin: 8px 0; }
+  .language-tabs button[aria-pressed="true"] { background: var(--teal); color: var(--paper); }
+  .language-code { margin: 0; max-height: 340px; overflow: auto; padding: 12px; background: #131B26; color: #E2E8F0; border-left: 4px solid var(--teal); border-radius: 6px; white-space: pre; }
+  .failure-types { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; }
+  .failure-types div { padding: 7px; background: var(--panel); border-left: 3px solid var(--border); font: 700 10px var(--display); }
+  .failure-types .domain { border-left-color: var(--rust); }
+  .science-diagram { width: 100%; height: auto; background: var(--paper); border: 1px solid var(--grid); border-radius: 5px; }
+  .science-diagram text { font-family: var(--mono); fill: var(--navy); font-size: 12px; }
+  .science-diagram .title { fill: var(--card); font-weight: 700; }
+  .science-diagram .edge-label { fill: var(--teal); font-size: 10px; }
+  .science-diagram .state-label { font-size: 11px; }
+  .science-tabs { display: flex; flex-wrap: wrap; gap: 7px; margin: 0 0 14px; }
+  .science-tabs button[aria-pressed="true"] { background: var(--teal); color: var(--paper); }
+  .science-panel[hidden] { display: none; }
+  .science-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin: 10px 0; }
+  .science-fields label { display: grid; gap: 3px; font-size: 12px; font-weight: 700; }
+  .science-fields input, .science-fields select { min-width: 0; font: 13px var(--mono); padding: 6px; border: 1.5px solid var(--navy); background: #fff; color: var(--navy); }
+  .science-output { min-height: 65px; }
+  .science-trace { padding-left: 26px; }
+  .science-trace li { margin: 4px 0; padding: 5px 8px; border-left: 3px solid var(--border); }
+  .science-trace li.active { background: #E4EFEA; border-left-color: var(--teal); font-weight: 700; }
+  .science-code-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
+  .science-code-tabs button[aria-pressed="true"] { background: var(--teal); color: var(--paper); }
+  .science-code { background: #131B26; color: #E2E8F0; padding: 12px; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 280px; overflow: auto; }
+  .science-contract { font: 700 12px var(--mono); }
   #session-guide { display: none; }
   .session-entry { margin: 14px 0; padding: 12px; border: 1px solid var(--border); border-radius: 8px; break-inside: avoid; }
   .session-entry p { margin: 6px 0; }
   @media (max-width: 720px) {
     .masthead .card, .materials-inspector, .materials-output { grid-template-columns: 1fr; }
+    .question-grid, .science-grid, .failure-types { grid-template-columns: 1fr; }
+    .science-grid .wide { grid-column: auto; }
+    .science-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .science-fields { grid-template-columns: 1fr 1fr; }
   }
+  @media (max-width: 480px) { .science-controls, .science-state { grid-template-columns: 1fr; } }
   @media print {
     body.print-session > :not(#session-guide) { display: none !important; }
     body.print-session { background: white; font-size: 10.5pt; }
@@ -206,6 +256,8 @@
     <button class="chip rust" data-filter="cases" aria-pressed="false">Case Studies</button>
     <button class="chip teal" data-filter="lab" aria-pressed="false">Invariant Lab</button>
     <button class="chip teal" data-filter="materials" aria-pressed="false">Materials Lab</button>
+    <button class="chip teal" data-filter="solution" aria-pressed="false">Solution Workbench</button>
+    <button class="chip teal" data-filter="science" aria-pressed="false">Scientific Workbenches</button>
     <input class="search" id="search" type="search" placeholder="filter: e.g. liskov, burn" aria-label="Search concepts and case studies">
   </div>
 </nav>
@@ -219,6 +271,281 @@
   <section class="block" id="concepts-section">
     <div class="section-head"><h2>Core Concepts</h2><span class="count" id="concept-count"></span></div>
     <div class="concepts" id="concepts"></div>
+  </section>
+
+  <section class="block" id="solution-section" aria-labelledby="solution-title">
+    <div class="section-head"><h2 id="solution-title">Scientific OOP Workbench · Solution State &amp; Dilution</h2><span class="count">Group 1 · Encapsulation reference lesson</span></div>
+    <p>A compact homogeneous-solution model links protected object state to material balance. Default conditions (0.100 mol/L, 0.500 L, 298.15 K) are pedagogical inputs, not experimental measurements.</p>
+    <div class="question-grid">
+      <article><h3>OOP question</h3><p>How can callers change solution state through meaningful operations without writing concentration or amount directly?</p></article>
+      <article><h3>Scientific question</h3><p>How do solute amount, volume, and molar concentration relate during dilution, solute addition, and homogeneous aliquot removal?</p></article>
+      <article><h3>Computational question</h3><p>Given a state and operation, what result follows, which method executes, and does the model accept the transition?</p></article>
+    </div>
+    <div class="science-grid" style="margin-top:14px">
+      <article class="card">
+        <h3>Object model</h3>
+        <p class="caption">One Solution contains a ChemicalSpecies. Callers invoke operations; the object validates and updates private amount/volume state.</p>
+        <div id="solution-diagram"></div>
+      </article>
+      <article class="card">
+        <h3>Scientific model</h3>
+        <div class="science-equation">C = n / V</div>
+        <div class="science-equation">Dilution: C₁V₁ = C₂V₂</div>
+        <p class="science-units">C: mol/L · n: mol · V: L · T: K</p>
+        <div style="overflow-x:auto">
+          <table class="science-mapping"><thead><tr><th>Symbol</th><th>Quantity</th><th>Unit</th></tr></thead><tbody id="solution-variables"></tbody></table>
+        </div>
+        <p id="solution-equation-detail">Dilution conserves solute amount: n = 0.050 mol. The specified final volume determines C₂.</p>
+        <div id="solution-plot"></div>
+      </article>
+      <article class="card">
+        <h3>Execute a state transition</h3>
+        <p class="sub">Chemical species: sodium chloride (NaCl), molar mass 58.44 g/mol. Starting conditions can be changed and reconstructed.</p>
+        <div class="science-controls">
+          <label for="solution-start-c">Starting concentration (mol/L)<input id="solution-start-c" type="number" step="any" value="0.100"></label>
+          <label for="solution-start-v">Starting volume (L)<input id="solution-start-v" type="number" step="any" value="0.500"></label>
+          <label for="solution-start-t">Temperature (K)<input id="solution-start-t" type="number" step="any" value="298.15"></label>
+          <label for="solution-operation">Operation<select id="solution-operation">
+            <option value="dilute">dilute(final_volume_l)</option>
+            <option value="add">add_solute(amount_mol)</option>
+            <option value="remove">remove_volume(volume_l)</option>
+          </select></label>
+          <label for="solution-argument" id="solution-argument-label">Final volume (L)<input id="solution-argument" type="number" step="any" value="1.000"></label>
+        </div>
+        <div class="controls">
+          <button type="button" class="btn ghost" id="solution-create">Construct / reset Solution</button>
+          <button type="button" class="btn teal" id="solution-run">Run operation</button>
+          <button type="button" class="btn rust" id="solution-break">Break it: direct concentration write</button>
+          <button type="button" class="btn rust" id="solution-bad-setter">Break it: uncontrolled setter</button>
+        </div>
+        <p class="readout" id="solution-result" role="status" aria-live="polite">Solution is ready. Select an operation and run it.</p>
+      </article>
+      <article class="card">
+        <h3>State inspector</h3>
+        <p class="caption">Concentration is derived from amount / volume; it is not independently writable.</p>
+        <div class="science-state">
+          <div><h4>BEFORE</h4><pre id="solution-before"></pre></div>
+          <div><h4>AFTER</h4><pre id="solution-after"></pre></div>
+        </div>
+      </article>
+      <article class="card wide">
+        <h3>Execution trace</h3>
+        <p class="caption">The highlighted steps show the call path and the scientific calculation used for the selected operation.</p>
+        <ol class="trace" id="solution-trace" aria-live="polite"></ol>
+      </article>
+      <article class="card wide">
+        <h3>Scientific Model ↔ Software Model</h3>
+        <p>The code is a model of the physical system, not the physical system itself. A software invariant prevents this API from representing invalid model state; it does not enforce a law of nature.</p>
+        <div style="overflow-x:auto">
+          <table class="science-mapping"><thead><tr><th>Scientific model</th><th>Software model</th></tr></thead><tbody id="solution-mappings"></tbody></table>
+        </div>
+      </article>
+      <article class="card wide">
+        <h3>Object identity · same species, independent state</h3>
+        <p>Construct Solution B with the same NaCl ChemicalSpecies but its own concentration, volume, amount, and temperature. Running an operation on A must not mutate B.</p>
+        <div class="science-controls">
+          <label for="solution-b-start-c">B concentration (mol/L)<input id="solution-b-start-c" type="number" step="any" value="0.250"></label>
+          <label for="solution-b-start-v">B volume (L)<input id="solution-b-start-v" type="number" step="any" value="0.200"></label>
+          <label for="solution-b-start-t">B temperature (K)<input id="solution-b-start-t" type="number" step="any" value="298.15"></label>
+        </div>
+        <button type="button" class="btn ghost" id="solution-create-b">Construct independent Solution B</button>
+        <p class="readout" id="solution-b-state" aria-live="polite"></p>
+      </article>
+      <article class="card">
+        <h3>Language comparison</h3>
+        <div class="language-tabs" role="tablist" aria-label="Solution code language">
+          <button class="chip" role="tab" data-language="Python" aria-pressed="true">Python</button>
+          <button class="chip" role="tab" data-language="Java" aria-pressed="false">Java</button>
+          <button class="chip" role="tab" data-language="TypeScript" aria-pressed="false">TypeScript</button>
+        </div>
+        <pre class="language-code" id="solution-code" aria-live="polite"></pre>
+        <p class="caption">Python uses a conventional private-name boundary and a read-only property. Java access modifiers are enforced by the compiler. TypeScript's <code>private</code> modifier is erased; ECMAScript <code>#private</code> fields remain private at runtime. TypeScript overload signatures do not create Java-style runtime overload dispatch.</p>
+      </article>
+      <article class="card">
+        <h3>Assumptions &amp; break cases</h3>
+        <ul id="solution-assumptions"></ul>
+        <div class="failure-types" aria-label="Failure categories">
+          <div class="domain">DOMAIN VALIDATION FAILURE</div>
+          <div>SOFTWARE DESIGN FAILURE</div>
+          <div>TYPE/CONTRACT FAILURE</div>
+          <div>NUMERICAL/MODEL LIMITATION</div>
+        </div>
+        <p class="caption">The read-only API rejects a direct assignment as a type/contract failure. A separate intentionally poor setter demonstrates a software-design failure by allowing concentration to contradict amount/volume. Invalid domain values are rejected before mutating the real object.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="block" id="science-section" aria-labelledby="science-title">
+    <div class="section-head"><h2 id="science-title">Scientific OOP Workbenches · Groups 2–4</h2><span class="count">measurement · biochemical contracts · reactor composition · kinetic dispatch</span></div>
+    <p>Every model is a simplified, explicit computational representation. Synthetic calibration and kinetic values are labeled; equations, units, assumptions, method calls, and outputs are shown together.</p>
+    <nav class="science-tabs" aria-label="Scientific workbench concepts">
+      <button class="chip" data-science-tab="detector" aria-pressed="true">Detector contract</button>
+      <button class="chip" data-science-tab="enzyme" aria-pressed="false">Enzyme substitutability</button>
+      <button class="chip" data-science-tab="reactor" aria-pressed="false">Reactor composition</button>
+      <button class="chip" data-science-tab="kinetics" aria-pressed="false">Kinetic dispatch</button>
+    </nav>
+
+    <article class="science-panel" data-science-panel="detector">
+      <div class="question-grid">
+        <article><h3>OOP question</h3><p>How can one AnalysisPipeline call a Detector contract while detector implementations remain swappable?</p></article>
+        <article><h3>Scientific question</h3><p>How does analyte concentration map to absorbance, fluorescence, or electrode current under each calibration model?</p></article>
+        <article><h3>Computational question</h3><p>Which detector object executes, which equation runs, and what Measurement is returned?</p></article>
+      </div>
+      <div class="science-grid" style="margin-top:12px">
+        <article class="card">
+          <h3>Run the measurement pipeline</h3>
+          <p class="sub">Calibration values are synthetic teaching values. Absorbance uses epsilon = 10 L/(mol cm); fluorescence sensitivity = 1000 RFU/(mol/L); electrochemical slope = 200 microA/(mol/L), offset = 5 microA.</p>
+          <div class="science-fields">
+            <label for="detector-concentration">Sample concentration (mol/L)<input id="detector-concentration" type="number" step="any" value="0.072"></label>
+            <label for="detector-type">Concrete Detector<select id="detector-type">
+              <option value="absorbance">AbsorbanceDetector</option>
+              <option value="fluorescence">FluorescenceDetector</option>
+              <option value="electrochemical">ElectrochemicalSensor</option>
+            </select></label>
+            <label for="detector-path">Path length b (cm)<input id="detector-path" type="number" step="any" value="1.000"></label>
+          </div>
+          <button type="button" class="btn teal" id="detector-run">AnalysisPipeline.analyze(sample)</button>
+          <p class="readout science-output" id="detector-result" role="status" aria-live="polite"></p>
+          <div class="science-state"><pre id="detector-state"></pre><ol id="detector-trace" class="science-trace"></ol></div>
+        </article>
+        <article class="card">
+          <h3>Executable architecture</h3>
+          <p class="science-equation">A = epsilon b c · F = S_F c · I = S_I c + I_0</p>
+          <p class="science-units">A dimensionless · b cm · c mol/L · F RFU · I microA</p>
+          <div id="detector-diagram"></div>
+          <p class="caption">Abstraction, explicit interface, dependency inversion, and late binding: only the injected detector changes.</p>
+        </article>
+        <article class="card wide">
+          <h3>Language examples · same contract, language-specific typing</h3>
+          <div class="science-code-tabs" data-code-tabs="detector">
+            <button class="chip" data-language="Python" aria-pressed="true">Python</button><button class="chip" data-language="Java" aria-pressed="false">Java</button><button class="chip" data-language="TypeScript" aria-pressed="false">TypeScript</button>
+          </div>
+          <pre class="science-code" id="detector-code"></pre>
+        </article>
+      </div>
+    </article>
+
+    <article class="science-panel" data-science-panel="enzyme" hidden>
+      <div class="question-grid">
+        <article><h3>OOP question</h3><p>Can a client use every EnzymeRateModel subtype without depending on its concrete class?</p></article>
+        <article><h3>Scientific question</h3><p>How do substrate and competitive inhibitor concentrations affect a simplified steady-state enzyme rate?</p></article>
+        <article><h3>Computational question</h3><p>What rate does the runtime subtype return, and does it preserve the base rate contract?</p></article>
+      </div>
+      <div class="science-grid" style="margin-top:12px">
+        <article class="card">
+          <h3>Substitution assay</h3>
+          <p class="sub">Vmax = 10 microMol/(L s), Km = 0.050 mol/L, Ki = 0.030 mol/L are synthetic teaching parameters, not measured enzyme values.</p>
+          <div class="science-fields">
+            <label for="enzyme-substrate">Substrate [S] (mol/L)<input id="enzyme-substrate" type="number" step="any" value="0.050"></label>
+            <label for="enzyme-inhibitor">Inhibitor [I] (mol/L)<input id="enzyme-inhibitor" type="number" step="any" value="0.020"></label>
+            <label for="enzyme-type">Runtime subtype<select id="enzyme-type">
+              <option value="mm">MichaelisMentenEnzyme</option><option value="competitive">CompetitiveInhibitionEnzyme</option><option value="broken">Broken test subtype (negative rate)</option>
+            </select></label>
+          </div>
+          <button type="button" class="btn teal" id="enzyme-run">Run rate + Liskov contract test</button>
+          <p class="readout science-output" id="enzyme-result" role="status" aria-live="polite"></p>
+          <div class="science-state"><pre id="enzyme-state"></pre><ol id="enzyme-trace" class="science-trace"></ol></div>
+        </article>
+        <article class="card">
+          <h3>Scientific and behavioral model</h3>
+          <div class="science-equation">v = Vmax [S] / (Km(1 + [I]/Ki) + [S])</div>
+          <p class="science-units">v: microMol/(L s) · concentrations and Km/Ki: mol/L</p>
+          <div id="enzyme-diagram"></div>
+          <div id="enzyme-plot"></div>
+          <p class="caption">Both valid subtypes must return finite 0 ≤ v ≤ Vmax, v(0)=0, and a nondecreasing rate as [S] rises. Biology does not automatically imply a valid software subtype.</p>
+        </article>
+        <article class="card wide">
+          <h3>Language examples</h3>
+          <div class="science-code-tabs" data-code-tabs="enzyme">
+            <button class="chip" data-language="Python" aria-pressed="true">Python</button><button class="chip" data-language="Java" aria-pressed="false">Java</button><button class="chip" data-language="TypeScript" aria-pressed="false">TypeScript</button>
+          </div>
+          <pre class="science-code" id="enzyme-code"></pre>
+        </article>
+      </div>
+    </article>
+
+    <article class="science-panel" data-science-panel="reactor" hidden>
+      <div class="question-grid">
+        <article><h3>OOP question</h3><p>Can Reactor delegate kinetics and mixing to swappable components instead of growing a subclass for every combination?</p></article>
+        <article><h3>Scientific question</h3><p>How do first-order kinetics, temperature, residence time, and ideal mixing determine outlet concentration?</p></article>
+        <article><h3>Computational question</h3><p>Which kinetic and mixing objects execute, and what C_out and conversion do they predict?</p></article>
+      </div>
+      <div class="science-grid" style="margin-top:12px">
+        <article class="card">
+          <h3>Assemble and run the reactor</h3>
+          <p class="sub">Synthetic kinetic parameters: constant k = 0.10 s^-1, or Arrhenius A = 0.20 s^-1 and Ea = 10000 J/mol. R = 8.314462618 J/(mol K).</p>
+          <div class="science-fields">
+            <label for="reactor-feed">Feed concentration (mol/L)<input id="reactor-feed" type="number" step="any" value="0.100"></label>
+            <label for="reactor-residence">Residence time tau (s)<input id="reactor-residence" type="number" step="any" value="10"></label>
+            <label for="reactor-temperature">Temperature T (K)<input id="reactor-temperature" type="number" step="any" value="298.15"></label>
+            <label for="reactor-kinetics">Kinetic component<select id="reactor-kinetics"><option value="constant">ConstantFirstOrderKinetics</option><option value="arrhenius">ArrheniusFirstOrderKinetics</option></select></label>
+            <label for="reactor-mixing">Mixing component<select id="reactor-mixing"><option value="cstr">CSTRMixing</option><option value="plugflow">PlugFlowMixing</option></select></label>
+          </div>
+          <button type="button" class="btn teal" id="reactor-run">Reactor.outlet(state)</button>
+          <p class="readout science-output" id="reactor-result" role="status" aria-live="polite"></p>
+          <pre class="readout" id="reactor-state"></pre><ol id="reactor-trace" class="science-trace"></ol>
+        </article>
+        <article class="card">
+          <h3>Composed process model</h3>
+          <div class="science-equation">k(T) = A exp(-Ea / RT)</div>
+          <div class="science-equation">CSTR: C_out = C_in / (1 + k tau)</div>
+          <div class="science-equation">PFR: C_out = C_in exp(-k tau)</div>
+          <p class="science-units">C: mol/L · k: s^-1 · tau: s · Ea: J/mol · T: K</p>
+          <div id="reactor-diagram"></div>
+          <div id="reactor-plot"></div>
+          <p class="caption">Steady state; irreversible first-order reaction; constant density and temperature; ideal CSTR or ideal plug flow; no transport limitation. 2 kinetic × 2 mixing configurations = 4 combinations from 2 + 2 component types (implementation structures, not runtime object counts).</p>
+        </article>
+        <article class="card wide">
+          <h3>Language examples</h3>
+          <div class="science-code-tabs" data-code-tabs="reactor">
+            <button class="chip" data-language="Python" aria-pressed="true">Python</button><button class="chip" data-language="Java" aria-pressed="false">Java</button><button class="chip" data-language="TypeScript" aria-pressed="false">TypeScript</button>
+          </div>
+          <pre class="science-code" id="reactor-code"></pre>
+        </article>
+      </div>
+    </article>
+
+    <article class="science-panel" data-science-panel="kinetics" hidden>
+      <div class="question-grid">
+        <article><h3>OOP question</h3><p>When a caller invokes model.rate(state), which override does the runtime object select?</p></article>
+        <article><h3>Scientific question</h3><p>How does substrate concentration change the rate under zero-, first-, second-order, or Michaelis-Menten models?</p></article>
+        <article><h3>Computational question</h3><p>What numeric rate, units, equation, and runtime implementation result from the chosen state?</p></article>
+      </div>
+      <div class="science-grid" style="margin-top:12px">
+        <article class="card">
+          <h3>Dispatch a reaction-rate model</h3>
+          <p class="sub">All constants are synthetic teaching values. Positive rate denotes consumption; d[A]/dt = -r.</p>
+          <div class="science-fields">
+            <label for="rate-substrate">Substrate concentration (mol/L)<input id="rate-substrate" type="number" step="any" value="0.050"></label>
+            <label for="rate-model">Runtime model<select id="rate-model">
+              <option value="zero">ZeroOrderKinetics · k0 = 0.010 mol/(L s)</option>
+              <option value="first">FirstOrderKinetics · k1 = 0.10 s^-1</option>
+              <option value="second">SecondOrderKinetics · k2 = 1.0 L/(mol s)</option>
+              <option value="mm">MichaelisMentenKinetics · Vmax = 1e-5 mol/(L s), Km = 0.050 mol/L</option>
+              <option value="broken">Broken test model · negative rate (contract failure)</option>
+            </select></label>
+          </div>
+          <button type="button" class="btn teal" id="rate-run">model.rate(state)</button>
+          <p class="readout science-output" id="rate-result" role="status" aria-live="polite"></p>
+          <div class="science-state"><pre id="rate-state"></pre><ol id="rate-trace" class="science-trace"></ol></div>
+        </article>
+        <article class="card">
+          <h3>Rate law and response curve</h3>
+          <div id="rate-equation" class="science-equation"></div>
+          <p class="science-units">r: mol/(L s) · [A] or [S]: mol/L · rate constants use order-dependent units</p>
+          <div id="rate-plot"></div>
+          <p class="caption">The laws are simplified and apply only under their stated kinetic assumptions. The result is a model prediction, not a universal biological rate.</p>
+        </article>
+        <article class="card wide">
+          <h3>Language differences: dispatch is not overloading</h3>
+          <div class="science-code-tabs" data-code-tabs="kinetics">
+            <button class="chip" data-language="Python" aria-pressed="true">Python</button><button class="chip" data-language="Java" aria-pressed="false">Java</button><button class="chip" data-language="TypeScript" aria-pressed="false">TypeScript</button>
+          </div>
+          <pre class="science-code" id="kinetics-code"></pre>
+          <p class="caption">Overriding selects by runtime receiver. Java overloads are resolved from compile-time signatures; TypeScript overload signatures describe one implementation and do not provide Java-style runtime dispatch. Python has no native signature-based method overloading.</p>
+        </article>
+      </div>
+    </article>
   </section>
 
   <section class="block" id="cases-section">
@@ -514,6 +841,450 @@ function runMaterialExperiment(key, inputs) {
   }
 }
 </script>
+<script id="solution-model">
+class ChemicalSpecies {
+  constructor(name, formula, molarMassGMol, charge = 0) {
+    if (!name.trim() || !formula.trim()) throw new DomainValidationError("Species name and formula must not be empty.");
+    if (!Number.isFinite(molarMassGMol) || molarMassGMol <= 0) {
+      throw new DomainValidationError("Molar mass must be finite and greater than zero.");
+    }
+    if (!Number.isInteger(charge)) throw new DomainValidationError("Species charge must be an integer.");
+    this.name = name;
+    this.formula = formula;
+    this.molarMassGMol = molarMassGMol;
+    this.charge = charge;
+    Object.freeze(this);
+  }
+}
+
+class DomainValidationError extends RangeError {}
+class NumericalModelError extends RangeError {}
+
+class Solution {
+  #solute;
+  #soluteAmountMol;
+  #volumeL;
+  #temperatureK;
+
+  constructor(solute, concentrationMolL, volumeL, temperatureK) {
+    if (!(solute instanceof ChemicalSpecies)) throw new DomainValidationError("solute must be a ChemicalSpecies.");
+    for (const [name, value] of Object.entries({ concentrationMolL, volumeL, temperatureK })) {
+      if (!Number.isFinite(value)) throw new DomainValidationError(`${name} must be finite.`);
+    }
+    if (concentrationMolL < 0) throw new DomainValidationError("concentrationMolL must be >= 0.");
+    if (volumeL <= 0) throw new DomainValidationError("volumeL must be > 0.");
+    if (temperatureK <= 0) throw new DomainValidationError("temperatureK must be > 0 K.");
+    const amountMol = concentrationMolL * volumeL;
+    if (!Number.isFinite(amountMol)) {
+      throw new NumericalModelError("concentration × volume exceeds floating-point range.");
+    }
+    this.#solute = solute;
+    this.#soluteAmountMol = amountMol;
+    this.#volumeL = volumeL;
+    this.#temperatureK = temperatureK;
+  }
+
+  get solute() { return this.#solute; }
+  get soluteAmountMol() { return this.#soluteAmountMol; }
+  get volumeL() { return this.#volumeL; }
+  get temperatureK() { return this.#temperatureK; }
+  get concentrationMolL() { return this.#soluteAmountMol / this.#volumeL; }
+
+  dilute(finalVolumeL) {
+    if (!Number.isFinite(finalVolumeL) || finalVolumeL <= this.#volumeL) {
+      throw new DomainValidationError("finalVolumeL must be finite and exceed the current volume.");
+    }
+    this.#volumeL = finalVolumeL;
+  }
+
+  addSolute(amountMol) {
+    if (!Number.isFinite(amountMol) || amountMol <= 0) {
+      throw new DomainValidationError("amountMol must be finite and > 0.");
+    }
+    const nextAmount = this.#soluteAmountMol + amountMol;
+    if (!Number.isFinite(nextAmount) || !Number.isFinite(nextAmount / this.#volumeL)) {
+      throw new NumericalModelError("resulting amount or concentration exceeds floating-point range.");
+    }
+    this.#soluteAmountMol = nextAmount;
+  }
+
+  removeVolume(volumeL) {
+    if (!Number.isFinite(volumeL) || volumeL <= 0 || volumeL >= this.#volumeL) {
+      throw new DomainValidationError("removed volumeL must be > 0 and less than the current volume.");
+    }
+    const nextAmount = this.#soluteAmountMol - this.concentrationMolL * volumeL;
+    if (!Number.isFinite(nextAmount) || !Number.isFinite(this.#volumeL - volumeL)) {
+      throw new NumericalModelError("aliquot calculation exceeds floating-point range.");
+    }
+    this.#soluteAmountMol = Math.max(0, nextAmount);
+    this.#volumeL -= volumeL;
+  }
+
+  snapshot() {
+    return {
+      solute: this.#solute,
+      soluteAmountMol: this.#soluteAmountMol,
+      volumeL: this.#volumeL,
+      concentrationMolL: this.concentrationMolL,
+      temperatureK: this.#temperatureK,
+    };
+  }
+}
+
+const SOLUTION_SPECIES = new ChemicalSpecies("Sodium chloride", "NaCl", 58.44, 0);
+const SOLUTION_CONCEPT = {
+  id: "solution-encapsulation",
+  oopConcept: "Encapsulation",
+  group: "Object Lifecycle & State",
+  scientificDomain: "Chemistry / physical chemistry",
+  scientificSystem: "Homogeneous aqueous sodium chloride solution",
+  variables: [
+    ["C", "molar concentration", "mol/L"],
+    ["n", "solute amount", "mol"],
+    ["V", "solution volume", "L"],
+    ["T", "absolute temperature", "K"],
+  ],
+  mappings: [
+    ["Chemical species", "ChemicalSpecies value object"],
+    ["Solution", "Solution instance"],
+    ["solute amount n", "private #soluteAmountMol"],
+    ["solution volume V", "private #volumeL"],
+    ["concentration C = n / V", "read-only concentrationMolL getter"],
+    ["dilute to final volume", "solution.dilute(finalVolumeL)"],
+    ["add a known solute amount", "solution.addSolute(amountMol)"],
+    ["remove a homogeneous aliquot", "solution.removeVolume(volumeL)"],
+    ["model-valid state constraints", "constructor and operation validation"],
+  ],
+  assumptions: [
+    "The solution is homogeneous, so a removed aliquot has the bulk concentration.",
+    "Dilution specifies final solution volume and conserves solute amount.",
+    "Added solute does not change volume; the operations are isothermal.",
+    "No reaction, precipitation, ion pairing, or activity-coefficient correction is modeled.",
+    "Default numerical conditions are pedagogical, not experimental measurements.",
+  ],
+  assumptions: [
+    "The solution is homogeneous, so a removed aliquot has the bulk concentration.",
+    "Dilution specifies final solution volume and conserves solute amount.",
+    "Added solute does not change volume; the operations are isothermal.",
+    "No reaction, precipitation, ion pairing, or activity-coefficient correction is modeled.",
+    "Default numerical conditions are pedagogical, not experimental measurements.",
+  ],
+  codeExamples: {
+    Python: `from math import isfinite
+
+class Solution:
+    def __init__(self, solute, concentration_mol_l, volume_l, temperature_k):
+        if not all(isfinite(x) for x in (concentration_mol_l, volume_l, temperature_k)):
+            raise ValueError("state values must be finite")
+        if concentration_mol_l < 0 or volume_l <= 0 or temperature_k <= 0:
+            raise ValueError("concentration >= 0; volume and T > 0")
+        self._solute = solute
+        self._solute_amount_mol = concentration_mol_l * volume_l
+        self._volume_l = volume_l
+        self._temperature_k = temperature_k
+
+    @property
+    def concentration_mol_l(self):
+        return self._solute_amount_mol / self._volume_l
+
+    def dilute(self, final_volume_l):
+        if not isfinite(final_volume_l) or final_volume_l <= self._volume_l:
+            raise ValueError("final volume must exceed current volume")
+        self._volume_l = final_volume_l`,
+    Java: `final class Solution {
+  private final ChemicalSpecies solute;
+  private double soluteAmountMol;
+  private double volumeL;
+  private final double temperatureK;
+
+  Solution(ChemicalSpecies solute, double cMolL, double volumeL, double tK) {
+    if (!Double.isFinite(cMolL) || !Double.isFinite(volumeL) || !Double.isFinite(tK)
+        || cMolL < 0 || volumeL <= 0 || tK <= 0) throw new IllegalArgumentException();
+    this.solute = solute;
+    this.soluteAmountMol = cMolL * volumeL;
+    this.volumeL = volumeL;
+    this.temperatureK = tK;
+  }
+
+  double concentrationMolL() { return soluteAmountMol / volumeL; }
+  void dilute(double finalVolumeL) {
+    if (!Double.isFinite(finalVolumeL) || finalVolumeL <= volumeL)
+      throw new IllegalArgumentException();
+    volumeL = finalVolumeL;
+  }
+}`,
+    TypeScript: `class Solution {
+  private readonly solute: ChemicalSpecies;
+  private soluteAmountMol: number;
+  private volumeL: number;
+  private temperatureK: number;
+  constructor(solute: ChemicalSpecies, cMolL: number, volumeL: number, temperatureK: number) {
+    if (![cMolL, volumeL, temperatureK].every(Number.isFinite)
+        || cMolL < 0 || volumeL <= 0 || temperatureK <= 0) throw new RangeError();
+    this.solute = solute;
+    this.soluteAmountMol = cMolL * volumeL;
+    this.volumeL = volumeL;
+    this.temperatureK = temperatureK;
+  }
+
+  get concentrationMolL(): number {
+    return this.soluteAmountMol / this.volumeL;
+  }
+  dilute(finalVolumeL: number): void {
+    if (!Number.isFinite(finalVolumeL) || finalVolumeL <= this.volumeL) throw new RangeError();
+    this.volumeL = finalVolumeL;
+  }
+}`,
+  },
+};
+</script>
+<script id="scientific-models">
+class AnalyticalSample {
+  constructor(concentrationMolL) {
+    if (!Number.isFinite(concentrationMolL) || concentrationMolL < 0) {
+      throw new DomainValidationError("sample concentration must be finite and >= 0 mol/L.");
+    }
+    this.concentrationMolL = concentrationMolL;
+  }
+}
+
+class Measurement {
+  constructor(value, units, detectorName, equation) {
+    if (!Number.isFinite(value)) throw new NumericalModelError("measurement exceeds floating-point range.");
+    Object.assign(this, { value, units, detectorName, equation });
+  }
+}
+
+class Detector {
+  measure(_sample) { throw new TypeError("Detector.measure(sample) is an abstract contract."); }
+}
+
+class AbsorbanceDetector extends Detector {
+  constructor(epsilonLmolCm, pathLengthCm) {
+    super();
+    if (!(Number.isFinite(epsilonLmolCm) && epsilonLmolCm > 0 &&
+          Number.isFinite(pathLengthCm) && pathLengthCm > 0)) {
+      throw new DomainValidationError("epsilon and path length must be finite and > 0.");
+    }
+    this.epsilonLmolCm = epsilonLmolCm;
+    this.pathLengthCm = pathLengthCm;
+  }
+  measure(sample) {
+    if (!(sample instanceof AnalyticalSample)) throw new TypeError("Expected AnalyticalSample.");
+    return new Measurement(this.epsilonLmolCm * this.pathLengthCm * sample.concentrationMolL,
+      "dimensionless absorbance", this.constructor.name, "A = epsilon * b * c");
+  }
+}
+
+class FluorescenceDetector extends Detector {
+  constructor(sensitivityRfuLMol) {
+    super();
+    if (!(Number.isFinite(sensitivityRfuLMol) && sensitivityRfuLMol > 0)) {
+      throw new DomainValidationError("fluorescence sensitivity must be finite and > 0.");
+    }
+    this.sensitivityRfuLMol = sensitivityRfuLMol;
+  }
+  measure(sample) {
+    if (!(sample instanceof AnalyticalSample)) throw new TypeError("Expected AnalyticalSample.");
+    return new Measurement(this.sensitivityRfuLMol * sample.concentrationMolL,
+      "RFU", this.constructor.name, "F = S_F * c");
+  }
+}
+
+class ElectrochemicalSensor extends Detector {
+  constructor(slopeMicroampLMol, offsetMicroamp) {
+    super();
+    if (!(Number.isFinite(slopeMicroampLMol) && slopeMicroampLMol > 0 &&
+          Number.isFinite(offsetMicroamp))) {
+      throw new DomainValidationError("electrode calibration must be finite with positive slope.");
+    }
+    this.slopeMicroampLMol = slopeMicroampLMol;
+    this.offsetMicroamp = offsetMicroamp;
+  }
+  measure(sample) {
+    if (!(sample instanceof AnalyticalSample)) throw new TypeError("Expected AnalyticalSample.");
+    return new Measurement(this.slopeMicroampLMol * sample.concentrationMolL + this.offsetMicroamp,
+      "microA", this.constructor.name, "I = S_I * c + I_0");
+  }
+}
+
+class AnalysisPipeline {
+  constructor(detector) {
+    if (!(detector instanceof Detector)) throw new TypeError("detector must implement Detector.");
+    this.detector = detector;
+  }
+  analyze(sample) { return this.detector.measure(sample); }
+}
+
+class EnzymeRateModel {
+  constructor(vmaxMicroMolLs, kmMolL) {
+    if (!(Number.isFinite(vmaxMicroMolLs) && vmaxMicroMolLs > 0 &&
+          Number.isFinite(kmMolL) && kmMolL > 0)) {
+      throw new DomainValidationError("Vmax and Km must be finite and > 0.");
+    }
+    this.vmaxMicroMolLs = vmaxMicroMolLs;
+    this.kmMolL = kmMolL;
+  }
+  rate(_substrateMolL) { throw new TypeError("EnzymeRateModel.rate(S) is an abstract contract."); }
+}
+
+class MichaelisMentenEnzyme extends EnzymeRateModel {
+  rate(substrateMolL) {
+    if (!Number.isFinite(substrateMolL) || substrateMolL < 0) {
+      throw new DomainValidationError("substrate concentration must be finite and >= 0.");
+    }
+    const rate = this.vmaxMicroMolLs * substrateMolL / (this.kmMolL + substrateMolL);
+    if (!Number.isFinite(rate)) throw new NumericalModelError("Michaelis-Menten rate exceeds floating-point range.");
+    return rate;
+  }
+}
+
+class CompetitiveInhibitionEnzyme extends EnzymeRateModel {
+  constructor(vmaxMicroMolLs, kmMolL, inhibitorMolL, kiMolL) {
+    super(vmaxMicroMolLs, kmMolL);
+    if (!(Number.isFinite(inhibitorMolL) && inhibitorMolL >= 0 &&
+          Number.isFinite(kiMolL) && kiMolL > 0)) {
+      throw new DomainValidationError("inhibitor must be >= 0 and Ki must be > 0.");
+    }
+    this.inhibitorMolL = inhibitorMolL;
+    this.kiMolL = kiMolL;
+  }
+  rate(substrateMolL) {
+    if (!Number.isFinite(substrateMolL) || substrateMolL < 0) {
+      throw new DomainValidationError("substrate concentration must be finite and >= 0.");
+    }
+    const apparentKm = this.kmMolL * (1 + this.inhibitorMolL / this.kiMolL);
+    const rate = this.vmaxMicroMolLs * substrateMolL / (apparentKm + substrateMolL);
+    if (!Number.isFinite(rate)) throw new NumericalModelError("competitive-inhibition rate exceeds floating-point range.");
+    return rate;
+  }
+}
+
+class ContractBreakingEnzyme extends MichaelisMentenEnzyme {
+  rate(substrateMolL) { return -super.rate(substrateMolL); }
+}
+
+function checkEnzymeContract(enzyme, substrateValuesMolL) {
+  const rates = substrateValuesMolL.map(value => enzyme.rate(value));
+  const failures = [];
+  if (!rates.length || substrateValuesMolL[0] !== 0 || rates[0] !== 0) {
+    failures.push("rate(0 mol/L) must equal 0 microMol/(L s)");
+  }
+  if (rates.some(rate => !Number.isFinite(rate) || rate < 0 || rate > enzyme.vmaxMicroMolLs)) {
+    failures.push("rate must be finite and within [0, Vmax]");
+  }
+  if (rates.some((rate, index) => index > 0 && rate < rates[index - 1])) {
+    failures.push("rate must not decrease as substrate increases");
+  }
+  return { holds: failures.length === 0, rates, failures };
+}
+
+const GAS_CONSTANT_J_MOL_K = 8.31446261815324;
+class ConstantFirstOrderKinetics {
+  constructor(kSInv) {
+    if (!(Number.isFinite(kSInv) && kSInv > 0)) throw new DomainValidationError("k must be > 0 s^-1.");
+    this.kSInv = kSInv;
+  }
+  rateConstant(temperatureK) {
+    if (!(Number.isFinite(temperatureK) && temperatureK > 0)) throw new DomainValidationError("T must be > 0 K.");
+    return this.kSInv;
+  }
+}
+
+class ArrheniusFirstOrderKinetics {
+  constructor(preExponentialSInv, activationEnergyJMol) {
+    if (!(Number.isFinite(preExponentialSInv) && preExponentialSInv > 0 &&
+          Number.isFinite(activationEnergyJMol) && activationEnergyJMol >= 0)) {
+      throw new DomainValidationError("Arrhenius A must be > 0 s^-1 and Ea >= 0 J/mol.");
+    }
+    this.preExponentialSInv = preExponentialSInv;
+    this.activationEnergyJMol = activationEnergyJMol;
+  }
+  rateConstant(temperatureK) {
+    if (!(Number.isFinite(temperatureK) && temperatureK > 0)) throw new DomainValidationError("T must be > 0 K.");
+    return this.preExponentialSInv * Math.exp(-this.activationEnergyJMol / (GAS_CONSTANT_J_MOL_K * temperatureK));
+  }
+}
+
+class CSTRMixing {
+  get equation() { return "Cout = Cin / (1 + k*tau)"; }
+  outlet(cin, k, tau) { return cin / (1 + k * tau); }
+}
+class PlugFlowMixing {
+  get equation() { return "Cout = Cin * exp(-k*tau)"; }
+  outlet(cin, k, tau) { return cin * Math.exp(-k * tau); }
+}
+class Reactor {
+  constructor(kinetics, mixing) {
+    if (typeof kinetics?.rateConstant !== "function" || typeof mixing?.outlet !== "function") {
+      throw new TypeError("Reactor requires kinetic and mixing collaborators.");
+    }
+    this.kinetics = kinetics;
+    this.mixing = mixing;
+  }
+  outlet(cinMolL, residenceTimeS, temperatureK) {
+    if (!(Number.isFinite(cinMolL) && cinMolL >= 0 &&
+          Number.isFinite(residenceTimeS) && residenceTimeS > 0 &&
+          Number.isFinite(temperatureK) && temperatureK > 0)) {
+      throw new DomainValidationError("Cin must be >= 0 mol/L; residence time and T must be > 0.");
+    }
+    const kSInv = this.kinetics.rateConstant(temperatureK);
+    const outletMolL = this.mixing.outlet(cinMolL, kSInv, residenceTimeS);
+    if (!Number.isFinite(outletMolL) || outletMolL < 0) throw new NumericalModelError("reactor balance produced invalid concentration.");
+    return {
+      inletMolL: cinMolL, outletMolL, kSInv, residenceTimeS, temperatureK,
+      conversion: cinMolL === 0 ? 0 : 1 - outletMolL / cinMolL,
+      kinetics: this.kinetics.constructor.name, mixing: this.mixing.constructor.name,
+      equation: this.mixing.equation,
+    };
+  }
+}
+
+class ReactionState {
+  constructor(substrateMolL) {
+    if (!Number.isFinite(substrateMolL) || substrateMolL < 0) {
+      throw new DomainValidationError("substrate concentration must be finite and >= 0.");
+    }
+    this.substrateMolL = substrateMolL;
+  }
+}
+
+class ReactionRateModel {
+  rate(_state) { throw new TypeError("ReactionRateModel.rate(state) is an abstract contract."); }
+}
+class RateContractError extends TypeError {}
+class ZeroOrderKinetics extends ReactionRateModel {
+  constructor(k0MolLs) { super(); if (!Number.isFinite(k0MolLs) || k0MolLs < 0) throw new DomainValidationError("k0 must be >= 0."); this.k0MolLs = k0MolLs; }
+  rate(_state) { return this.k0MolLs; }
+  get equation() { return "r = k0"; }
+}
+class FirstOrderReaction extends ReactionRateModel {
+  constructor(k1SInv) { super(); if (!Number.isFinite(k1SInv) || k1SInv < 0) throw new DomainValidationError("k1 must be >= 0."); this.k1SInv = k1SInv; }
+  rate(state) { return this.k1SInv * state.substrateMolL; }
+  get equation() { return "r = k1 * [A]"; }
+}
+class SecondOrderKinetics extends ReactionRateModel {
+  constructor(k2LMolS) { super(); if (!Number.isFinite(k2LMolS) || k2LMolS < 0) throw new DomainValidationError("k2 must be >= 0."); this.k2LMolS = k2LMolS; }
+  rate(state) { return this.k2LMolS * state.substrateMolL ** 2; }
+  get equation() { return "r = k2 * [A]^2"; }
+}
+class MichaelisMentenKinetics extends ReactionRateModel {
+  constructor(vmaxMolLs, kmMolL) { super(); if (!(Number.isFinite(vmaxMolLs) && vmaxMolLs > 0 && Number.isFinite(kmMolL) && kmMolL > 0)) throw new DomainValidationError("Vmax and Km must be > 0."); this.vmaxMolLs = vmaxMolLs; this.kmMolL = kmMolL; }
+  rate(state) { return this.vmaxMolLs * state.substrateMolL / (this.kmMolL + state.substrateMolL); }
+  get equation() { return "v = Vmax * [S] / (Km + [S])"; }
+}
+class ContractBreakingReactionRateModel extends ReactionRateModel {
+  rate(state) { return -Math.abs(state.substrateMolL); }
+  get equation() { return "r = -[A] (intentionally invalid)"; }
+}
+function dispatchReactionRate(model, state) {
+  if (!(model instanceof ReactionRateModel)) throw new TypeError("model must implement ReactionRateModel.");
+  const rate = model.rate(state);
+  if (!Number.isFinite(rate)) throw new NumericalModelError("rate model returned a non-finite rate.");
+  if (rate < 0) throw new RateContractError("rate model violated its non-negative rate contract.");
+  return rate;
+}
+</script>
 <script>
 "use strict";
 
@@ -522,18 +1293,120 @@ const NAVY = "#162B4D", RUST = "#9E3B24", TEAL = "#1C5D58", PAPER = "#F7F3E8", C
 const ARROW_LABELS = ["instantiates", "checks", "updates", "delegates to", "implements",
   "specializes", "contains", "dispatches to", "matches"];
 
+const SCIENCE_CODE = {
+  detector: {
+    Python: `class Detector(ABC):
+    @abstractmethod
+    def measure(self, sample: AnalyticalSample) -> Measurement: ...
+
+class AnalysisPipeline:
+    def __init__(self, detector: Detector):
+        self._detector = detector
+    def analyze(self, sample):
+        return self._detector.measure(sample)`,
+    Java: `interface Detector {
+  Measurement measure(AnalyticalSample sample);
+}
+final class AnalysisPipeline {
+  private final Detector detector;
+  AnalysisPipeline(Detector detector) { this.detector = detector; }
+  Measurement analyze(AnalyticalSample sample) {
+    return detector.measure(sample);
+  }
+}`,
+    TypeScript: `interface Detector {
+  measure(sample: AnalyticalSample): Measurement;
+}
+class AnalysisPipeline {
+  constructor(private readonly detector: Detector) {}
+  analyze(sample: AnalyticalSample): Measurement {
+    return this.detector.measure(sample);
+  }
+}`,
+  },
+  enzyme: {
+    Python: `class EnzymeRateModel(ABC):
+    @abstractmethod
+    def rate(self, substrate_mol_l: float) -> float: ...
+
+class CompetitiveInhibitionEnzyme(EnzymeRateModel):
+    def rate(self, substrate_mol_l: float) -> float:
+        km_app = self.km * (1 + self.inhibitor / self.ki)
+        return self.vmax * substrate_mol_l / (km_app + substrate_mol_l)
+
+check_enzyme_contract(enzyme)`,
+    Java: `abstract class EnzymeRateModel {
+  abstract double rate(double substrateMolL);
+}
+final class CompetitiveInhibitionEnzyme extends EnzymeRateModel {
+  @Override double rate(double s) {
+    double kmApp = km * (1 + inhibitor / ki);
+    return vmax * s / (kmApp + s);
+  }
+}`,
+    TypeScript: `interface EnzymeRateModel {
+  rate(substrateMolL: number): number;
+}
+const enzyme: EnzymeRateModel = new CompetitiveInhibitionEnzyme(...);
+const rate = enzyme.rate(substrateMolL);`,
+  },
+  reactor: {
+    Python: `reactor = Reactor(
+    ArrheniusFirstOrderKinetics(A_s_inv, Ea_j_mol),
+    CSTRMixing(),
+)
+result = reactor.outlet(Cin_mol_l, tau_s, temperature_k)
+# host delegates to both injected components`,
+    Java: `final class Reactor {
+  private final KineticRateConstant kinetics;
+  private final MixingModel mixing;
+  Reactor(KineticRateConstant k, MixingModel m) {
+    this.kinetics = k; this.mixing = m;
+  }
+  double outlet(State s) { return mixing.balance(kinetics.k(s.T), s); }
+}`,
+    TypeScript: `class Reactor {
+  constructor(private kinetics: KineticRateConstant,
+              private mixing: MixingModel) {}
+  outlet(state: ReactorState): ReactorResult {
+    return this.mixing.balance(this.kinetics.rateConstant(state.T), state);
+  }
+}`,
+  },
+  kinetics: {
+    Python: `class ReactionRateModel(ABC):
+    @abstractmethod
+    def rate(self, state: ReactionState) -> float: ...
+
+model: ReactionRateModel = FirstOrderReaction(k1_s)
+rate = model.rate(state)  # runtime receiver selects override`,
+    Java: `ReactionRateModel model = new FirstOrderReaction(0.10);
+double rate = model.rate(state); // runtime dispatch
+// Overloads are a separate compile-time choice:
+void analyze(Sample s) { ... }
+void analyze(Sample s, Detector d) { ... }`,
+    TypeScript: `interface ReactionRateModel {
+  rate(state: ReactionState): number;
+}
+const model: ReactionRateModel = new FirstOrderReaction(0.10);
+const rate = model.rate(state); // runtime dispatch
+// Overload signatures describe one implementation; they
+// do not create Java-style runtime overload dispatch.`,
+  },
+};
+
 const GROUPS = [
   { key: "lifecycle", number: 1, title: "Object Lifecycle & State", color: "c-navy",
-    summary: "How state comes into existence and stays valid.",
+    summary: "Construct and transform chemical state while preserving a stated material balance.",
     concepts: ["class", "object", "constructor", "encapsulation"] },
   { key: "contracts", number: 2, title: "Contracts & Abstraction", color: "c-teal",
-    summary: "What a caller may rely on, separated from how it is done.",
+    summary: "Analyze samples through interchangeable scientific measurement contracts.",
     concepts: ["abstraction", "interface"] },
   { key: "reuse", number: 3, title: "Code Reuse & Structure", color: "c-rust",
-    summary: "Specialization (is-a) versus assembly from parts (has-a).",
+    summary: "Test biochemical behavioral subtypes and assemble reactor models from components.",
     concepts: ["inheritance", "composition"] },
   { key: "dispatch", number: 4, title: "Polymorphic Dispatch", color: "c-navy",
-    summary: "Which implementation runs: runtime type vs call signature.",
+    summary: "Select a kinetic rate law by runtime model; distinguish overriding from overloading.",
     concepts: ["polymorphism"] },
 ];
 
@@ -543,63 +1416,75 @@ const e = (from, to, label, color = NAVY, opts = {}) => Object.assign({ from, to
 
 const FIGURES = {
   class: { h: 165, nodes: [
-      n("cls", 10, 25, 180, "Class FuelTank", ["_fuel_kg: float", "_capacity_kg: float", "burn(dt) / refuel(kg)"]),
-      n("a", 330, 12, 180, "Object tank_a", ["_fuel_kg = 600.0"]),
-      n("b", 330, 108, 180, "Object tank_b", ["_fuel_kg = 250.0"]) ],
+      n("cls", 10, 25, 200, "Class Solution", ["solute: ChemicalSpecies", "n: mol; V: L; T: K", "dilute() / add_solute()"]),
+      n("a", 320, 12, 190, "Object solution_a", ["NaCl: C = 0.100 mol/L", "V = 0.500 L; n = 0.050 mol"]),
+      n("b", 320, 108, 190, "Object solution_b", ["NaCl: C = 0.250 mol/L", "V = 0.200 L; n = 0.050 mol"]) ],
     edges: [e("cls", "a", "instantiates"), e("cls", "b", "instantiates")],
-    caption: "One class, many objects: each instance owns its own state." },
+    caption: "Both objects use the same solute and class, but each owns independent concentration, volume, and temperature state." },
   object: { h: 215, boundary: { x: 160, y: 8, w: 352, h: 198, label: "ENCAPSULATION BOUNDARY" },
     nodes: [
-      n("caller", 5, 20, 130, "Caller", ["tank.burn(4)"], TEAL),
-      n("burn", 175, 120, 128, "Operation", ["burn(dt: float)"], TEAL),
-      n("state", 360, 32, 145, "State", ["_fuel_kg = 500.0"]),
-      n("inv", 360, 150, 145, "Invariant", ["0 <= fuel <= 1000"], RUST) ],
+      n("caller", 5, 20, 130, "Caller", ["solution.dilute(1 L)"], TEAL),
+      n("burn", 175, 120, 128, "Operation", ["dilute(final_V)"], TEAL),
+      n("state", 360, 32, 145, "State", ["n = 0.050 mol", "V = 1.000 L"]),
+      n("inv", 360, 150, 145, "Model check", ["C1V1 = C2V2", "C2 = 0.050 mol/L"], RUST) ],
     edges: [e("caller", "burn", "delegates to", TEAL), e("burn", "inv", "checks", RUST), e("burn", "state", "updates", TEAL)],
-    caption: "The caller hands the request to the object; burn() checks the invariant, then updates state." },
+    caption: "Dilution changes volume while conserving solute amount; the object's concentration is derived as n / V." },
   constructor: { h: 210, nodes: [
-      n("ctor", 10, 75, 190, "Constructor", ["__init__(engine, cap, fuel)"], TEAL),
-      n("inv", 290, 8, 220, "Invariant", ["0 <= fuel <= capacity"], RUST),
-      n("obj", 290, 78, 220, "Object tank_a", ["_engine = IonThruster", "_fuel_kg = 600.0"]),
-      n("eng", 290, 160, 220, "Engine dependency", ["IonThruster(rate=0.5)"], TEAL) ],
+      n("ctor", 10, 75, 190, "Constructor", ["Solution(NaCl, C, V, T)"], TEAL),
+      n("inv", 290, 8, 220, "Model constraints", ["C >= 0; V > 0 L", "T > 0 K"], RUST),
+      n("obj", 290, 78, 220, "Solution object", ["n = C x V = 0.050 mol", "V = 0.500 L; T = 298.15 K"]),
+      n("eng", 290, 160, 220, "ChemicalSpecies", ["NaCl; 58.44 g/mol"], TEAL) ],
     edges: [e("ctor", "inv", "checks", RUST), e("ctor", "obj", "instantiates"), e("obj", "eng", "contains", TEAL)],
-    caption: "Initialization validates the invariant and binds dependencies before anyone can call the object." },
+    caption: "The constructor rejects states outside the program's model domain; these checks do not enforce laws of nature." },
   encapsulation: { h: 205, boundary: { x: 200, y: 8, w: 312, h: 190, label: "ENCAPSULATION BOUNDARY" },
     nodes: [
-      n("outside", 5, 40, 170, "Outside caller", ["tank._fuel_kg = -50"], RUST),
-      n("state", 290, 38, 140, "Private state", ["_fuel_kg = 600.0"]),
-      n("burn", 215, 132, 135, "burn(dt)", ["dt >= 0"], TEAL),
-      n("refuel", 370, 132, 135, "refuel(kg)", ["kg > 0"], TEAL) ],
+      n("outside", 5, 40, 170, "Outside caller", ["solution.C = -1"], RUST),
+      n("state", 290, 38, 140, "Private state", ["n = 0.050 mol", "V = 0.500 L"]),
+      n("burn", 215, 132, 135, "dilute(V2)", ["V2 > current V"], TEAL),
+      n("refuel", 370, 132, 135, "add_solute(dn)", ["dn > 0 mol"], TEAL) ],
     edges: [e("burn", "state", "updates", TEAL), e("refuel", "state", "updates", TEAL),
       e("outside", "state", "updates", RUST, { dashed: true, blocked: true })],
-    caption: "Only the object's own operations cross the boundary; direct field writes are blocked." },
-  abstraction: { h: 175, boundary: { x: 300, y: 8, w: 212, h: 159, label: "HIDDEN" },
+    caption: "Concentration is derived from n / V. Validated operations update internal amount or volume; the software invariant is not a law of nature." },
+  abstraction: { h: 175, boundary: { x: 350, y: 8, w: 160, h: 159, label: "IMPLEMENTATION" },
     nodes: [
-      n("nav", 10, 12, 145, "Navigator", ["plan_burn(dv)"]),
-      n("prop", 10, 110, 145, "Propulsion", ["thrust(dt)"], TEAL),
-      n("hidden", 330, 82, 160, "Internals", ["valve_timing()", "catalyst_temp", "rate_kg_s"]) ],
-    edges: [e("nav", "prop", "delegates to"), e("prop", "hidden", "delegates to", TEAL)],
-    caption: "The caller sees thrust(); burn-rate maths and valve timing stay hidden." },
+      n("pipeline", 35, 65, 220, "AnalysisPipeline", ["analyze(AnalyticalSample)"]),
+      n("detector", 340, 65, 165, "Detector", ["measure(sample)"], TEAL) ],
+    edges: [e("pipeline", "detector", "delegates to", TEAL)],
+    caption: "The pipeline sees a measurement operation; each detector's calibration details remain in its implementation." },
   interface: { h: 185, nodes: [
-      n("nav", 5, 30, 110, "Navigator", ["plan_burn(dv)"]),
-      n("prop", 205, 25, 230, "<<interface>> Propulsion", ["thrust(dt: float) -> float"], TEAL),
-      n("chem", 70, 125, 175, "ChemicalEngine", ["rate = 25.0 kg/s"]),
-      n("ion", 300, 125, 175, "IonThruster", ["rate = 0.5 kg/s"]) ],
-    edges: [e("nav", "prop", "delegates to"), e("chem", "prop", "implements", TEAL, { dashed: true }),
-      e("ion", "prop", "implements", TEAL, { dashed: true })],
-    caption: "Clients depend on the contract; implementations are interchangeable." },
+      n("pipeline", 5, 60, 110, "AnalysisPipeline", ["analyze(sample)"]),
+      n("contract", 150, 60, 160, "<<interface>> Detector", ["measure(sample)", "-> Measurement"], TEAL),
+      n("absorbance", 335, 3, 180, "AbsorbanceDetector", ["A = epsilon b c"]),
+      n("fluorescence", 335, 68, 180, "FluorescenceDetector", ["F = S_F c"]),
+      n("electrode", 335, 133, 180, "ElectrochemicalSensor", ["I = S_I c + I_0"]) ],
+    edges: [e("pipeline", "contract", "delegates to"), e("absorbance", "contract", "implements", TEAL, { dashed: true }),
+      e("fluorescence", "contract", "implements", TEAL, { dashed: true }), e("electrode", "contract", "implements", TEAL, { dashed: true })],
+    caption: "Each implementation returns a Measurement under one interface; the higher-level pipeline stays unchanged." },
   inheritance: { h: 190, nodes: [
-      n("rect", 10, 10, 210, "Rectangle", ["set_width(w: float)", "set_height(h: float)", "area() -> float"]),
-      n("square", 10, 128, 210, "Square", ["invariant: width == height"], RUST),
-      n("client", 300, 62, 210, "Client (expects Rectangle)", ["set_width(5); set_height(4)", "assert area() == 20"], RUST) ],
-    edges: [e("square", "rect", "specializes", RUST), e("client", "square", "checks", RUST)],
-    caption: "Square specializes Rectangle but is not substitutable: the client gets 16, not 20." },
+      n("base", 5, 65, 150, "EnzymeRateModel", ["rate([S])", "0 <= v <= Vmax"]),
+      n("mm", 185, 5, 175, "MichaelisMentenEnzyme", ["v = Vmax [S]/(Km+[S])"]),
+      n("competitive", 185, 90, 175, "CompetitiveInhibitionEnzyme", ["competitive Km shift"]),
+      n("assay", 385, 55, 130, "Contract assay", ["finite", "bounded", "monotone"], TEAL) ],
+    edges: [e("mm", "base", "specializes"), e("competitive", "base", "specializes"),
+      e("assay", "mm", "checks", TEAL), e("assay", "competitive", "checks", TEAL)],
+    caption: "Enzyme subtype labels are not enough: each rate implementation must satisfy the client-facing behavioral contract." },
   composition: { h: 195, nodes: [
-      n("craft", 160, 12, 200, "Spacecraft", ["thrust() / navigate() / send()"], TEAL),
-      n("engine", 15, 130, 150, "Engine", ["thrust(dt)"]),
-      n("guidance", 185, 130, 150, "Guidance", ["heading()"]),
-      n("comms", 355, 130, 150, "Comms", ["send(msg)"]) ],
-    edges: [e("craft", "engine", "contains", TEAL), e("craft", "guidance", "contains", TEAL), e("craft", "comms", "contains", TEAL)],
-    caption: "has-a: behavior is assembled from collaborators that can be swapped independently." },
+      n("reactor", 155, 5, 205, "Reactor", ["outlet(Cin, tau, T)"], TEAL),
+      n("kinetics", 5, 125, 155, "Kinetic model", ["constant k", "or Arrhenius k(T)"]),
+      n("mixing", 355, 125, 155, "Mixing model", ["ideal CSTR", "or ideal PFR"]) ],
+    edges: [e("reactor", "kinetics", "contains", TEAL), e("reactor", "mixing", "contains", TEAL)],
+    caption: "The host has independently swappable kinetic and mixing components; 2 x 2 configurations need four subclasses but only four component types." },
+  polymorphism: { h: 210, nodes: [
+      n("caller", 5, 83, 110, "Caller", ["model.rate(state)"], TEAL),
+      n("contract", 150, 83, 150, "ReactionRateModel", ["rate(state) -> r"]),
+      n("zero", 330, 2, 185, "ZeroOrderKinetics", ["r = k0"]),
+      n("first", 330, 50, 185, "FirstOrderReaction", ["r = k1 [A]"]),
+      n("second", 330, 98, 185, "SecondOrderKinetics", ["r = k2 [A]^2"]),
+      n("mm", 330, 146, 185, "MichaelisMentenKinetics", ["v = Vmax [S]/(Km+[S])"]) ],
+    edges: [e("caller", "contract", "delegates to"), e("contract", "zero", "dispatches to", TEAL),
+      e("contract", "first", "dispatches to", TEAL), e("contract", "second", "dispatches to", TEAL),
+      e("contract", "mm", "dispatches to", TEAL)],
+    caption: "Runtime selection of rate(state) changes the equation and numerical result; overload resolution is a separate compile-time concept." },
   fig41: { h: 180, title: "Figure 4.1 - Dynamic dispatch through Shape.draw()", nodes: [
       n("shape", 170, 12, 180, "<<abstract>> Shape", ["draw()"]),
       n("Circle", 10, 120, 150, "Circle", ["draw()"], TEAL),
@@ -661,51 +1546,56 @@ const FIGURES = {
 
 const CONCEPTS = [
   { key: "class", name: "Class", group: "lifecycle",
-    narrative: "A class is a blueprint: it declares the state an object will hold and the operations allowed on that state. It is a type definition, not a running thing.",
-    code: "class FuelTank:\n    capacity_kg: float\n    fuel_kg: float\n    def burn(self, dt: float) -> None: ...\n    def refuel(self, kg: float) -> None: ...",
-    trapCode: "class FuelTank:\n    fuel_kg = 0.0          # class attribute!\n    @staticmethod\n    def burn(dt): FuelTank.fuel_kg -= 25 * dt",
-    trap: "Trap: treating a class as a bag of static helpers with shared mutable globals. Every instance then shares one state and invariants leak." },
+    narrative: "A class defines the state and operations for a scientific model. Solution stores amount and volume and derives concentration; it is a type definition, not a particular sample of solution.",
+    code: "class Solution:\n    def __init__(self, solute, concentration_mol_l, volume_l, temperature_k):\n        self._solute_amount_mol = concentration_mol_l * volume_l\n        self._volume_l = volume_l\n        self._temperature_k = temperature_k\n\n    @property\n    def concentration_mol_l(self):\n        return self._solute_amount_mol / self._volume_l",
+    trapCode: "class Solution:\n    shared_state = {\"amount_mol\": 0.0, \"volume_l\": 1.0}\n\n# Incorrectly shared across every solution",
+    trap: "Trap: storing mutable amount and volume on the class instead of each instance. Two solutions would then share concentration state." },
   { key: "object", name: "Object", group: "lifecycle",
-    narrative: "An object encapsulates state and behavior behind a defined interaction boundary. It maintains its invariants only because every state change goes through controlled operations - the language itself guarantees nothing about domain rules.",
-    code: "tank = FuelTank(capacity_kg=1000, fuel_kg=600)\ntank.burn(4)      # 600 - 25*4 = 500 kg\ntank.refuel(200)  # 700 kg",
-    trapCode: "tank.fuel_kg = -50   # reachable field\nassert 0 <= tank.fuel_kg  # fails",
-    trap: "Trap: tank.fuel_kg = -50 from outside. If the field is reachable, the invariant 0 <= fuel <= capacity is a hope, not a guarantee." },
+    narrative: "An object is one initialized instance with its own scientific state. Two Solution objects may contain the same ChemicalSpecies while keeping independent amount, volume, concentration, and temperature.",
+    code: "aqueous = ChemicalSpecies(\"Sodium chloride\", \"NaCl\", 58.44)\na = Solution(aqueous, 0.100, 0.500, 298.15)\nb = Solution(aqueous, 0.250, 0.200, 298.15)\na.dilute(1.000)\n# a: 0.050 mol/L; b remains 0.250 mol/L",
+    trapCode: "class Solution:\n    concentration_mol_l = 0.100  # shared class value\n\n# changing one sample affects the model for all",
+    trap: "Trap: confusing a class definition or shared class variable with an independent sample. Object identity matters when state changes." },
   { key: "constructor", name: "Constructor / Initialization", group: "lifecycle",
-    narrative: "Initialization establishes the initial state, binds required dependencies, and validates invariants before the object is usable. Languages differ: Java/C# constructors, C++ member-initializer lists, Python __init__ (after __new__), Rust/Go factory functions.",
-    code: "def __init__(self, engine: Engine, capacity_kg: float, fuel_kg: float):\n    if not 0 <= fuel_kg <= capacity_kg:\n        raise ValueError('fuel outside bounds')\n    self._engine = engine",
-    trapCode: "tank = FuelTank()        # half-built\ntank.burn(4)             # engine is None\ntank.init(engine, 1000, 600)",
-    trap: "Trap: a no-arg constructor followed by init() or setters. Between the two calls the object exists in an invalid, half-built state." },
+    narrative: "Construction establishes a complete initial Solution and rejects states outside this program's model domain. These checks protect the representation; software does not enforce physical laws. Languages provide different constructor and validation mechanisms.",
+    code: "def __init__(self, solute, concentration_mol_l, volume_l, temperature_k):\n    if not all(math.isfinite(x) for x in (concentration_mol_l, volume_l, temperature_k)):\n        raise ValueError(\"state values must be finite\")\n    if concentration_mol_l < 0 or volume_l <= 0 or temperature_k <= 0:\n        raise ValueError(\"C >= 0; V > 0 L; T > 0 K\")\n    self._solute = solute\n    self._solute_amount_mol = concentration_mol_l * volume_l\n    self._volume_l = volume_l\n    self._temperature_k = temperature_k",
+    trapCode: "solution = Solution.__new__(Solution)\nsolution.dilute(1.0)  # state was never initialized\n# Prefer one validated constructor call",
+    trap: "Trap: publish a partially initialized object and complete it later with setters. An unusable state can escape before all model constraints are checked." },
   { key: "encapsulation", name: "Encapsulation", group: "lifecycle",
-    narrative: "Encapsulation is access control in service of invariant protection: internal fields are hidden so that only the object's own operations can change them.",
-    code: "class FuelTank:\n    def __init__(self, ...): self._fuel_kg = ...\n    @property\n    def fuel_kg(self) -> float: return self._fuel_kg",
-    trapCode: "private double fuelKg;\npublic void setFuelKg(double v) { fuelKg = v; }",
-    trap: "Trap: a private field with a public setter for every field. Access is technically controlled, but nothing is protected." },
+    narrative: "Encapsulation is access control in service of invariant protection. Solution exposes validated dilution, solute-addition, and aliquot-removal operations; concentration is derived from private amount and volume state. The API constrains the program's model, not the physical system.",
+    code: "class Solution:\n    @property\n    def concentration_mol_l(self):\n        return self._solute_amount_mol / self._volume_l\n\n    def dilute(self, final_volume_l):\n        if not math.isfinite(final_volume_l) or final_volume_l <= self._volume_l:\n            raise ValueError(\"final volume must exceed current volume\")\n        self._volume_l = final_volume_l\n\n    def add_solute(self, amount_mol):\n        if not math.isfinite(amount_mol) or amount_mol <= 0:\n            raise ValueError(\"amount must be positive\")\n        self._solute_amount_mol += amount_mol",
+    trapCode: "solution.concentration_mol_l = -1\n# No public setter: reject the write\n# Use solution.add_solute(amount_mol)\n# or solution.dilute(final_volume_l)",
+    trap: "Trap: expose independent setters for concentration, amount, and volume. Callers could contradict C = n / V. Run the Solution workbench to compare before/after state and inspect validation and method dispatch.",
+    scienceWorkbench: "solution" },
   { key: "abstraction", name: "Abstraction", group: "contracts",
-    narrative: "Abstraction exposes the essential capabilities a caller needs while hiding implementation details. It is about what is visible to the caller, distinct from encapsulation's job of guarding state.",
-    code: "class Propulsion(ABC):\n    @abstractmethod\n    def thrust(self, dt: float) -> float: ...",
-    trapCode: "engine.preheat_catalyst(450)\nengine.open_valve(0.3)\nengine.thrust(dt)   # caller must know internals",
-    trap: "Trap: leaky abstraction - thrust() that requires callers to pre-heat the catalyst bed first. Hidden details have escaped into the contract." },
+    narrative: "AnalysisPipeline needs only Detector.measure(sample); it does not need detector-specific calibration fields or equations. That capability boundary hides instrument details without hiding the Measurement result.",
+    code: "class AnalysisPipeline:\n    def __init__(self, detector: Detector): self._detector = detector\n    def analyze(self, sample): return self._detector.measure(sample)",
+    trapCode: "if isinstance(detector, AbsorbanceDetector):\n    value = detector.epsilon * detector.path * sample.c\nelif isinstance(detector, FluorescenceDetector):\n    ...  # pipeline now knows each instrument",
+    trap: "Trap: a leaky abstraction makes the pipeline inspect concrete detector types and duplicate calibration logic.",
+    scienceWorkbench: "detector" },
   { key: "interface", name: "Interface", group: "contracts",
-    narrative: "An interface is an explicit contract of operations with no committed implementation. Multiple classes implement it, and clients depend on the contract instead of a concrete class.",
-    code: "interface Propulsion { double thrust(double dt); }\nclass IonThruster implements Propulsion { ... }",
-    trapCode: "interface Vehicle { fly(); dive(); drive(); dock(); ... }\nclass Car implements Vehicle {\n  void fly() { throw new UnsupportedOperationException(); }\n}",
-    trap: "Trap: a 20-method 'god interface'. Implementers stub half the methods and throw UnsupportedOperationException at runtime." },
+    narrative: "Detector.measure(sample) returns a Measurement with a finite value, units, implementation, and equation. Absorbance, fluorescence, and electrochemical implementations honor that measurement contract using different simplified calibration models.",
+    code: "interface Detector { Measurement measure(AnalyticalSample sample); }\nfinal class AnalysisPipeline {\n  private final Detector detector;\n  Measurement analyze(AnalyticalSample s) { return detector.measure(s); }\n}",
+    trapCode: "class FakeDetector:\n    def measure(self, sample):\n        return \"0.7\"  # no numeric value, units, or measurement contract",
+    trap: "Trap: sharing a method name without honoring its output and failure contract does not make implementations substitutable.",
+    scienceWorkbench: "detector" },
   { key: "inheritance", name: "Inheritance", group: "reuse",
-    narrative: "Inheritance models specialization: a subtype must be behaviorally substitutable for its base type wherever the base is expected (Liskov). Code reuse is a side effect, not the justification.",
-    code: "class Rectangle:\n    def set_width(self, w): ...\n    def set_height(self, h): ...\nclass Square(Rectangle): ...",
-    trapCode: "r: Rectangle = Square(1)\nr.set_width(5); r.set_height(4)\nassert r.area() == 20   # 16 -> fails",
-    trap: "Trap: inheriting only to reuse code. Square narrows Rectangle's contract: set_width(5); set_height(4) gives area 16, not 20." },
+    narrative: "A biochemical rate subtype must be behaviorally substitutable wherever EnzymeRateModel is expected. Biological relatedness alone does not prove that the subtype preserves the rate contract.",
+    code: "class EnzymeRateModel(ABC):\n    @abstractmethod\n    def rate(self, substrate_mol_l: float) -> float: ...\n\nrate = enzyme.rate(substrate_mol_l)  # check finite 0 <= rate <= Vmax",
+    trapCode: "class BrokenEnzyme(EnzymeRateModel):\n    def rate(self, substrate_mol_l):\n        return -super().rate(substrate_mol_l)  # violates contract",
+    trap: "Trap: assuming biological classification alone justifies inheritance. Run the Liskov assay to catch a subtype that returns an invalid rate.",
+    scienceWorkbench: "enzyme" },
   { key: "composition", name: "Composition", group: "reuse",
-    narrative: "Composition is has-a: an object assembles behavior from collaborating components it contains and delegates to. Components can be swapped without touching a class hierarchy.",
-    code: "class Spacecraft:\n    def __init__(self, engine: Propulsion,\n                 guidance: Guidance, comms: Comms): ...",
-    trapCode: "craft.engine.tank.valve.open()   # reaching through parts",
-    trap: "Trap: composing then exposing every component publicly (craft.engine.tank.valve.open()) - a Law of Demeter violation." },
+    narrative: "A Reactor has kinetic and mixing components and delegates to both. Swapping either component changes outlet concentration without creating a subclass for every combination.",
+    code: "reactor = Reactor(ArrheniusFirstOrderKinetics(A, Ea), CSTRMixing())\nresult = reactor.outlet(Cin_mol_l, tau_s, temperature_k)",
+    trapCode: "class ArrheniusCSTRReactor(Reactor): ...\nclass ArrheniusPlugFlowReactor(Reactor): ...\nclass ConstantRateCSTRReactor(Reactor): ...",
+    trap: "Trap: subclassing once per kinetic/mixing combination duplicates host classes instead of composing independent scientific behavior.",
+    scienceWorkbench: "reactor" },
   { key: "polymorphism", name: "Polymorphism", group: "dispatch",
-    narrative: "Subtype polymorphism selects an overriding method from the receiver's runtime type (dynamic dispatch). Overloading is different: the compiler selects among signatures from the call's argument types. Python and JavaScript have no signature overloading.",
-    code: "for s in shapes:\n    s.draw()            # runtime dispatch\ntranslate(1.0, 2.0)      # matches (float, float)\ntranslate(1.0, 2.0, 3.0) # matches (float, float, float)",
-    trapCode: "Shape s = new Circle();\ndescribe(s);   // describe(Shape s), not describe(Circle c)\ns.draw();      // Circle.draw()",
-    trap: "Trap: expecting an overload to dispatch on runtime type. With Shape s = new Circle(), describe(s) picks describe(Shape) even though s.draw() runs Circle.draw().",
-    figures: ["fig41", "fig42"] },
+    narrative: "model.rate(state) dispatches to the override selected by the runtime kinetic-model object. Overloading is separate: Java selects signatures at compile time, Python has no native signature-based overload dispatch, and TypeScript overload signatures describe one runtime implementation.",
+    code: "model: ReactionRateModel = FirstOrderReaction(k1_s_inv=0.10)\nstate = ReactionState(substrate_mol_l=0.050)\nrate = model.rate(state)  # 0.005 mol/(L s)",
+    trapCode: "model = ContractBreakingReactionRateModel()\nmodel.rate(state)  # negative rate -> TYPE/CONTRACT FAILURE",
+    trap: "Trap: confusing override dispatch with overload resolution, or assuming a method name identifies the scientific rate law without selecting a runtime model.",
+    scienceWorkbench: "kinetics", figures: ["polymorphism", "fig42"] },
 ];
 
 const CASE_STUDIES = [
@@ -828,6 +1718,7 @@ function renderFigure(spec, extraClass = "") {
   for (const ed of spec.edges) {
     if (!ARROW_LABELS.includes(ed.label)) throw new Error(`unknown arrow label ${ed.label}`);
     const s = byKey[ed.from], d = byKey[ed.to];
+    if (!s || !d) throw new Error(`figure edge ${ed.from} -> ${ed.to} references a missing node`);
     const p1 = boundaryPoint(s, centerOf(d)), p2 = boundaryPoint(d, centerOf(s));
     const ang = Math.atan2(p2[1] - p1[1], p2[0] - p1[0]), sz = 9, sp = 0.42;
     const head = [p2, [p2[0] - sz * Math.cos(ang - sp), p2[1] - sz * Math.sin(ang - sp)],
@@ -909,6 +1800,7 @@ function renderConcepts() {
         <p class="trap-note">${esc(c.trap)}</p>
       </div>
       <button class="chip teal" data-material-lesson="${c.key}">Try ${esc(c.name)} in Materials Lab</button>
+      ${c.scienceWorkbench ? `<button class="chip teal" data-science-workbench="${c.scienceWorkbench}">Open ${c.scienceWorkbench === "solution" ? "Solution / Dilution" : ({ detector: "Detector", enzyme: "Enzyme Substitutability", reactor: "Reactor Composition", kinetics: "Kinetic Dispatch" }[c.scienceWorkbench])} Workbench</button>` : ""}
     </article>`;
   }).join("");
 }
@@ -939,6 +1831,8 @@ function applyFilters() {
   const isGroup = GROUPS.some(g => g.key === f);
   document.querySelectorAll("#filters .chip").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.filter === f)));
   $("groups-section").classList.toggle("hidden", !(f === "all" || isGroup) || q.length > 0);
+  $("solution-section").classList.toggle("hidden", !(f === "all" || f === "solution" || f === "lifecycle") || q.length > 0);
+  $("science-section").classList.toggle("hidden", !(f === "all" || f === "science" || f === "contracts" || f === "reuse" || f === "dispatch") || q.length > 0);
 
   let nConcepts = 0;
   document.querySelectorAll(".concept").forEach(el => {
@@ -974,7 +1868,7 @@ function bindCatalog() {
     const b = ev.target.closest("[data-filter]");
     if (!b) return;
     state.filter = b.dataset.filter;
-    if (state.filter === "materials" || state.filter === "lab") {
+    if (state.filter === "materials" || state.filter === "lab" || state.filter === "solution") {
       state.query = ""; $("search").value = "";
     }
     applyFilters();
@@ -996,6 +1890,20 @@ function bindCatalog() {
       applyFilters();
       selectMaterialLesson(lesson.dataset.materialLesson);
       $("material-lesson-" + lesson.dataset.materialLesson).focus();
+    }
+    const workbench = ev.target.closest("[data-science-workbench]");
+    if (workbench) {
+      state.query = ""; $("search").value = "";
+      if (workbench.dataset.scienceWorkbench === "solution") {
+        state.filter = "solution";
+        applyFilters();
+        $("solution-section").scrollIntoView();
+      } else {
+        state.filter = "science";
+        applyFilters();
+        selectSciencePanel(workbench.dataset.scienceWorkbench);
+        $("science-section").scrollIntoView();
+      }
     }
   });
   $("cases").addEventListener("click", ev => {
@@ -1321,6 +2229,728 @@ function bindMaterials() {
   selectMaterialLesson(materialLesson);
 }
 
+/* ---- Scientific OOP Workbench: Solution encapsulation ---- */
+let solutionInstance = new Solution(SOLUTION_SPECIES, 0.100, 0.500, 298.15);
+let solutionBInstance = new Solution(SOLUTION_SPECIES, 0.250, 0.200, 298.15);
+let solutionTraceTimer = null;
+const solutionFormat = value => String(Number(Number(value).toPrecision(6)));
+
+function solutionStateText(snapshot) {
+  if (!snapshot) return "No valid Solution instance.";
+  return `solute               ${snapshot.solute.formula} (${snapshot.solute.name})\n` +
+    `solute amount, n      ${solutionFormat(snapshot.soluteAmountMol)} mol\n` +
+    `solution volume, V    ${solutionFormat(snapshot.volumeL)} L\n` +
+    `concentration, C      ${solutionFormat(snapshot.concentrationMolL)} mol/L\n` +
+    `temperature, T        ${solutionFormat(snapshot.temperatureK)} K`;
+}
+
+function renderSolutionBState() {
+  const first = solutionInstance ? solutionInstance.snapshot() : null;
+  const second = solutionBInstance ? solutionBInstance.snapshot() : null;
+  const output = $("solution-b-state");
+  output.className = "readout";
+  output.textContent =
+    `A !== B                         ${solutionInstance !== solutionBInstance}\n` +
+    `A.solute === B.solute           ${solutionInstance.solute === solutionBInstance.solute}\n` +
+    `Solution A: C=${solutionFormat(first.concentrationMolL)} mol/L, V=${solutionFormat(first.volumeL)} L, ` +
+    `n=${solutionFormat(first.soluteAmountMol)} mol, T=${solutionFormat(first.temperatureK)} K\n` +
+    `Solution B: C=${solutionFormat(second.concentrationMolL)} mol/L, V=${solutionFormat(second.volumeL)} L, ` +
+    `n=${solutionFormat(second.soluteAmountMol)} mol, T=${solutionFormat(second.temperatureK)} K`;
+}
+
+function renderSolutionDiagram(operation) {
+  const methods = [
+    ["dilute(finalVolumeL)", operation === "dilute"],
+    ["addSolute(amountMol)", operation === "add"],
+    ["removeVolume(volumeL)", operation === "remove"],
+    ["concentrationMolL (read-only)", false],
+  ];
+  const methodRows = methods.map(([text, selected], index) =>
+    `<text x="202" y="${91 + index * 19}" fill="${selected ? TEAL : NAVY}" font-weight="${selected ? "700" : "400"}">${text}</text>`
+  ).join("");
+  const snapshot = solutionInstance ? solutionInstance.snapshot() : null;
+  const stateRows = [
+    `solute: ${snapshot ? snapshot.solute.formula : "ChemicalSpecies"}`,
+    `#soluteAmountMol: ${snapshot ? solutionFormat(snapshot.soluteAmountMol) : "n/a"} mol`,
+    `#volumeL: ${snapshot ? solutionFormat(snapshot.volumeL) : "n/a"} L`,
+    `#temperatureK: ${snapshot ? solutionFormat(snapshot.temperatureK) : "n/a"} K`,
+    "C = n / V (derived)",
+  ].map((text, index) => `<text x="467" y="${80 + index * 19}">${esc(text)}</text>`).join("");
+  $("solution-diagram").innerHTML =
+    `<svg class="science-diagram" viewBox="0 0 760 245" role="img" aria-label="Caller delegates to Solution operations; validated operations update private state">` +
+    `<defs><marker id="solution-arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="${NAVY}"/></marker></defs>` +
+    `<rect x="8" y="91" width="145" height="62" rx="4" fill="${CARD}" stroke="${NAVY}"/>` +
+    `<text x="80" y="116" text-anchor="middle" font-weight="700">Caller</text><text x="80" y="136" text-anchor="middle">select operation</text>` +
+    `<rect x="175" y="10" width="575" height="225" rx="8" fill="none" stroke="${TEAL}" stroke-dasharray="6 4"/>` +
+    `<text x="738" y="25" text-anchor="end" fill="${TEAL}" font-size="10">SOLUTION OBJECT</text>` +
+    `<rect x="190" y="39" width="245" height="145" rx="4" fill="${CARD}" stroke="${TEAL}"/>` +
+    `<rect x="190" y="39" width="245" height="27" fill="${TEAL}"/><text class="title" x="312" y="57" text-anchor="middle">Solution · public API</text>` +
+    methodRows +
+    `<rect x="460" y="39" width="275" height="117" rx="4" fill="${CARD}" stroke="${NAVY}"/>` +
+    `<rect x="460" y="39" width="275" height="27" fill="${NAVY}"/><text class="title" x="597" y="57" text-anchor="middle">Private state + derived property</text>` +
+    stateRows +
+    `<rect x="460" y="168" width="275" height="46" rx="4" fill="#F1ECE0" stroke="${RUST}"/>` +
+    `<text x="597" y="187" text-anchor="middle" fill="${RUST}" font-weight="700">Invariant checks before state mutation</text>` +
+    `<text x="597" y="203" text-anchor="middle">n ≥ 0 · V &gt; 0 · T &gt; 0 K</text>` +
+    `<line x1="153" y1="122" x2="188" y2="122" stroke="${NAVY}" marker-end="url(#solution-arrow)"/>` +
+    `<text class="edge-label" x="170" y="111" text-anchor="middle">delegates to</text>` +
+    `<line x1="435" y1="106" x2="458" y2="106" stroke="${TEAL}" marker-end="url(#solution-arrow)"/>` +
+    `<text class="edge-label" x="446" y="96" text-anchor="middle">updates</text>` +
+    `<line x1="435" y1="170" x2="458" y2="183" stroke="${RUST}" marker-end="url(#solution-arrow)"/>` +
+    `<text class="edge-label" x="444" y="166" text-anchor="middle">checks</text>` +
+    `</svg>`;
+}
+
+function renderSolutionPlot(before, after) {
+  const container = $("solution-plot");
+  if (!after) {
+    container.innerHTML = `<p class="caption">Construct a valid Solution to compare its concentration state.</p>`;
+    return;
+  }
+  const maxC = Math.max(before?.concentrationMolL || 0, after.concentrationMolL, 0.001);
+  const barHeight = value => Math.max(2, 78 * value / maxC);
+  const rows = [
+    before && { label: "BEFORE", x: 120, state: before, color: NAVY },
+    { label: "AFTER", x: 365, state: after, color: TEAL },
+  ].filter(Boolean);
+  const marks = rows.map(row => {
+    const height = barHeight(row.state.concentrationMolL);
+    return `<rect x="${row.x}" y="${108 - height}" width="72" height="${height}" fill="${row.color}" opacity=".82"/>` +
+      `<text x="${row.x + 36}" y="126" text-anchor="middle" class="state-label">${row.label}</text>` +
+      `<text x="${row.x + 36}" y="${Math.max(18, 98 - height)}" text-anchor="middle" class="state-label">${solutionFormat(row.state.concentrationMolL)} mol/L</text>` +
+      `<text x="${row.x + 36}" y="146" text-anchor="middle" class="state-label">n=${solutionFormat(row.state.soluteAmountMol)} mol</text>` +
+      `<text x="${row.x + 36}" y="164" text-anchor="middle" class="state-label">V=${solutionFormat(row.state.volumeL)} L</text>`;
+  }).join("");
+  container.innerHTML = `<svg class="science-diagram" viewBox="0 0 520 178" role="img" aria-label="${esc(rows.map(row => `${row.label}: ${solutionFormat(row.state.concentrationMolL)} moles per litre`).join("; "))}">` +
+    `<line x1="70" y1="108" x2="490" y2="108" stroke="${NAVY}"/>` +
+    `<text x="18" y="27" class="state-label">C = n / V</text>${marks}</svg>`;
+}
+
+function animateSolutionTrace(lines) {
+  if (solutionTraceTimer) clearTimeout(solutionTraceTimer);
+  const trace = $("solution-trace");
+  trace.replaceChildren(...lines.map(line => {
+    const item = document.createElement("li");
+    item.textContent = line;
+    return item;
+  }));
+  let index = 0;
+  const step = () => {
+    trace.querySelectorAll(".active").forEach(item => item.classList.remove("active"));
+    if (index >= trace.children.length) {
+      solutionTraceTimer = null;
+      return;
+    }
+    trace.children[index++].classList.add("active");
+    solutionTraceTimer = setTimeout(step, 420);
+  };
+  step();
+}
+
+function updateSolutionWorkbench(before, after, operation, equation, trace) {
+  $("solution-before").textContent = solutionStateText(before);
+  $("solution-after").textContent = solutionStateText(after);
+  $("solution-equation-detail").textContent = equation;
+  renderSolutionDiagram(operation);
+  renderSolutionPlot(before, after);
+  renderSolutionBState();
+  animateSolutionTrace(trace);
+}
+
+function showSolutionFailure(category, error, before, operation, attempted) {
+  const after = solutionInstance ? solutionInstance.snapshot() : null;
+  const line = `${category}: ${error.message}`;
+  $("solution-result").className = "readout bad";
+  $("solution-result").textContent = `${category}\n${error.message}\nState unchanged: ${before && after ? "yes" : "no valid object existed"}.`;
+  const trace = operation === "direct write"
+    ? [
+      `Caller attempts solution.${attempted} mol/L.`,
+      "The public Solution API exposes no concentration setter.",
+      line,
+      "The direct write is rejected; the Solution state remains unchanged.",
+    ]
+    : [
+      `Caller requests ${operation}(${attempted}).`,
+      operation === "construct" ? "Solution constructor receives the initial state." : `Solution.${operation}() receives the request.`,
+      line,
+      "No state mutation occurs; the existing object state is retained.",
+    ];
+  updateSolutionWorkbench(before, after, operation, attempted, trace);
+}
+
+function createSolution() {
+  const before = solutionInstance ? solutionInstance.snapshot() : null;
+  const concentration = $("solution-start-c").value.trim() === "" ? NaN : Number($("solution-start-c").value);
+  const volume = $("solution-start-v").value.trim() === "" ? NaN : Number($("solution-start-v").value);
+  const temperature = $("solution-start-t").value.trim() === "" ? NaN : Number($("solution-start-t").value);
+  try {
+    const created = new Solution(SOLUTION_SPECIES, concentration, volume, temperature);
+    solutionInstance = created;
+    const after = solutionInstance.snapshot();
+    $("solution-result").className = "readout ok";
+    $("solution-result").textContent =
+      `Constructed Solution(${SOLUTION_SPECIES.formula}, C=${solutionFormat(concentration)} mol/L, ` +
+      `V=${solutionFormat(volume)} L, T=${solutionFormat(temperature)} K).\n` +
+      `Initial amount n = C × V = ${solutionFormat(after.soluteAmountMol)} mol.`;
+    updateSolutionWorkbench(before, after, $("solution-operation").value, "n = C × V", [
+      "Caller constructs Solution(solute, concentration, volume, temperature).",
+      "Constructor validates C ≥ 0 mol/L, V > 0 L, and T > 0 K.",
+      `Constructor derives n = C × V = ${solutionFormat(after.soluteAmountMol)} mol.`,
+      "The valid Solution object is initialized with private amount, volume, and temperature state.",
+      "concentrationMolL is derived from n / V.",
+    ]);
+  } catch (error) {
+    if (error instanceof DomainValidationError) {
+      showSolutionFailure("DOMAIN VALIDATION FAILURE", error, before, "construct", "Solution(...)");
+    } else if (error instanceof NumericalModelError) {
+      showSolutionFailure("NUMERICAL/MODEL LIMITATION", error, before, "construct", "Solution(...)");
+    } else {
+      throw error;
+    }
+  }
+}
+
+function createSolutionB() {
+  const concentration = $("solution-b-start-c").value.trim() === "" ? NaN : Number($("solution-b-start-c").value);
+  const volume = $("solution-b-start-v").value.trim() === "" ? NaN : Number($("solution-b-start-v").value);
+  const temperature = $("solution-b-start-t").value.trim() === "" ? NaN : Number($("solution-b-start-t").value);
+  try {
+    solutionBInstance = new Solution(SOLUTION_SPECIES, concentration, volume, temperature);
+    renderSolutionBState();
+  } catch (error) {
+    if (!(error instanceof DomainValidationError)) throw error;
+    $("solution-b-state").className = "readout bad";
+    $("solution-b-state").textContent = `DOMAIN VALIDATION FAILURE\n${error.message}\nExisting Solution B remains unchanged.`;
+  }
+}
+
+function runSolutionOperation() {
+  const before = solutionInstance ? solutionInstance.snapshot() : null;
+  if (!solutionInstance) {
+    showSolutionFailure("DOMAIN VALIDATION FAILURE", new DomainValidationError("Construct a valid Solution first."),
+      null, "operation", "no Solution instance");
+    return;
+  }
+  const operation = $("solution-operation").value;
+  const raw = $("solution-argument").value.trim();
+  const argument = raw === "" ? NaN : Number(raw);
+  const method = { dilute: "dilute", add: "addSolute", remove: "removeVolume" }[operation];
+  const displayMethod = { dilute: "dilute", add: "add_solute", remove: "remove_volume" }[operation];
+  try {
+    let equation;
+    if (operation === "dilute") {
+      solutionInstance.dilute(argument);
+      const after = solutionInstance.snapshot();
+      equation = `C₁V₁ = C₂V₂: (${solutionFormat(before.concentrationMolL)} mol/L × ${solutionFormat(before.volumeL)} L) / ${solutionFormat(after.volumeL)} L = ${solutionFormat(after.concentrationMolL)} mol/L. Solute amount remains ${solutionFormat(after.soluteAmountMol)} mol.`;
+    } else if (operation === "add") {
+      solutionInstance.addSolute(argument);
+      const after = solutionInstance.snapshot();
+      equation = `n_after = n_before + Δn = ${solutionFormat(before.soluteAmountMol)} mol + ${solutionFormat(argument)} mol = ${solutionFormat(after.soluteAmountMol)} mol; C_after = n_after / V = ${solutionFormat(after.concentrationMolL)} mol/L.`;
+    } else {
+      solutionInstance.removeVolume(argument);
+      const after = solutionInstance.snapshot();
+      equation = `n_removed = C × V_removed = ${solutionFormat(before.concentrationMolL)} mol/L × ${solutionFormat(argument)} L. The homogeneous aliquot leaves C = ${solutionFormat(after.concentrationMolL)} mol/L.`;
+    }
+    const after = solutionInstance.snapshot();
+    $("solution-result").className = "readout ok";
+    $("solution-result").textContent = `COMPUTATION SUCCESS\nSolution.${method}(${solutionFormat(argument)}) executed.\n${equation}`;
+    const trace = [
+      `Caller invokes solution.${displayMethod}(${solutionFormat(argument)}).`,
+      `Runtime object: Solution; method executed: Solution.${method}().`,
+      "Validate finite operation input and domain constraints before mutation.",
+      equation,
+      operation === "dilute"
+        ? `Update private volume: ${solutionFormat(before.volumeL)} L → ${solutionFormat(after.volumeL)} L; conserve n.`
+        : operation === "add"
+          ? `Update private amount: ${solutionFormat(before.soluteAmountMol)} mol → ${solutionFormat(after.soluteAmountMol)} mol.`
+          : `Update private amount and volume for a homogeneous aliquot: ${solutionFormat(before.volumeL)} L → ${solutionFormat(after.volumeL)} L.`,
+      `Return derived C = n / V = ${solutionFormat(after.concentrationMolL)} mol/L.`,
+    ];
+    updateSolutionWorkbench(before, after, operation, equation, trace);
+  } catch (error) {
+    if (error instanceof DomainValidationError) {
+      showSolutionFailure("DOMAIN VALIDATION FAILURE", error, before, method, raw || "∅");
+    } else if (error instanceof NumericalModelError) {
+      showSolutionFailure("NUMERICAL/MODEL LIMITATION", error, before, method, raw || "∅");
+    } else {
+      throw error;
+    }
+  }
+}
+
+function breakSolutionEncapsulation() {
+  const before = solutionInstance ? solutionInstance.snapshot() : null;
+  if (!solutionInstance) {
+    showSolutionFailure("DOMAIN VALIDATION FAILURE", new DomainValidationError("Construct a valid Solution first."),
+      null, "direct write", "concentrationMolL = -1");
+    return;
+  }
+  try {
+    solutionInstance.concentrationMolL = -1;
+    throw new Error("The direct write unexpectedly succeeded.");
+  } catch (error) {
+    if (!(error instanceof TypeError)) throw error;
+    showSolutionFailure("TYPE/CONTRACT FAILURE", error, before, "direct write", "concentrationMolL = -1");
+  }
+}
+
+function demonstrateUncontrolledSetter() {
+  const before = solutionInstance ? solutionInstance.snapshot() : null;
+  if (!before) {
+    showSolutionFailure("DOMAIN VALIDATION FAILURE", new DomainValidationError("Construct a valid Solution first."),
+      null, "uncontrolled setter", "concentrationMolL = -1");
+    return;
+  }
+  const poorlyEncapsulated = {
+    soluteAmountMol: before.soluteAmountMol,
+    volumeL: before.volumeL,
+    concentrationMolL: before.concentrationMolL,
+    setConcentration(value) { this.concentrationMolL = value; },
+  };
+  poorlyEncapsulated.setConcentration(-1);
+  const error = new Error(
+    `Uncontrolled setter accepted -1 mol/L while n / V remains ${solutionFormat(poorlyEncapsulated.soluteAmountMol / poorlyEncapsulated.volumeL)} mol/L.`
+  );
+  $("solution-result").className = "readout bad";
+  $("solution-result").textContent = `SOFTWARE DESIGN FAILURE\n${error.message}\nThe actual Solution instance remains unchanged.`;
+  updateSolutionWorkbench(before, before, "add", error.message, [
+    "An intentionally poor design exposes setConcentration(value).",
+    "setConcentration(-1 mol/L) accepts an invalid independent concentration.",
+    `Stored C = -1 mol/L, but n / V = ${solutionFormat(before.concentrationMolL)} mol/L.`,
+    "The public setter permits contradictory state; this is a software design failure.",
+    "The real Solution object remains unchanged.",
+  ]);
+}
+
+function bindSolutionWorkbench() {
+  $("solution-create").addEventListener("click", createSolution);
+  $("solution-create-b").addEventListener("click", createSolutionB);
+  $("solution-run").addEventListener("click", runSolutionOperation);
+  $("solution-break").addEventListener("click", breakSolutionEncapsulation);
+  $("solution-bad-setter").addEventListener("click", demonstrateUncontrolledSetter);
+  $("solution-operation").addEventListener("change", event => {
+    const spec = {
+      dilute: ["Final volume (L)", "1.000"],
+      add: ["Added amount (mol)", "0.010"],
+      remove: ["Aliquot volume (L)", "0.100"],
+    }[event.target.value];
+    $("solution-argument-label").firstChild.textContent = spec[0];
+    $("solution-argument").value = spec[1];
+    renderSolutionDiagram(event.target.value);
+  });
+  document.querySelector(".language-tabs").addEventListener("click", event => {
+    const tab = event.target.closest("[data-language]");
+    if (!tab) return;
+    document.querySelectorAll(".language-tabs [data-language]").forEach(button =>
+      button.setAttribute("aria-pressed", String(button === tab)));
+    $("solution-code").textContent = SOLUTION_CONCEPT.codeExamples[tab.dataset.language];
+  });
+  $("solution-mappings").innerHTML = SOLUTION_CONCEPT.mappings.map(([science, software]) =>
+    `<tr><td>${esc(science)}</td><td>${esc(software)}</td></tr>`
+  ).join("");
+  $("solution-variables").innerHTML = SOLUTION_CONCEPT.variables.map(([symbol, name, unit]) =>
+    `<tr><td>${esc(symbol)}</td><td>${esc(name)}</td><td>${esc(unit)}</td></tr>`
+  ).join("");
+  $("solution-assumptions").innerHTML = SOLUTION_CONCEPT.assumptions.map(assumption =>
+    `<li>${esc(assumption)}</li>`
+  ).join("");
+  $("solution-code").textContent = SOLUTION_CONCEPT.codeExamples.Python;
+  createSolution();
+}
+
+/* ---- Scientific OOP Workbenches: detector, enzyme, reactor, kinetics ---- */
+const scienceTimers = {};
+const scienceNumber = value => String(Number(Number(value).toPrecision(6)));
+
+function scienceValue(id) {
+  return $(id).valueAsNumber;
+}
+
+function showScienceTrace(id, steps) {
+  if (scienceTimers[id]) clearInterval(scienceTimers[id]);
+  const list = $(id);
+  list.innerHTML = steps.map(step => `<li>${esc(step)}</li>`).join("");
+  const rows = [...list.children];
+  let active = 0;
+  const activate = () => {
+    rows.forEach((row, index) => row.classList.toggle("active", index === active));
+    active += 1;
+    if (active >= rows.length) {
+      clearInterval(scienceTimers[id]);
+      delete scienceTimers[id];
+    }
+  };
+  if (rows.length) {
+    activate();
+    scienceTimers[id] = setInterval(activate, 340);
+  }
+}
+
+function showScienceFailure(id, category, error) {
+  const output = $(id);
+  output.className = "readout bad science-output";
+  output.textContent = `${category}\n${error.message}`;
+}
+
+function renderScienceCodeTabs() {
+  document.querySelectorAll("[data-code-tabs]").forEach(tabs => {
+    const key = tabs.dataset.codeTabs;
+    const target = $(`${key}-code`);
+    target.textContent = SCIENCE_CODE[key].Python;
+    tabs.addEventListener("click", event => {
+      const tab = event.target.closest("[data-language]");
+      if (!tab) return;
+      tabs.querySelectorAll("[data-language]").forEach(button =>
+        button.setAttribute("aria-pressed", String(button === tab)));
+      target.textContent = SCIENCE_CODE[key][tab.dataset.language];
+    });
+  });
+}
+
+function scienceTabs() {
+  const nav = document.querySelector(".science-tabs");
+  nav.addEventListener("click", event => {
+    const tab = event.target.closest("[data-science-tab]");
+    if (!tab) return;
+    selectSciencePanel(tab.dataset.scienceTab);
+  });
+}
+
+function selectSciencePanel(selected) {
+  document.querySelectorAll(".science-tabs [data-science-tab]").forEach(button =>
+    button.setAttribute("aria-pressed", String(button.dataset.scienceTab === selected)));
+  document.querySelectorAll("[data-science-panel]").forEach(panel => {
+    panel.hidden = panel.dataset.sciencePanel !== selected;
+  });
+}
+
+function detectorDiagram(selected) {
+  const concrete = [
+    ["AbsorbanceDetector", "absorbance"],
+    ["FluorescenceDetector", "fluorescence"],
+    ["ElectrochemicalSensor", "electrochemical"],
+  ];
+  const node = (x, y, w, h, label, active = false) =>
+    `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="7" fill="${active ? "#E4EFEA" : "#FFFDF7"}" stroke="${active ? TEAL : NAVY}" stroke-width="${active ? 2.5 : 1.5}"/>` +
+    `<text x="${x + w / 2}" y="${y + h / 2 + 4}" text-anchor="middle" font-size="12">${esc(label)}</text>`;
+  const shapes = [
+    node(8, 67, 94, 44, "Sample"),
+    node(135, 67, 130, 44, "AnalysisPipeline"),
+    node(302, 67, 116, 44, "«interface» Detector"),
+    ...concrete.map(([label, key], index) => node(465, 12 + index * 56, 150, 34, label, key === selected)),
+    node(670, 67, 112, 44, "Measurement"),
+  ];
+  const lines = [
+    `<path d="M102 89 H135 M265 89 H302" stroke="${NAVY}" fill="none" marker-end="url(#science-arrow)"/>`,
+    ...concrete.map((_, index) =>
+      `<path d="M418 89 C440 89 440 ${29 + index * 56} 465 ${29 + index * 56}" stroke="${TEAL}" fill="none" marker-end="url(#science-arrow)"/>`
+    ),
+    `<path d="M615 89 H670" stroke="${NAVY}" fill="none" marker-end="url(#science-arrow)"/>`,
+  ].join("");
+  return `<div style="overflow-x:auto"><svg class="fig" viewBox="0 0 790 190" role="img" aria-label="Sample to AnalysisPipeline to Detector contract to selected concrete detector to Measurement">` +
+    `<defs><marker id="science-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="${TEAL}"/></marker></defs>` +
+    `<g class="layer1">${lines}${shapes.join("")}</g><g class="layer2"><text x="16" y="52" font-size="10">input</text><text x="308" y="52" font-size="10">contract</text><text x="667" y="52" font-size="10">output</text></g></svg></div>`;
+}
+
+function runDetector() {
+  const output = $("detector-result");
+  output.className = "readout science-output";
+  try {
+    const concentration = scienceValue("detector-concentration");
+    const path = scienceValue("detector-path");
+    const sample = new AnalyticalSample(concentration);
+    const selected = $("detector-type").value;
+    const detector = selected === "absorbance"
+      ? new AbsorbanceDetector(10, path)
+      : selected === "fluorescence"
+        ? new FluorescenceDetector(1000)
+        : new ElectrochemicalSensor(200, 5);
+    const pipeline = new AnalysisPipeline(detector);
+    const measurement = pipeline.analyze(sample);
+    const value = scienceNumber(measurement.value);
+    output.textContent = `AnalysisPipeline.analyze(sample)\nRuntime implementation: ${measurement.detectorName}.measure(sample)\n${measurement.equation} = ${value} ${measurement.units}`;
+    $("detector-state").textContent =
+      `Sample.concentration = ${scienceNumber(concentration)} mol/L\n` +
+      `Detector = ${measurement.detectorName}\n` +
+      `Measurement.value = ${value} ${measurement.units}`;
+    $("detector-diagram").innerHTML = detectorDiagram(selected);
+    const equation = selected === "absorbance"
+      ? `A = 10 L/(mol cm) × ${scienceNumber(path)} cm × ${scienceNumber(concentration)} mol/L = ${value} (dimensionless)`
+      : selected === "fluorescence"
+        ? `F = 1000 RFU/(mol/L) × ${scienceNumber(concentration)} mol/L = ${value} RFU`
+        : `I = 200 microA/(mol/L) × ${scienceNumber(concentration)} mol/L + 5 microA = ${value} microA`;
+    showScienceTrace("detector-trace", [
+      "Caller invokes AnalysisPipeline.analyze(sample).",
+      "Pipeline delegates to its injected Detector.measure(sample) contract.",
+      `${measurement.detectorName} executes at runtime.`,
+      equation,
+      `Return Measurement(${value} ${measurement.units}).`,
+    ]);
+  } catch (error) {
+    if (error instanceof DomainValidationError) showScienceFailure("detector-result", "DOMAIN VALIDATION FAILURE", error);
+    else if (error instanceof NumericalModelError) showScienceFailure("detector-result", "NUMERICAL/MODEL LIMITATION", error);
+    else if (error instanceof TypeError) showScienceFailure("detector-result", "TYPE/CONTRACT FAILURE", error);
+    else throw error;
+  }
+}
+
+function renderEnzymeDiagram(selected) {
+  const nodes = [
+    [170, 10, 230, 36, "EnzymeRateModel · rate(S)", true],
+    [24, 102, 220, 38, "MichaelisMentenEnzyme", selected === "mm"],
+    [326, 102, 250, 38, "CompetitiveInhibitionEnzyme", selected === "competitive"],
+    [622, 102, 210, 38, "BrokenContractEnzyme", selected === "broken"],
+  ];
+  const shapes = nodes.map(([x, y, w, h, label, active]) =>
+    `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="7" fill="${active ? "#E4EFEA" : "#FFFDF7"}" stroke="${active ? TEAL : NAVY}" stroke-width="${active ? 2.5 : 1.5}"/>` +
+    `<text x="${x + w / 2}" y="${y + 23}" text-anchor="middle" font-size="12">${esc(label)}</text>`
+  ).join("");
+  const lines = [[285, 46, 134], [285, 46, 451], [285, 46, 727]].map(([x, y, end]) =>
+    `<path d="M${x} ${y} C${x} 76 ${end} 76 ${end} 102" fill="none" stroke="${TEAL}" marker-end="url(#enzyme-arrow)"/>`
+  ).join("");
+  return `<svg class="fig" viewBox="0 0 860 160" role="img" aria-label="EnzymeRateModel base contract specialized by two valid enzymes and one deliberately invalid test subtype">` +
+    `<defs><marker id="enzyme-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="${TEAL}"/></marker></defs><g class="layer1">${lines}${shapes}</g>` +
+    `<g class="layer2"><text x="20" y="153" font-size="11">is-a specialization; only behavioral contract checks establish substitutability</text></g></svg>`;
+}
+
+function renderEnzymePlot(selected, substrate, inhibitor) {
+  const left = 48, right = 500, top = 18, bottom = 164, xmax = 0.20;
+  const ymin = -1, ymax = 10.5;
+  const x = value => left + value / xmax * (right - left);
+  const y = value => bottom - (value - ymin) / (ymax - ymin) * (bottom - top);
+  const mm = value => 10 * value / (0.05 + value);
+  const competitive = value => 10 * value / (0.05 * (1 + inhibitor / 0.03) + value);
+  const curve = fn => Array.from({ length: 61 }, (_, index) => {
+    const value = xmax * index / 60;
+    return `${index ? "L" : "M"}${x(value).toFixed(1)} ${y(fn(value)).toFixed(1)}`;
+  }).join(" ");
+  const chosen = selected === "broken" ? -mm(substrate) : selected === "competitive" ? competitive(substrate) : mm(substrate);
+  const dots = `<circle cx="${x(substrate)}" cy="${y(chosen)}" r="5" fill="${selected === "competitive" ? RUST : TEAL}"/>`;
+  return `<svg class="fig" viewBox="0 0 540 220" role="img" aria-label="Michaelis-Menten and competitive-inhibition rate curves; marker shows selected input and broken subtype may fall below zero">` +
+    `<g class="layer1"><path d="M${left} ${top} V${bottom} H${right}" fill="none" stroke="${NAVY}"/>` +
+    `<path d="${curve(mm)}" fill="none" stroke="${TEAL}" stroke-width="2.5"/>` +
+    `<path d="${curve(competitive)}" fill="none" stroke="${RUST}" stroke-width="2.5" stroke-dasharray="5 3"/>${dots}</g>` +
+    `<g class="layer2"><text x="${left}" y="202" font-size="11">[S] (mol/L)</text><text x="6" y="14" font-size="10">v (microMol/(L s))</text>` +
+    `<text x="300" y="22" fill="${TEAL}" font-size="11">Michaelis-Menten</text><text x="300" y="38" fill="${RUST}" font-size="11">competitive inhibition</text>` +
+    `<text x="${left}" y="${bottom + 15}" font-size="10">0</text><text x="${right - 20}" y="${bottom + 15}" font-size="10">0.20</text></g></svg>`;
+}
+
+function runEnzyme() {
+  const output = $("enzyme-result");
+  output.className = "readout science-output";
+  try {
+    const substrate = scienceValue("enzyme-substrate");
+    const inhibitor = scienceValue("enzyme-inhibitor");
+    const selected = $("enzyme-type").value;
+    const enzyme = selected === "competitive"
+      ? new CompetitiveInhibitionEnzyme(10, 0.05, inhibitor, 0.03)
+      : selected === "broken"
+        ? new ContractBreakingEnzyme(10, 0.05)
+        : new MichaelisMentenEnzyme(10, 0.05);
+    const result = checkEnzymeContract(enzyme, [0, 0.01, 0.05, 0.2]);
+    const rate = enzyme.rate(substrate);
+    const valid = selected !== "broken" && result.holds;
+    output.className = `readout science-output ${valid ? "ok" : "bad"}`;
+    output.textContent = `${valid ? "LISKOV SUBSTITUTION TEST PASSED" : "TYPE/CONTRACT FAILURE"}\n` +
+      `${enzyme.constructor.name}.rate(${scienceNumber(substrate)} mol/L) = ${scienceNumber(rate)} microMol/(L s)\n` +
+      `Contract assay: ${result.holds ? "passed" : result.failures.join("; ")}`;
+    $("enzyme-state").textContent =
+      `Runtime object            ${enzyme.constructor.name}\n` +
+      `Input [S]                 ${scienceNumber(substrate)} mol/L\n` +
+      `Input [I]                 ${scienceNumber(inhibitor)} mol/L\n` +
+      `Rate result               ${scienceNumber(rate)} microMol/(L s)\n` +
+      `Contract rates            ${result.rates.map(scienceNumber).join(", ")} microMol/(L s)`;
+    renderEnzymeDiagram(selected);
+    $("enzyme-plot").innerHTML = renderEnzymePlot(selected, substrate, inhibitor);
+    const equation = selected === "competitive"
+      ? `v = 10 × ${scienceNumber(substrate)} / (0.050 × (1 + ${scienceNumber(inhibitor)}/0.030) + ${scienceNumber(substrate)}) = ${scienceNumber(rate)} microMol/(L s)`
+      : `v = 10 × ${scienceNumber(substrate)} / (0.050 + ${scienceNumber(substrate)}) = ${scienceNumber(rate)} microMol/(L s)`;
+    showScienceTrace("enzyme-trace", [
+      `Caller invokes enzyme.rate(${scienceNumber(substrate)} mol/L) through EnzymeRateModel.`,
+      `Runtime dispatch selects ${enzyme.constructor.name}.rate().`,
+      equation,
+      `Substitutability assay checks [0, 0.01, 0.05, 0.2] mol/L: ${result.holds ? "all rates satisfy the contract" : result.failures.join("; ")}.`,
+    ]);
+  } catch (error) {
+    if (error instanceof DomainValidationError) showScienceFailure("enzyme-result", "DOMAIN VALIDATION FAILURE", error);
+    else if (error instanceof NumericalModelError) showScienceFailure("enzyme-result", "NUMERICAL/MODEL LIMITATION", error);
+    else if (error instanceof TypeError) showScienceFailure("enzyme-result", "TYPE/CONTRACT FAILURE", error);
+    else throw error;
+  }
+}
+
+function reactorDiagram(kineticsName, mixingName) {
+  const boxes = [
+    [12, 72, 125, 48, "Reactor", true],
+    [205, 20, 200, 45, kineticsName, true],
+    [205, 105, 200, 45, mixingName, true],
+    [470, 72, 145, 48, "ReactorResult", true],
+  ].map(([x, y, w, h, label]) =>
+    `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="7" fill="#E4EFEA" stroke="${TEAL}" stroke-width="2"/>` +
+    `<text x="${x + w / 2}" y="${y + h / 2 + 4}" text-anchor="middle" font-size="12">${esc(label)}</text>`
+  ).join("");
+  return `<svg class="fig" viewBox="0 0 635 175" role="img" aria-label="Reactor contains kinetic and mixing components and delegates outlet calculation to both">` +
+    `<g class="layer1"><path d="M137 83 C165 83 165 42 205 42 M137 108 C165 108 165 128 205 128 M405 42 C440 42 435 83 470 83 M405 128 C440 128 435 108 470 108" fill="none" stroke="${TEAL}" stroke-width="2" marker-end="url(#reactor-arrow)"/>${boxes}</g>` +
+    `<g class="layer2"><text x="142" y="33" font-size="10">has-a / delegates</text><text x="142" y="155" font-size="10">has-a / delegates</text></g>` +
+    `<defs><marker id="reactor-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="${TEAL}"/></marker></defs></svg>`;
+}
+
+function reactorModels() {
+  const kinetics = $("reactor-kinetics").value === "arrhenius"
+    ? new ArrheniusFirstOrderKinetics(0.20, 10000)
+    : new ConstantFirstOrderKinetics(0.10);
+  const mixing = $("reactor-mixing").value === "plugflow" ? new PlugFlowMixing() : new CSTRMixing();
+  return { kinetics, mixing };
+}
+
+function renderReactorPlot(result, selectedMixing) {
+  const left = 45, right = 500, top = 18, bottom = 160, maxTau = 30;
+  const x = tau => left + tau / maxTau * (right - left);
+  const y = concentration => bottom - concentration / result.inletMolL * (bottom - top);
+  const path = fn => Array.from({ length: 61 }, (_, index) => {
+    const tau = maxTau * index / 60, concentration = fn(result.inletMolL, result.kSInv, tau);
+    return `${index ? "L" : "M"}${x(tau).toFixed(1)} ${y(concentration).toFixed(1)}`;
+  }).join(" ");
+  const cstr = tau => result.inletMolL / (1 + result.kSInv * tau);
+  const pfr = tau => result.inletMolL * Math.exp(-result.kSInv * tau);
+  const dotY = y(result.outletMolL);
+  return `<svg class="fig" viewBox="0 0 540 210" role="img" aria-label="CSTR and plug-flow outlet concentration versus residence time at the selected temperature">` +
+    `<g class="layer1"><path d="M${left} ${top} V${bottom} H${right}" fill="none" stroke="${NAVY}"/>` +
+    `<path d="${path(cstr)}" fill="none" stroke="${selectedMixing === "cstr" ? TEAL : "#79908D"}" stroke-width="${selectedMixing === "cstr" ? 3 : 1.7}"/>` +
+    `<path d="${path(pfr)}" fill="none" stroke="${selectedMixing === "plugflow" ? RUST : "#B88676"}" stroke-width="${selectedMixing === "plugflow" ? 3 : 1.7}" stroke-dasharray="6 3"/>` +
+    `<circle cx="${x(result.residenceTimeS)}" cy="${dotY}" r="5" fill="${selectedMixing === "cstr" ? TEAL : RUST}"/></g>` +
+    `<g class="layer2"><text x="45" y="195" font-size="11">residence time, tau (s)</text><text x="4" y="14" font-size="10">C_out (mol/L)</text>` +
+    `<text x="310" y="20" fill="${TEAL}" font-size="11">CSTR</text><text x="355" y="20" fill="${RUST}" font-size="11">plug flow</text></g></svg>`;
+}
+
+function runReactor() {
+  const output = $("reactor-result");
+  output.className = "readout science-output";
+  try {
+    const { kinetics, mixing } = reactorModels();
+    const reactor = new Reactor(kinetics, mixing);
+    const result = reactor.outlet(scienceValue("reactor-feed"), scienceValue("reactor-residence"), scienceValue("reactor-temperature"));
+    output.className = "readout science-output ok";
+    output.textContent = `Reactor.outlet(state)\nKinetics: ${result.kinetics}; mixing: ${result.mixing}\n` +
+      `${result.equation}\nC_out = ${scienceNumber(result.outletMolL)} mol/L; conversion = ${scienceNumber(result.conversion * 100)}%`;
+    $("reactor-state").textContent =
+      `Reactor.kinetics = ${result.kinetics}\n` +
+      `Reactor.mixing = ${result.mixing}\n` +
+      `C_in = ${scienceNumber(result.inletMolL)} mol/L\n` +
+      `k(T) = ${scienceNumber(result.kSInv)} s^-1\n` +
+      `tau = ${scienceNumber(result.residenceTimeS)} s; T = ${scienceNumber(result.temperatureK)} K\n` +
+      `C_out = ${scienceNumber(result.outletMolL)} mol/L\nConversion = ${scienceNumber(result.conversion * 100)}%`;
+    $("reactor-diagram").innerHTML = reactorDiagram(result.kinetics, result.mixing);
+    $("reactor-plot").innerHTML = renderReactorPlot(result, $("reactor-mixing").value);
+    showScienceTrace("reactor-trace", [
+      "Caller invokes Reactor.outlet(C_in, tau, T).",
+      `Reactor delegates temperature response to ${result.kinetics}.`,
+      `k(${scienceNumber(result.temperatureK)} K) = ${scienceNumber(result.kSInv)} s^-1.`,
+      `Reactor delegates material balance to ${result.mixing}: ${result.equation}.`,
+      `Return C_out = ${scienceNumber(result.outletMolL)} mol/L and conversion = ${scienceNumber(result.conversion * 100)}%.`,
+    ]);
+  } catch (error) {
+    if (error instanceof DomainValidationError) showScienceFailure("reactor-result", "DOMAIN VALIDATION FAILURE", error);
+    else if (error instanceof NumericalModelError) showScienceFailure("reactor-result", "NUMERICAL/MODEL LIMITATION", error);
+    else if (error instanceof TypeError) showScienceFailure("reactor-result", "TYPE/CONTRACT FAILURE", error);
+    else throw error;
+  }
+}
+
+function kineticModels() {
+  return {
+    zero: new ZeroOrderKinetics(0.010),
+    first: new FirstOrderReaction(0.10),
+    second: new SecondOrderKinetics(1.0),
+    mm: new MichaelisMentenKinetics(1e-5, 0.050),
+    broken: new ContractBreakingReactionRateModel(),
+  };
+}
+
+function renderRatePlot(selected, substrate) {
+  const left = 52, right = 500, top = 18, bottom = 163, xmax = 0.20;
+  const ymin = -0.005, ymax = 0.05;
+  const x = value => left + value / xmax * (right - left);
+  const y = value => bottom - (value - ymin) / (ymax - ymin) * (bottom - top);
+  const models = kineticModels(), keys = ["zero", "first", "second", "mm"];
+  const colors = { zero: "#51657C", first: TEAL, second: RUST, mm: "#87579A" };
+  const curve = key => Array.from({ length: 61 }, (_, index) => {
+    const value = xmax * index / 60;
+    const rate = dispatchReactionRate(models[key], new ReactionState(value));
+    return `${index ? "L" : "M"}${x(value).toFixed(1)} ${y(rate).toFixed(1)}`;
+  }).join(" ");
+  const current = models[selected].rate(new ReactionState(substrate));
+  const linePaths = keys.map(key =>
+    `<path d="${curve(key)}" fill="none" stroke="${colors[key]}" stroke-width="${key === selected ? 3 : 1.6}" ${key === selected ? "" : 'stroke-dasharray="4 3"'}/>`
+  ).join("");
+  const markerY = Math.max(top, Math.min(bottom, y(current)));
+  const legend = keys.map((key, index) =>
+    `<text x="${index % 2 ? 300 : 180}" y="${20 + Math.floor(index / 2) * 16}" fill="${colors[key]}" font-size="10">${key}</text>`
+  ).join("");
+  return `<svg class="fig" viewBox="0 0 540 210" role="img" aria-label="Zero-, first-, second-order, and Michaelis-Menten rate laws plotted against substrate concentration; marker indicates selected model">` +
+    `<g class="layer1"><path d="M${left} ${top} V${bottom} H${right}" fill="none" stroke="${NAVY}"/>${linePaths}<circle cx="${x(substrate)}" cy="${markerY}" r="5" fill="${colors[selected] || RUST}"/></g>` +
+    `<g class="layer2">${legend}<text x="52" y="196" font-size="11">[A] or [S] (mol/L)</text><text x="4" y="14" font-size="10">r (mol/(L s))</text></g></svg>`;
+}
+
+function runKinetics() {
+  const output = $("rate-result");
+  output.className = "readout science-output";
+  const selected = $("rate-model").value;
+  const model = kineticModels()[selected];
+  try {
+    const substrate = scienceValue("rate-substrate");
+    const state = new ReactionState(substrate);
+    const rate = dispatchReactionRate(model, state);
+    output.className = "readout science-output ok";
+    output.textContent = `Runtime object: ${model.constructor.name}\n` +
+      `model.rate(state) = ${scienceNumber(rate)} mol/(L s)\nEquation: ${model.equation}`;
+    $("rate-state").textContent =
+      `ReactionState.substrateMolL = ${scienceNumber(substrate)} mol/L\n` +
+      `Runtime receiver = ${model.constructor.name}\n` +
+      `Overridden method = ${model.constructor.name}.rate(state)\n` +
+      `Returned rate = ${scienceNumber(rate)} mol/(L s)`;
+    $("rate-equation").textContent = model.equation;
+    $("rate-plot").innerHTML = renderRatePlot(selected, substrate);
+    showScienceTrace("rate-trace", [
+      "Caller invokes model.rate(state) through ReactionRateModel.",
+      `Runtime dispatch selects ${model.constructor.name}.rate(state).`,
+      `Apply ${model.equation}.`,
+      `Return ${scienceNumber(rate)} mol/(L s); positive r denotes consumption, so d[A]/dt = -r.`,
+    ]);
+  } catch (error) {
+    if (error instanceof DomainValidationError) showScienceFailure("rate-result", "DOMAIN VALIDATION FAILURE", error);
+    else if (error instanceof NumericalModelError) showScienceFailure("rate-result", "NUMERICAL/MODEL LIMITATION", error);
+    else if (error instanceof RateContractError || error instanceof TypeError) {
+      $("rate-state").textContent = `Runtime receiver = ${model.constructor.name}\nContract rejected: ${error.message}`;
+      showScienceFailure("rate-result", "TYPE/CONTRACT FAILURE", error);
+      $("rate-equation").textContent = model.equation;
+      $("rate-plot").innerHTML = renderRatePlot(selected, Math.max(0, scienceValue("rate-substrate") || 0));
+      showScienceTrace("rate-trace", [
+        "Caller invokes model.rate(state) through ReactionRateModel.",
+        `Runtime dispatch selects ${model.constructor.name}.rate(state).`,
+        `The model violates the non-negative rate contract: ${error.message}`,
+      ]);
+    } else throw error;
+  }
+}
+
+function bindScienceWorkbenches() {
+  scienceTabs();
+  renderScienceCodeTabs();
+  $("detector-run").addEventListener("click", runDetector);
+  $("detector-type").addEventListener("change", runDetector);
+  $("enzyme-run").addEventListener("click", runEnzyme);
+  $("enzyme-type").addEventListener("change", runEnzyme);
+  $("reactor-run").addEventListener("click", runReactor);
+  ["reactor-kinetics", "reactor-mixing"].forEach(id => $(id).addEventListener("change", runReactor));
+  $("rate-run").addEventListener("click", runKinetics);
+  $("rate-model").addEventListener("change", runKinetics);
+  runDetector();
+  runEnzyme();
+  runReactor();
+  runKinetics();
+}
+
 /* ---- Boot ---- */
 renderGroups();
 renderConcepts();
@@ -1328,6 +2958,8 @@ renderCases();
 bindCatalog();
 bindLab();
 bindMaterials();
+bindSolutionWorkbench();
+bindScienceWorkbenches();
 applyFilters();
 logLine("FuelTank(ChemicalEngine, capacity_kg=1000, fuel_kg=600)  constructed", true);
 drawTank();

@@ -13,7 +13,36 @@ import pytest
 from oop_guide import (
     CASE_STUDIES,
     CONCEPTS,
+    AbsorbanceDetector,
+    AnalysisPipeline,
+    AnalyticalSample,
+    ArrheniusFirstOrderKinetics,
+    CSTRMixing,
+    CompetitiveInhibitionEnzyme,
+    ConstantFirstOrderKinetics,
+    ContractBreakingEnzyme,
+    ContractBreakingReactionRateModel,
+    DETECTOR_INTERFACE,
+    Detector,
+    DomainValidationError,
+    ElectrochemicalSensor,
+    ENZYME_INHERITANCE,
+    FirstOrderReaction,
+    FluorescenceDetector,
     GROUPS,
+    KINETIC_POLYMORPHISM,
+    MichaelisMentenEnzyme,
+    MichaelisMentenKinetics,
+    NumericalModelError,
+    PlugFlowMixing,
+    REACTOR_COMPOSITION,
+    RateContractError,
+    ReactionState,
+    Reactor,
+    SecondOrderKinetics,
+    ZeroOrderKinetics,
+    SODIUM_CHLORIDE,
+    SOLUTION_ENCAPSULATION,
     SEMANTIC_ARROW_LABELS,
     Circle,
     InvariantLabState,
@@ -21,12 +50,15 @@ from oop_guide import (
     Rectangle,
     Square,
     SquareShape,
+    Solution,
     Triangle,
     __version__,
     check_rectangle_contract,
+    check_enzyme_contract,
     circle_area,
     composition_component_count,
     dispatch_draw,
+    dispatch_reaction_rate,
     reference_shapes,
     resolve_describe_overload,
     resolve_translate,
@@ -138,6 +170,182 @@ def test_refuel_exactly_to_capacity_is_allowed() -> None:
 def test_constructor_validates_invariant(kwargs: dict) -> None:
     with pytest.raises(InvariantViolation):
         InvariantLabState(**kwargs)
+
+
+# --- scientific solution model --------------------------------------------
+
+
+def test_solution_dilution_conserves_solute_and_objects_are_independent() -> None:
+    solution_a = Solution(SODIUM_CHLORIDE, 0.100, 0.500, 298.15)
+    solution_b = Solution(SODIUM_CHLORIDE, 0.250, 0.200, 298.15)
+    assert solution_a is not solution_b
+    assert solution_a.solute is solution_b.solute
+    assert math.isclose(solution_a.solute_amount_mol, 0.050)
+    solution_a.dilute(1.000)
+    assert math.isclose(solution_a.solute_amount_mol, 0.050)
+    assert math.isclose(solution_a.concentration_mol_l, 0.050)
+    assert solution_a.volume_l == 1.000
+    assert math.isclose(solution_b.concentration_mol_l, 0.250)
+    assert solution_b.volume_l == 0.200
+
+
+def test_solution_add_solute_and_remove_homogeneous_aliquot() -> None:
+    solution = Solution(SODIUM_CHLORIDE, 0.100, 0.500, 298.15)
+    solution.add_solute(0.010)
+    assert math.isclose(solution.solute_amount_mol, 0.060)
+    assert math.isclose(solution.concentration_mol_l, 0.120)
+    solution.remove_volume(0.100)
+    assert math.isclose(solution.volume_l, 0.400)
+    assert math.isclose(solution.solute_amount_mol, 0.048)
+    assert math.isclose(solution.concentration_mol_l, 0.120)
+
+
+@pytest.mark.parametrize(
+    "concentration,volume,temperature",
+    [
+        (-0.1, 0.5, 298.15),
+        (0.1, 0, 298.15),
+        (0.1, -0.5, 298.15),
+        (0.1, 0.5, 0),
+        (0.1, 0.5, -1),
+        (float("nan"), 0.5, 298.15),
+        (0.1, float("inf"), 298.15),
+    ],
+)
+def test_solution_constructor_rejects_invalid_domain_state(
+    concentration: float, volume: float, temperature: float
+) -> None:
+    with pytest.raises(DomainValidationError):
+        Solution(SODIUM_CHLORIDE, concentration, volume, temperature)
+
+
+@pytest.mark.parametrize(
+    "operation,argument",
+    [
+        ("dilute", 0.5),
+        ("dilute", -1),
+        ("dilute", float("nan")),
+        ("add_solute", 0),
+        ("add_solute", -0.01),
+        ("add_solute", float("inf")),
+        ("remove_volume", 0),
+        ("remove_volume", 0.5),
+        ("remove_volume", 0.6),
+    ],
+)
+def test_rejected_solution_operations_preserve_state(operation: str, argument: float) -> None:
+    solution = Solution(SODIUM_CHLORIDE, 0.100, 0.500, 298.15)
+    before = solution.snapshot()
+    with pytest.raises(DomainValidationError):
+        getattr(solution, operation)(argument)
+    assert solution.snapshot() == before
+
+
+def test_solution_reports_floating_point_limit_without_mutation() -> None:
+    with pytest.raises(NumericalModelError):
+        Solution(SODIUM_CHLORIDE, 1e308, 1e308, 298.15)
+    solution = Solution(SODIUM_CHLORIDE, 1e308, 1.0, 298.15)
+    before = solution.snapshot()
+    with pytest.raises(NumericalModelError):
+        solution.add_solute(1e308)
+    assert solution.snapshot() == before
+
+
+def test_solution_concept_schema_covers_the_reference_workbench() -> None:
+    assert SOLUTION_ENCAPSULATION.oop_concept == "Encapsulation"
+    assert {example.language for example in SOLUTION_ENCAPSULATION.code_examples} == {
+        "Python", "Java", "TypeScript",
+    }
+    assert any("C1 V1 = C2 V2" in equation for equation in SOLUTION_ENCAPSULATION.governing_equations)
+    assert {failure.category for failure in SOLUTION_ENCAPSULATION.failure_cases} == {
+        "DOMAIN VALIDATION FAILURE", "SOFTWARE DESIGN FAILURE",
+        "TYPE/CONTRACT FAILURE", "NUMERICAL/MODEL LIMITATION",
+    }
+
+
+def test_detector_contract_dispatch_and_calibrated_responses() -> None:
+    sample = AnalyticalSample(SODIUM_CHLORIDE, 0.072)
+    detectors = (
+        (AbsorbanceDetector(10, 1), 0.72, "dimensionless absorbance"),
+        (FluorescenceDetector(1000), 72, "RFU"),
+        (ElectrochemicalSensor(200, 5), 19.4, "microA"),
+    )
+    for detector, expected, units in detectors:
+        measurement = AnalysisPipeline(detector).analyze(sample)
+        assert math.isclose(measurement.value, expected)
+        assert measurement.units == units
+        assert measurement.detector_name == type(detector).__name__
+        assert math.isfinite(measurement.value)
+    with pytest.raises(TypeError):
+        AnalysisPipeline(object())
+    with pytest.raises(DomainValidationError):
+        AnalyticalSample(SODIUM_CHLORIDE, -1)
+    with pytest.raises(NumericalModelError):
+        AbsorbanceDetector(1e308, 1e308).measure(
+            AnalyticalSample(SODIUM_CHLORIDE, 1)
+        )
+
+
+def test_enzyme_subtypes_satisfy_behavioral_contract() -> None:
+    michaelis_menten = MichaelisMentenEnzyme(10, 0.05)
+    competitive = CompetitiveInhibitionEnzyme(10, 0.05, 0.02, 0.03)
+    for enzyme in (michaelis_menten, competitive):
+        check = check_enzyme_contract(enzyme)
+        assert check.holds, check.failures
+        assert check.rates[0] == 0
+        assert all(0 <= rate <= enzyme.vmax_umol_l_s for rate in check.rates)
+    assert michaelis_menten.rate(0.05) == 5
+    assert competitive.rate(0.05) < michaelis_menten.rate(0.05)
+    broken = check_enzyme_contract(ContractBreakingEnzyme(10, 0.05))
+    assert not broken.holds
+    assert any("within [0, Vmax]" in failure for failure in broken.failures)
+    with pytest.raises(DomainValidationError):
+        michaelis_menten.rate(-0.1)
+
+
+def test_reactor_composition_swaps_kinetics_and_mixing_models() -> None:
+    cstr = Reactor(ConstantFirstOrderKinetics(0.1), CSTRMixing()).outlet(
+        0.1, 10, 298.15
+    )
+    pfr = Reactor(ConstantFirstOrderKinetics(0.1), PlugFlowMixing()).outlet(
+        0.1, 10, 298.15
+    )
+    assert math.isclose(cstr.outlet_mol_l, 0.05)
+    assert math.isclose(pfr.outlet_mol_l, 0.1 * math.exp(-1))
+    assert cstr.mixing_model == "CSTRMixing"
+    assert pfr.mixing_model == "PlugFlowMixing"
+    arrhenius = ArrheniusFirstOrderKinetics(0.2, 10000)
+    expected_k = 0.2 * math.exp(-10000 / (8.31446261815324 * 298.15))
+    assert math.isclose(arrhenius.rate_constant_s_inv(298.15), expected_k)
+    with pytest.raises(DomainValidationError):
+        Reactor(ConstantFirstOrderKinetics(0.1), CSTRMixing()).outlet(0.1, 10, 0)
+    with pytest.raises(TypeError):
+        Reactor(object(), CSTRMixing())
+
+
+def test_kinetic_runtime_dispatch_uses_selected_rate_law() -> None:
+    state = ReactionState(0.05)
+    cases = (
+        (ZeroOrderKinetics(0.01), 0.01),
+        (FirstOrderReaction(0.1), 0.005),
+        (SecondOrderKinetics(1), 0.0025),
+        (MichaelisMentenKinetics(1e-5, 0.05), 5e-6),
+    )
+    for model, expected in cases:
+        assert math.isclose(dispatch_reaction_rate(model, state), expected)
+    with pytest.raises(RateContractError):
+        dispatch_reaction_rate(ContractBreakingReactionRateModel(), state)
+    with pytest.raises(NumericalModelError):
+        dispatch_reaction_rate(FirstOrderReaction(1e308), ReactionState(1e308))
+
+
+def test_scientific_workbench_schemas_cover_language_and_domain_questions() -> None:
+    for spec in (DETECTOR_INTERFACE, ENZYME_INHERITANCE, REACTOR_COMPOSITION, KINETIC_POLYMORPHISM):
+        assert spec.oop_question and spec.scientific_question and spec.computational_question
+        assert {example.language for example in spec.code_examples} == {
+            "Python", "Java", "TypeScript",
+        }
+        assert spec.governing_equations and spec.assumptions and spec.variables
 
 
 def test_engine_swap_keeps_tank_and_changes_rate() -> None:
@@ -337,6 +545,10 @@ def test_web_workbench_mirrors_catalog() -> None:
         assert feature in html
     for hexcode in ("#F7F3E8", "#E6DFC8", "#162B4D", "#9E3B24", "#1C5D58"):
         assert hexcode.lower() in html.lower()
+    for feature in ("Solution State &amp; Dilution", "Scientific Model ↔ Software Model",
+                    "C₁V₁ = C₂V₂", "DOMAIN VALIDATION FAILURE",
+                    "SOLUTION_CONCEPT", "solution.dilute(finalVolumeL)"):
+        assert feature in html
     assert "TODO" not in html
     assert not re.search(r"(src|href)\s*=\s*[\"']https?://", html)
     assert "@import" not in html and "url(http" not in html
@@ -377,6 +589,110 @@ def test_materials_experiment_logic() -> None:
     }
     assert.equal(run("polymorphism", { material: "dye" }).right, "DyeSample.glyph()");
     assert.equal(run("polymorphism", { material: "quartz" }).views[0].glyph, "grain");
+    """
+    result = subprocess.run([node, "-"], input=model + checks, text=True,
+                            capture_output=True, timeout=10)
+    assert result.returncode == 0, result.stderr
+
+
+def test_solution_browser_model() -> None:
+    node = shutil.which("node")
+    if node is None:
+        pytest.skip("Node.js is required to exercise the inline browser model")
+    html = WEB_INDEX.read_text(encoding="utf-8")
+    model = html.split('<script id="solution-model">', 1)[1].split("</script>", 1)[0]
+    checks = """
+    "use strict";
+    const assert = require("node:assert/strict");
+    const close = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-12,
+      `${actual} is not close to ${expected}`);
+    const nacl = new ChemicalSpecies("Sodium chloride", "NaCl", 58.44);
+    const solution = new Solution(nacl, 0.100, 0.500, 298.15);
+    const independent = new Solution(nacl, 0.250, 0.200, 298.15);
+    assert.notEqual(solution, independent);
+    assert.equal(solution.solute, independent.solute);
+    assert.equal(solution.soluteAmountMol, 0.05);
+    solution.dilute(1.000);
+    assert.equal(solution.soluteAmountMol, 0.05);
+    assert.equal(solution.concentrationMolL, 0.05);
+    assert.equal(independent.concentrationMolL, 0.25);
+    solution.addSolute(0.010);
+    close(solution.concentrationMolL, 0.06);
+    solution.removeVolume(0.100);
+    assert.equal(solution.volumeL, 0.9);
+    close(solution.concentrationMolL, 0.06);
+    for (const [c, v, t] of [[-1, 1, 298], [1, 0, 298], [1, 1, 0], [1, 1, NaN]]) {
+      assert.throws(() => new Solution(nacl, c, v, t), DomainValidationError);
+    }
+    assert.throws(() => new Solution(nacl, 1e308, 1e308, 298), NumericalModelError);
+    const large = new Solution(nacl, 1e308, 1, 298);
+    const largeBefore = large.snapshot();
+    assert.throws(() => large.addSolute(1e308), NumericalModelError);
+    assert.deepEqual(large.snapshot(), largeBefore);
+    const before = solution.snapshot();
+    assert.throws(() => solution.dilute(0.9), DomainValidationError);
+    assert.throws(() => solution.addSolute(-1), DomainValidationError);
+    assert.throws(() => solution.removeVolume(0.9), DomainValidationError);
+    assert.deepEqual(solution.snapshot(), before);
+    assert.equal(Reflect.set(solution, "concentrationMolL", -1), false);
+    assert.equal(SOLUTION_CONCEPT.variables[0][2], "mol/L");
+    """
+    result = subprocess.run([node, "-"], input=model + checks, text=True,
+                            capture_output=True, timeout=10)
+    assert result.returncode == 0, result.stderr
+
+
+def test_scientific_browser_models() -> None:
+    node = shutil.which("node")
+    if node is None:
+        pytest.skip("Node.js is required to exercise the inline browser model")
+    html = WEB_INDEX.read_text(encoding="utf-8")
+    model = html.split('<script id="scientific-models">', 1)[1].split("</script>", 1)[0]
+    checks = """
+    "use strict";
+    const assert = require("node:assert/strict");
+    const close = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-12,
+      `${actual} is not close to ${expected}`);
+    const sample = new AnalyticalSample(0.072);
+    const measurements = [
+      [new AbsorbanceDetector(10, 1), 0.72, "dimensionless absorbance"],
+      [new FluorescenceDetector(1000), 72, "RFU"],
+      [new ElectrochemicalSensor(200, 5), 19.4, "microA"],
+    ];
+    for (const [detector, expected, units] of measurements) {
+      const actual = new AnalysisPipeline(detector).analyze(sample);
+      close(actual.value, expected);
+      assert.equal(actual.units, units);
+      assert.equal(actual.detectorName, detector.constructor.name);
+    }
+    assert.throws(() => new AnalysisPipeline({ measure() {} }), TypeError);
+    assert.throws(() => new AnalyticalSample(-1), DomainValidationError);
+    assert.throws(() => new AbsorbanceDetector(1e308, 1e308).measure(new AnalyticalSample(1)),
+      NumericalModelError);
+    const mm = new MichaelisMentenEnzyme(10, 0.05);
+    const competitive = new CompetitiveInhibitionEnzyme(10, 0.05, 0.02, 0.03);
+    assert.equal(checkEnzymeContract(mm, [0, 0.01, 0.05, 0.2]).holds, true);
+    assert.equal(checkEnzymeContract(competitive, [0, 0.01, 0.05, 0.2]).holds, true);
+    assert.ok(competitive.rate(0.05) < mm.rate(0.05));
+    assert.equal(checkEnzymeContract(new ContractBreakingEnzyme(10, 0.05),
+      [0, 0.01, 0.05, 0.2]).holds, false);
+    const cstr = new Reactor(new ConstantFirstOrderKinetics(0.1), new CSTRMixing())
+      .outlet(0.1, 10, 298.15);
+    const pfr = new Reactor(new ConstantFirstOrderKinetics(0.1), new PlugFlowMixing())
+      .outlet(0.1, 10, 298.15);
+    close(cstr.outletMolL, 0.05);
+    close(pfr.outletMolL, 0.1 * Math.exp(-1));
+    const expectedK = 0.2 * Math.exp(-10000 / (GAS_CONSTANT_J_MOL_K * 298.15));
+    close(new ArrheniusFirstOrderKinetics(0.2, 10000).rateConstant(298.15), expectedK);
+    const state = new ReactionState(0.05);
+    for (const [model, expected] of [
+      [new ZeroOrderKinetics(0.01), 0.01],
+      [new FirstOrderReaction(0.1), 0.005],
+      [new SecondOrderKinetics(1), 0.0025],
+      [new MichaelisMentenKinetics(1e-5, 0.05), 5e-6],
+    ]) close(dispatchReactionRate(model, state), expected);
+    assert.throws(() => dispatchReactionRate(new ContractBreakingReactionRateModel(), state),
+      RateContractError);
     """
     result = subprocess.run([node, "-"], input=model + checks, text=True,
                             capture_output=True, timeout=10)

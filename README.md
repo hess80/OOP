@@ -4,7 +4,7 @@ A runnable study guide for object-oriented design. The PDF uses the deterministi
 
 | Output | What it is | How to open |
 | --- | --- | --- |
-| `web/index.html` | Self-contained interactive workbench with concept cards, case studies, the **Break It / Invariant Lab**, and a **Materials Lab** with session export | Open the file directly in any modern browser (no server or network needed) |
+| `web/index.html` | Self-contained interactive workbench with concept cards, case studies, the **Break It / Invariant Lab**, the synthetic **Materials Lab**, and scientific OOP workbenches | Open the file directly in any modern browser (no server or network needed) |
 | `dist/oop_visual_study_guide.pdf` | Deterministic multi-page PDF on warm graph paper, with vector diagrams and deterministic check tables | Open in any PDF viewer; rebuild with the command below |
 
 ---
@@ -85,6 +85,7 @@ Every arrow carries one of these labels:
 ├── src/oop_guide/
 │   ├── __init__.py                # package exports + __version__
 │   ├── models.py                  # ConceptSpec, GroupSpec, CaseStudySpec, InvariantLabState + deterministic helpers
+│   ├── science.py                 # typed scientific schemas and chemistry, detector, enzyme, reactor, and kinetics models
 │   └── pdf_builder.py             # deterministic PDF generator
 ├── tests/test_models_and_pdf.py   # unit + integration tests
 ├── web/index.html                 # interactive workbench (no external resources)
@@ -113,6 +114,7 @@ The tests cover:
 
 - **Catalog:** the four groups, nine concepts and six case studies.
 - **Fuel invariants:** `burn(dt)` and `refuel(kg)` bounds; a rejected operation leaves state unchanged.
+- **Scientific Solution model:** dilution material balance, solute addition, homogeneous aliquot removal, constructor/operation validation, independent instances, and the typed workbench schema.
 - **Geometry and Liskov:** the geometry math, and the `Rectangle` vs. `Square` contract check.
 - **Composition:** subclass-explosion counts versus composed-component counts.
 - **Dispatch:** overload resolution by signature, and the figure layout bounds and arrow labels.
@@ -167,5 +169,20 @@ Choose **Materials Lab**, or open an experiment from a concept card. Each of the
 Try **Composition** with 12 units, **Fine mesh**, and **Sample scale**. Switching from salt crystals to dye particles changes the number of units that pass from 0 to 12. The rules and units are illustrative. Each run starts with fresh samples; the session notebook keeps the results so you can compare runs.
 
 Select **Print / Save session as PDF** and choose your browser's PDF destination to export the notebook. The export includes parameters, diagrams, and accepted or rejected results for every Materials Lab run. The notebook stays in the current tab and is not saved across reloads. The checked-in PDF remains a separate, reproducible reference and includes a Materials Lab worksheet.
+
+### Scientific Solution / Dilution Workbench
+
+Choose **Solution Workbench**, or open it from the Encapsulation concept. The first scientific reference lesson models homogeneous aqueous sodium chloride solutions with `C = n / V`. It exposes `dilute(final_volume)`, `add_solute(amount)`, and `remove_volume(volume)`; the state inspector and execution trace show the object transition and material-balance calculation. Default values are pedagogical, not experimental measurements. The assumptions exclude reactions, precipitation, ion pairing, activity corrections, volume change on solute addition, and temperature change.
+
+The workbench also compares two independent `Solution` objects containing the same `ChemicalSpecies`, provides Python, Java, and TypeScript examples, and distinguishes domain validation, type/contract, software-design, and numerical/model failures.
+
+### Scientific OOP Workbenches · Groups 2–4
+
+- **Detector contract:** `AnalysisPipeline` calls `Detector.measure(sample)` while absorbance, fluorescence, and electrochemical implementations apply distinct simplified calibration equations. Calibration inputs are explicitly labeled synthetic.
+- **Biochemical inheritance:** Michaelis-Menten and competitive-inhibition rate objects are tested against a shared behavioral contract; a deliberately broken subtype demonstrates why biological taxonomy alone does not establish substitutability.
+- **Reactor composition:** a reactor composes first-order constant/Arrhenius kinetics with ideal CSTR/plug-flow balances. Users can swap either collaborator and compare equations, concentration results, and response curves.
+- **Kinetic dispatch:** one `rate(state)` call dispatches at runtime to zero-, first-, second-order, or simplified Michaelis-Menten kinetics. The workbench distinguishes overriding from language-specific overloading.
+
+Each panel links the OOP model, scientific equation and units, object/method execution trace, state or result, assumptions, and Python/Java/TypeScript code. The scientific schema and deterministic Python reference implementations live in `src/oop_guide/science.py`; the inline browser models have Node.js behavior tests when Node is available. The project remains offline and adds no visualization dependencies; its information-bearing diagrams and plots use SVG.
 
 The notebook layout, group inspector, and dark code/trap panels adapt the [uploaded HTML template](https://github.com/hess80/OOP/blob/0fba08790346b024264af66f431db324d39dc6ab/oop_visual_study_guide_architecture_workbench.html). The [uploaded PDF](https://github.com/hess80/OOP/blob/0fba08790346b024264af66f431db324d39dc6ab/OOP%20Visual%20Assets%20%26%20Study%20Guide.pdf) inspired the lesson-specific visual metaphors: guarded chambers, instrument contracts, modular parts, and dispatch silhouettes. The workbench redraws these as SVG rather than depending on external images or fonts.

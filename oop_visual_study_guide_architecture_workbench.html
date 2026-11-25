@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OOP Visual Study Guide &amp; Architecture Workbench</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --paper-bg: #F7F3E8;
+      --card-bg: #FCFBF7;
+      --panel-bg: #F1ECE0;
+      --navy: #162B4D;
+      --rust: #9E3B24;
+      --teal: #1C5D58;
+      --ink: #1E242B;
+      --muted: #475569;
+      --border: #C7BFA9;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--paper-bg);
+      color: var(--ink);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-image:
+        linear-gradient(to right, rgba(22, 43, 77, 0.065) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(22, 43, 77, 0.065) 1px, transparent 1px);
+      background-size: 24px 24px;
+      overflow-x: hidden;
+    }
+
+    .font-display-graphic {
+      font-family: 'Chakra Petch', 'Arial Narrow', Impact, sans-serif;
+      letter-spacing: 0.03em;
+    }
+
+    .font-code {
+      font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    .notebook-card {
+      background-color: var(--card-bg);
+      border: 1.5px solid var(--border);
+      box-shadow: 0 2px 0 rgba(22, 43, 77, 0.08);
+      border-radius: 10px;
+    }
+
+    .nav-pill-active {
+      background-color: var(--navy);
+      color: #FFFFFF;
+      border-color: var(--navy);
+    }
+
+    .nav-pill-idle {
+      background-color: var(--card-bg);
+      color: var(--navy);
+      border-color: var(--border);
+    }
+
+    .nav-pill-idle:hover {
+      border-color: var(--navy);
+      background-color: var(--panel-bg);
+    }
+
+    .code-pane {
+      background-color: #131B26;
+      color: #E2E8F0;
+      border-radius: 8px;
+      padding: 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8125rem;
+      line-height: 1.55;
+      overflow-x: auto;
+      border: 1px solid #273549;
+    }
+
+    .trap-pane {
+      background-color: #241312;
+      color: #FDECEC;
+      border-radius: 8px;
+      padding: 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8125rem;
+      line-height: 1.55;
+      overflow-x: auto;
+      border: 1px solid #7F1D1D;
+    }
+
+    .status-banner {
+      border-radius: 8px;
+      padding: 12px 14px;
+      border-left-width: 4px;
+    }
+  </style>
+</head>
+<body class="min-h-screen antialiased">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+    <!-- Top Header & Metaphor Rationale Banner -->
+    <header class="notebook-card p-5 sm:p-7">
+      <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 border-b border-[#C7BFA9] pb-5">
+        <div class="space-y-2 max-w-4xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#F1ECE0] border border-[#C7BFA9] text-xs font-code font-semibold text-[#9E3B24]">
+            <span>ENGINEERING ARCHITECTURE WORKBENCH</span>
+            <span>//</span>
+            <span>4 GROUPS · 9 CORE CONCEPTS · 6 CASE STUDIES</span>
+          </div>
+          <h1 class="font-display-graphic text-2xl sm:text-4xl font-bold uppercase text-[#162B4D] leading-tight">
+            Object-Oriented Programming: Structural Model &amp; Invariant Lab
+          </h1>
+          <p class="text-sm sm:text-base text-[#334155] leading-relaxed">
+            Replaces isolated flashcard metaphors with four coupled structural layers, domain-matched vector diagrams,
+            clean-vs.-trap code comparisons, and an interactive simulator for testing invariants and dispatch rules.
+          </p>
+        </div>
+
+        <div class="bg-[#F1ECE0] border border-[#C7BFA9] rounded-lg p-3.5 lg:w-80 shrink-0 space-y-1.5">
+          <div class="font-display-graphic text-xs font-bold uppercase tracking-wider text-[#1C5D58]">
+            Why Imagery Shifts Across Groups
+          </div>
+          <p class="text-xs text-[#1E242B] leading-relaxed">
+            A single metaphor distorts distinct mechanics: a rocket models lifecycle invariants well, while modular
+            buildings, lineage trees, and geometric shapes fit structural assembly and dispatch more cleanly.
+          </p>
+        </div>
+      </div>
+
+      <!-- Four-Group Matrix Strip -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3.5 pt-5">
+        <button
+          type="button"
+          data-group-jump="group-1"
+          class="text-left p-3.5 rounded-lg bg-[#F1ECE0] hover:bg-[#EAE3D2] border border-[#C7BFA9] transition cursor-pointer"
+        >
+          <div class="font-display-graphic text-xs font-bold uppercase text-[#9E3B24]">Group 01 · Lifecycle &amp; State</div>
+          <div class="font-display-graphic text-base font-bold text-[#162B4D] mt-0.5">Class, Object, Ctor &amp; Encapsulation</div>
+          <p class="text-xs text-[#475569] mt-1">Valid initialization and guarded state transitions.</p>
+        </button>
+
+        <button
+          type="button"
+          data-group-jump="group-2"
+          class="text-left p-3.5 rounded-lg bg-[#F1ECE0] hover:bg-[#EAE3D2] border border-[#C7BFA9] transition cursor-pointer"
+        >
+          <div class="font-display-graphic text-xs font-bold uppercase text-[#1C5D58]">Group 02 · Contracts &amp; Abstraction</div>
+          <div class="font-display-graphic text-base font-bold text-[#162B4D] mt-0.5">Abstraction &amp; Interface</div>
+          <p class="text-xs text-[#475569] mt-1">Caller capabilities and contracts without shared lineage.</p>
+        </button>
+
+        <button
+          type="button"
+          data-group-jump="group-3"
+          class="text-left p-3.5 rounded-lg bg-[#F1ECE0] hover:bg-[#EAE3D2] border border-[#C7BFA9] transition cursor-pointer"
+        >
+          <div class="font-display-graphic text-xs font-bold uppercase text-[#9E3B24]">Group 03 · Code Reuse &amp; Structure</div>
+          <div class="font-display-graphic text-base font-bold text-[#162B4D] mt-0.5">Inheritance &amp; Composition</div>
+          <p class="text-xs text-[#475569] mt-1">Subtype specialization vs. swappable components.</p>
+        </button>
+
+        <button
+          type="button"
+          data-group-jump="group-4"
+          class="text-left p-3.5 rounded-lg bg-[#F1ECE0] hover:bg-[#EAE3D2] border border-[#C7BFA9] transition cursor-pointer"
+        >
+          <div class="font-display-graphic text-xs font-bold uppercase text-[#1C5D58]">Group 04 · Polymorphic Dispatch</div>
+          <div class="font-display-graphic text-base font-bold text-[#162B4D] mt-0.5">Runtime Dispatch &amp; Overloading</div>
+          <p class="text-xs text-[#475569] mt-1">Dynamic overriding vs. signature-based overloading.</p>
+        </button>
+      </div>
+    </header>
+
+    <!-- Primary View Switcher & Filter Bar -->
+    <nav aria-label="Primary Study View Switcher" class="notebook-card p-4 space-y-3">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex flex-wrap items-center gap-2" role="tablist">
+          <button
+            id="tab-groups"
+            type="button"
+            role="tab"
+            aria-selected="true"
+            class="px-4 py-2 rounded-lg border font-display-graphic text-xs sm:text-sm font-bold uppercase transition cursor-pointer nav-pill-active"
+          >
+            1. Structure Groups &amp; Inspector
+          </button>
+          <button
+            id="tab-concepts"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            class="px-4 py-2 rounded-lg border font-display-graphic text-xs sm:text-sm font-bold uppercase transition cursor-pointer nav-pill-idle"
+          >
+            2. All 9 Core Concepts
+          </button>
+          <button
+            id="tab-traps"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            class="px-4 py-2 rounded-lg border font-display-graphic text-xs sm:text-sm font-bold uppercase transition cursor-pointer nav-pill-idle"
+          >
+            3. Production Case Studies &amp; Traps
+          </button>
+          <button
+            id="tab-lab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            class="px-4 py-2 rounded-lg border font-display-graphic text-xs sm:text-sm font-bold uppercase transition cursor-pointer nav-pill-idle"
+          >
+            4. Break It / Invariant Lab
+          </button>
+        </div>
+
+        <div id="filter-controls" class="flex flex-wrap items-center gap-2">
+          <span class="text-xs font-code text-[#475569] uppercase">Group Filter:</span>
+          <button type="button" data-filter="all" class="filter-btn px-3 py-1.5 rounded-md border text-xs font-code font-semibold cursor-pointer nav-pill-active">
+            All
+          </button>
+          <button type="button" data-filter="group-1" class="filter-btn px-3 py-1.5 rounded-md border text-xs font-code font-semibold cursor-pointer nav-pill-idle">
+            G1: Lifecycle
+          </button>
+          <button type="button" data-filter="group-2" class="filter-btn px-3 py-1.5 rounded-md border text-xs font-code font-semibold cursor-pointer nav-pill-idle">
+            G2: Contracts
+          </button>
+          <button type="button" data-filter="group-3" class="filter-btn px-3 py-1.5 rounded-md border text-xs font-code font-semibold cursor-pointer nav-pill-idle">
+            G3: Structure
+          </button>
+          <button type="button" data-filter="group-4" class="filter-btn px-3 py-1.5 rounded-md border text-xs font-code font-semibold cursor-pointer nav-pill-idle">
+            G4: Dispatch
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- View 1: Structure Groups & Interactive Concept Inspector -->
+    <section id="view-groups" class="space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Left Selector Column -->
+        <div class="lg:col-span-4 space-y-4">
+          <div class="notebook-card p-4 space-y-3">
+            <h2 class="font-display-graphic text-lg font-bold uppercase text-[#162B4D] border-b border-[#C7BFA9] pb-2">
+              Concept &amp; Metaphor Selector
+            </h2>
+            <div id="inspector-concept-list" class="space-y-2 max-h-[680px] overflow-y-auto pr-1"></div>
+          </div>
+        </div>
+
+        <!-- Right Detailed Inspector Stage -->
+        <div class="lg:col-span-8 space-y-5">
+          <div id="inspector-detail-card" class="notebook-card p-5 sm:p-6 space-y-5"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- View 2: All Core Concepts Catalog -->
+    <section id="view-concepts" class="hidden space-y-4">
+      <div class="notebook-card p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <div>
+          <h2 class="font-display-graphic text-xl font-bold uppercase text-[#162B4D]">
+            Complete Concept Reference Matrix
+          </h2>
+          <p class="text-xs sm:text-sm text-[#475569]">
+            Inspect any concept's semantic relationship, visual metaphor, and clean implementation vs. common pitfall.
+          </p>
+        </div>
+        <div id="concept-count-badge" class="font-code text-xs font-semibold px-3 py-1.5 rounded bg-[#F1ECE0] border border-[#C7BFA9] text-[#162B4D]"></div>
+      </div>
+      <div id="concepts-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
+    </section>
+
+    <!-- View 3: Production Case Studies & Engineering Traps -->
+    <section id="view-traps" class="hidden space-y-5">
+      <div class="notebook-card p-5">
+        <h2 class="font-display-graphic text-xl font-bold uppercase text-[#9E3B24]">
+          Production Case Studies &amp; Engineering Traps
+        </h2>
+        <p class="text-sm text-[#334155] mt-1">
+          Real-world failure modes where textbook noun hierarchies, unchecked mutation, or concrete coupling break production systems.
+        </p>
+      </div>
+      <div id="traps-list" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
+    </section>
+
+    <!-- View 4: Interactive Break It / Invariant Lab -->
+    <section id="view-lab" class="hidden space-y-6">
+      <div class="notebook-card p-5 space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 border-b border-[#C7BFA9] pb-3">
+          <div>
+            <h2 class="font-display-graphic text-xl font-bold uppercase text-[#162B4D]">
+              Break It / Invariant Simulator Lab
+            </h2>
+            <p class="text-xs sm:text-sm text-[#475569]">
+              Test invariant boundaries, Liskov substitutability, runtime vs. signature dispatch, and composition scaling deterministically.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button type="button" data-lab-tab="propellant" class="lab-subtab px-3 py-1.5 rounded-md border text-xs font-code font-semibold cursor-pointer nav-pill-active">
+              1. Propellant Invariants
+            </button>
+            <button type="button" data-lab-tab="lsp" class="lab-subtab px-3 py-1.5 rounded-md border text-xs font-code font-semibold cursor-pointer nav-pill-idle">
+              2. Rectangle vs. Square (LSP)
+            </button>
+            <button type="button" data-lab-tab="dispatch" class="lab-subtab px-3 py-1.5 rounded-md border text-xs font-code font-semibold cursor-pointer nav-pill-idle">
+              3. Overriding vs. Overloading
+            </button>
+            <button type="button" data-lab-tab="composition" class="lab-subtab px-3 py-1.5 rounded-md border text-xs font-code font-semibold cursor-pointer nav-pill-idle">
+              4. Composition vs. Subclasses
+            </button>
+          </div>
+        </div>
+
+        <!-- Lab 1: Rocket Propellant Encapsulation -->
+        <div id="lab-panel-propellant" class="lab-panel grid grid-cols-1 lg:grid-cols-12 gap-5">
+          <div class="lg:col-span-6 bg-[#F1ECE0] border border-[#C7BFA9] rounded-lg p-4 space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="font-display-graphic text-base font-bold uppercase text-[#9E3B24]">
+                RocketStage State Guard
+              </h3>
+              <span class="font-code text-xs px-2 py-0.5 rounded bg-[#FCFBF7] border border-[#C7BFA9] text-[#162B4D]">
+                Invariant: 0 &lt;= fuelKg &lt;= 1500
+              </span>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2 text-center font-code bg-[#FCFBF7] border border-[#C7BFA9] rounded-lg p-3">
+              <div>
+                <div class="text-[11px] text-[#475569] uppercase">Current Fuel</div>
+                <div id="sim-fuel-val" class="text-lg font-bold text-[#162B4D]">1200.0 kg</div>
+              </div>
+              <div>
+                <div class="text-[11px] text-[#475569] uppercase">Max Capacity</div>
+                <div class="text-lg font-bold text-[#1C5D58]">1500.0 kg</div>
+              </div>
+              <div>
+                <div class="text-[11px] text-[#475569] uppercase">Burn Rate</div>
+                <div class="text-lg font-bold text-[#9E3B24]">50.0 kg/s</div>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label for="sim-seconds-input" class="block text-xs font-code font-semibold text-[#162B4D]">
+                Seconds / Refuel Delta Input:
+              </label>
+              <input
+                id="sim-seconds-input"
+                type="number"
+                step="1"
+                value="25"
+                class="w-full px-3 py-2 rounded-md border border-[#C7BFA9] bg-[#FCFBF7] font-code text-sm text-[#1E242B]"
+              />
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+              <button id="btn-sim-burn" type="button" class="px-3.5 py-2 rounded-md bg-[#162B4D] text-white font-code text-xs font-semibold cursor-pointer hover:opacity-95">
+                burn(dt)
+              </button>
+              <button id="btn-sim-refuel" type="button" class="px-3.5 py-2 rounded-md bg-[#1C5D58] text-white font-code text-xs font-semibold cursor-pointer hover:opacity-95">
+                refuel(kg)
+              </button>
+              <button id="btn-sim-raw-write" type="button" class="px-3.5 py-2 rounded-md bg-[#9E3B24] text-white font-code text-xs font-semibold cursor-pointer hover:opacity-95">
+                Attempt Raw fuelKg = -200
+              </button>
+              <button id="btn-sim-reset-fuel" type="button" class="px-3.5 py-2 rounded-md bg-[#FCFBF7] border border-[#C7BFA9] text-[#162B4D] font-code text-xs font-semibold cursor-pointer">
+                Reset (1200 kg)
+              </button>
+            </div>
+          </div>
+
+          <div class="lg:col-span-6 space-y-3">
+            <div id="sim-fuel-feedback" class="status-banner bg-[#F1ECE0] border-[#1C5D58] text-sm">
+              Ready. Test <code>burn(25)</code> (consumes <code>1250.0 kg</code>, exceeds <code>1200.0 kg</code>) or <code>Attempt Raw fuelKg = -200</code>.
+            </div>
+            <pre id="sim-fuel-log" class="code-pane h-56"></pre>
+          </div>
+        </div>
+
+        <!-- Lab 2: Rectangle vs Square LSP Trap -->
+        <div id="lab-panel-lsp" class="lab-panel hidden grid grid-cols-1 lg:grid-cols-12 gap-5">
+          <div class="lg:col-span-6 bg-[#F1ECE0] border border-[#C7BFA9] rounded-lg p-4 space-y-4">
+            <h3 class="font-display-graphic text-base font-bold uppercase text-[#9E3B24]">
+              Behavioral Contract Test: setWidth(10), setHeight(5)
+            </h3>
+            <p class="text-xs text-[#334155] leading-relaxed">
+              A <code>Rectangle</code> contract promises independent <code>width</code> and <code>height</code> setters.
+              If <code>Square</code> forces <code>width == height</code> inside those setters, substituting a <code>Square</code>
+              where a mutable <code>Rectangle</code> is expected breaks caller assumptions.
+            </p>
+
+            <div class="flex flex-wrap gap-2">
+              <button id="btn-lsp-rect" type="button" class="px-3.5 py-2 rounded-md bg-[#162B4D] text-white font-code text-xs font-semibold cursor-pointer">
+                Run on Rectangle (10 x 5)
+              </button>
+              <button id="btn-lsp-square-trap" type="button" class="px-3.5 py-2 rounded-md bg-[#9E3B24] text-white font-code text-xs font-semibold cursor-pointer">
+                Run on Square Subtype Trap
+              </button>
+              <button id="btn-lsp-immutable" type="button" class="px-3.5 py-2 rounded-md bg-[#1C5D58] text-white font-code text-xs font-semibold cursor-pointer">
+                Compare Immutable Shape Contract
+              </button>
+            </div>
+          </div>
+
+          <div class="lg:col-span-6 space-y-3">
+            <div id="sim-lsp-feedback" class="status-banner bg-[#F1ECE0] border-[#162B4D] text-sm">
+              Select a subtype execution above to inspect width, height, area, and behavioral contract compliance.
+            </div>
+            <pre id="sim-lsp-trace" class="code-pane h-52"></pre>
+          </div>
+        </div>
+
+        <!-- Lab 3: Runtime Dispatch vs Signature Overloading -->
+        <div id="lab-panel-dispatch" class="lab-panel hidden grid grid-cols-1 lg:grid-cols-12 gap-5">
+          <div class="lg:col-span-6 bg-[#F1ECE0] border border-[#C7BFA9] rounded-lg p-4 space-y-4">
+            <h3 class="font-display-graphic text-base font-bold uppercase text-[#1C5D58]">
+              Dispatch &amp; Signature Resolution Tester
+            </h3>
+            <div class="space-y-2">
+              <label class="block text-xs font-code font-semibold text-[#162B4D]">1. Runtime Subtype Dispatch (<code>Shape.draw()</code>):</label>
+              <div class="flex flex-wrap gap-2">
+                <button type="button" data-draw-type="Circle" class="draw-btn px-3 py-1.5 rounded bg-[#162B4D] text-white font-code text-xs cursor-pointer">
+                  draw(Circle r=1.5)
+                </button>
+                <button type="button" data-draw-type="Square" class="draw-btn px-3 py-1.5 rounded bg-[#162B4D] text-white font-code text-xs cursor-pointer">
+                  draw(Square s=3)
+                </button>
+                <button type="button" data-draw-type="Triangle" class="draw-btn px-3 py-1.5 rounded bg-[#162B4D] text-white font-code text-xs cursor-pointer">
+                  draw(Triangle b=4,h=3.5)
+                </button>
+              </div>
+            </div>
+
+            <div class="space-y-2 pt-2 border-t border-[#C7BFA9]">
+              <label class="block text-xs font-code font-semibold text-[#162B4D]">2. Parameter Signature Overloading (<code>translate(...)</code>):</label>
+              <div class="flex flex-wrap gap-2">
+                <button type="button" data-overload="2d" class="overload-btn px-3 py-1.5 rounded bg-[#1C5D58] text-white font-code text-xs cursor-pointer">
+                  translate(2.5f, 4.0f)
+                </button>
+                <button type="button" data-overload="3d" class="overload-btn px-3 py-1.5 rounded bg-[#9E3B24] text-white font-code text-xs cursor-pointer">
+                  translate(2.5f, 4.0f, -1.5f)
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-6 space-y-3">
+            <div id="sim-dispatch-feedback" class="status-banner bg-[#F1ECE0] border-[#1C5D58] text-sm">
+              Runtime overriding dispatches by dynamic instance type; overload resolution matches parameter signature from call context.
+            </div>
+            <pre id="sim-dispatch-output" class="code-pane h-52"></pre>
+          </div>
+        </div>
+
+        <!-- Lab 4: Composition vs Subclass Explosion -->
+        <div id="lab-panel-composition" class="lab-panel hidden grid grid-cols-1 lg:grid-cols-12 gap-5">
+          <div class="lg:col-span-6 bg-[#F1ECE0] border border-[#C7BFA9] rounded-lg p-4 space-y-4">
+            <h3 class="font-display-graphic text-base font-bold uppercase text-[#162B4D]">
+              Orthogonal Trait Scaling Calculator
+            </h3>
+            <p class="text-xs text-[#334155]">
+              Adjust how many variants exist across 3 orthogonal axes (e.g., Propulsion, Guidance, Sensor).
+              Naive subclassing multiplies combinations (<code>A × B × C</code>), whereas composition assembles independent modules (<code>A + B + C</code>).
+            </p>
+            <div class="grid grid-cols-3 gap-3 font-code text-xs">
+              <div>
+                <label for="axis-a" class="block text-[#162B4D] font-semibold mb-1">Axis A (n)</label>
+                <input id="axis-a" type="number" min="1" max="10" value="3" class="w-full px-2.5 py-1.5 rounded border border-[#C7BFA9] bg-[#FCFBF7]" />
+              </div>
+              <div>
+                <label for="axis-b" class="block text-[#162B4D] font-semibold mb-1">Axis B (m)</label>
+                <input id="axis-b" type="number" min="1" max="10" value="4" class="w-full px-2.5 py-1.5 rounded border border-[#C7BFA9] bg-[#FCFBF7]" />
+              </div>
+              <div>
+                <label for="axis-c" class="block text-[#162B4D] font-semibold mb-1">Axis C (k)</label>
+                <input id="axis-c" type="number" min="1" max="10" value="3" class="w-full px-2.5 py-1.5 rounded border border-[#C7BFA9] bg-[#FCFBF7]" />
+              </div>
+            </div>
+            <button id="btn-calc-scaling" type="button" class="px-4 py-2 rounded-md bg-[#162B4D] text-white font-code text-xs font-semibold cursor-pointer">
+              Compute Scaling Comparison
+            </button>
+          </div>
+
+          <div class="lg:col-span-6 space-y-3">
+            <div id="sim-comp-feedback" class="status-banner bg-[#F1ECE0] border-[#9E3B24] text-sm"></div>
+            <pre id="sim-comp-output" class="code-pane h-52"></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const CONCEPTS = [
+      {
+        id: "class-object",
+        group: "group-1",
+        groupLabel: "Group 1: Object Lifecycle & State",
+        num: "01",
+        name: "Class & Object",
+        metaphor: "RocketStage Blueprint vs. Booster Instances",
+        metaphorReason: "A class defines the stage specification; each instantiated object holds independent propellant and telemetry state.",
+        relationVerb: "instantiates",
+        cleanCode: `class RocketStage {
+  private double fuelKg;
+  constructor(double fuelKg) {
+    if (fuelKg <= 0) throw new Error("fuelKg must be > 0");
+    this.fuelKg = fuelKg;
+  }
+}`,
+        trapCode: `// Trap: Treating class and instance as interchangeable
+// or sharing mutable static state across all stages
+class RocketStage {
+  static double fuelKg = 1200.0; // Shared across ALL instances!
+}`,
+        renderSvg() {
+          return `
+            <svg viewBox="0 0 640 190" class="w-full h-44 bg-[#F7F3E8] border border-[#C7BFA9] rounded-md" role="img" aria-label="Class instantiates two rocket stage objects">
+              <rect x="24" y="36" width="170" height="118" rx="8" fill="#F1ECE0" stroke="#162B4D" stroke-width="2" stroke-dasharray="6 4" />
+              <text x="109" y="64" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="700" fill="#162B4D">RocketStage</text>
+              <text x="109" y="86" text-anchor="middle" font-family="Inter" font-size="11" fill="#475569">Class Blueprint</text>
+              <text x="109" y="112" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#1C5D58">fuelKg, thrustKn</text>
+
+              <line x1="194" y1="74" x2="292" y2="54" stroke="#9E3B24" stroke-width="2.2" />
+              <polygon points="292,54 282,50 284,60" fill="#9E3B24" />
+              <rect x="202" y="42" width="84" height="18" rx="4" fill="#FCFBF7" stroke="#9E3B24" />
+              <text x="244" y="55" text-anchor="middle" font-family="JetBrains Mono" font-size="10" font-weight="700" fill="#9E3B24">instantiates</text>
+
+              <line x1="194" y1="116" x2="292" y2="136" stroke="#9E3B24" stroke-width="2.2" />
+              <polygon points="292,136 284,130 282,140" fill="#9E3B24" />
+              <rect x="202" y="128" width="84" height="18" rx="4" fill="#FCFBF7" stroke="#9E3B24" />
+              <text x="244" y="141" text-anchor="middle" font-family="JetBrains Mono" font-size="10" font-weight="700" fill="#9E3B24">instantiates</text>
+
+              <rect x="300" y="24" width="312" height="58" rx="8" fill="#FCFBF7" stroke="#162B4D" stroke-width="2" />
+              <text x="316" y="48" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#162B4D">booster_alpha</text>
+              <text x="596" y="48" text-anchor="end" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#1C5D58">fuel = 1200 kg</text>
+              <rect x="316" y="58" width="210" height="10" rx="3" fill="#1C5D58" />
+
+              <rect x="300" y="106" width="312" height="58" rx="8" fill="#FCFBF7" stroke="#162B4D" stroke-width="2" />
+              <text x="316" y="130" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#162B4D">booster_beta</text>
+              <text x="596" y="130" text-anchor="end" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#9E3B24">fuel = 450 kg</text>
+              <rect x="316" y="140" width="82" height="10" rx="3" fill="#9E3B24" />
+            </svg>
+          `;
+        }
+      },
+      {
+        id: "constructor",
+        group: "group-1",
+        groupLabel: "Group 1: Object Lifecycle & State",
+        num: "02",
+        name: "Constructor",
+        metaphor: "Assembly Bay Clamps & Pre-Flight Invariant Gate",
+        metaphorReason: "Initialization checks preconditions (fuel > 0, thrust > 0) before an instance is exposed.",
+        relationVerb: "validates",
+        cleanCode: `constructor(double fuelKg, double maxThrustKn) {
+  if (fuelKg <= 0) throw new InvalidStateError("fuelKg > 0 required");
+  if (maxThrustKn <= 0) throw new InvalidStateError("maxThrustKn > 0 required");
+  this.fuelKg = fuelKg;
+  this.maxThrustKn = maxThrustKn;
+}`,
+        trapCode: `// Trap: Empty constructor leaving object half-initialized
+constructor() {
+  // fuelKg and maxThrustKn left undefined or 0!
+}
+stage.ignite(); // Fails mid-flight because invariants were skipped`,
+        renderSvg() {
+          return `
+            <svg viewBox="0 0 640 190" class="w-full h-44 bg-[#F7F3E8] border border-[#C7BFA9] rounded-md" role="img" aria-label="Constructor validates preconditions before creating instance">
+              <rect x="24" y="42" width="176" height="106" rx="8" fill="#FCFBF7" stroke="#162B4D" stroke-width="2" />
+              <text x="112" y="72" text-anchor="middle" font-family="JetBrains Mono" font-size="11.5" font-weight="700" fill="#162B4D">RocketStage(</text>
+              <text x="112" y="92" text-anchor="middle" font-family="JetBrains Mono" font-size="11.5" font-weight="700" fill="#162B4D">  fuelKg, thrustKn</text>
+              <text x="112" y="112" text-anchor="middle" font-family="JetBrains Mono" font-size="11.5" font-weight="700" fill="#162B4D">)</text>
+
+              <line x1="200" y1="95" x2="246" y2="95" stroke="#1C5D58" stroke-width="2.2" />
+              <polygon points="246,95 236,90 236,100" fill="#1C5D58" />
+
+              <rect x="250" y="34" width="186" height="122" rx="8" fill="#F1ECE0" stroke="#1C5D58" stroke-width="2" />
+              <text x="343" y="60" text-anchor="middle" font-family="Chakra Petch" font-size="12" font-weight="700" fill="#1C5D58">INVARIANT GATE</text>
+              <text x="343" y="88" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#1E242B">fuelKg &gt; 0</text>
+              <text x="343" y="110" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#1E242B">thrustKn &gt; 0</text>
+              <text x="343" y="136" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#9E3B24">Rejects invalid args</text>
+
+              <line x1="436" y1="95" x2="478" y2="95" stroke="#162B4D" stroke-width="2.2" />
+              <polygon points="478,95 468,90 468,100" fill="#162B4D" />
+
+              <rect x="482" y="52" width="134" height="86" rx="8" fill="#FCFBF7" stroke="#162B4D" stroke-width="2" />
+              <text x="549" y="88" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#162B4D">Valid Stage</text>
+              <text x="549" y="110" text-anchor="middle" font-family="Inter" font-size="11" fill="#1C5D58">Ready for use</text>
+            </svg>
+          `;
+        }
+      },
+      {
+        id: "encapsulation",
+        group: "group-1",
+        groupLabel: "Group 1: Object Lifecycle & State",
+        num: "03",
+        name: "Encapsulation",
+        metaphor: "Guarded Propellant Tank & Controlled Valve Operations",
+        metaphorReason: "Protects internal fuel state behind burn(dt) and refuel(kg) checks rather than direct writes.",
+        relationVerb: "protects",
+        cleanCode: `burn(double seconds) {
+  if (seconds < 0) throw new Error("seconds >= 0");
+  const needed = seconds * this.burnRateKgPerSec;
+  if (needed > this.fuelKg) throw new Error("Insufficient fuel");
+  this.fuelKg -= needed;
+}`,
+        trapCode: `// Trap: Public state or unguarded setter allowing invalid state
+stage.fuelKg = -500.0; // Negative propellant corrupts invariants!`,
+        renderSvg() {
+          return `
+            <svg viewBox="0 0 640 190" class="w-full h-44 bg-[#F7F3E8] border border-[#C7BFA9] rounded-md" role="img" aria-label="Controlled operations update tank state while direct writes are blocked">
+              <rect x="24" y="28" width="166" height="54" rx="7" fill="#FCFBF7" stroke="#1C5D58" stroke-width="2" />
+              <text x="107" y="52" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#1C5D58">burn(seconds)</text>
+              <text x="107" y="70" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#475569">Checks fuel &gt;= burn</text>
+
+              <rect x="24" y="108" width="166" height="54" rx="7" fill="#FCFBF7" stroke="#1C5D58" stroke-width="2" />
+              <text x="107" y="132" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#1C5D58">refuel(kg)</text>
+              <text x="107" y="150" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#475569">Checks fuel &lt;= cap</text>
+
+              <line x1="190" y1="55" x2="254" y2="82" stroke="#1C5D58" stroke-width="2.2" />
+              <polygon points="254,82 243,82 247,73" fill="#1C5D58" />
+              <line x1="190" y1="135" x2="254" y2="108" stroke="#1C5D58" stroke-width="2.2" />
+              <polygon points="254,108 247,117 243,108" fill="#1C5D58" />
+
+              <rect x="258" y="42" width="174" height="106" rx="8" fill="#162B4D" stroke="#162B4D" stroke-width="2" />
+              <text x="345" y="76" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="700" fill="#FFFFFF">private fuelKg</text>
+              <text x="345" y="100" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#A7F3D0">0 &lt;= fuelKg &lt;= cap</text>
+              <text x="345" y="124" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#E2E8F0">Invariant Protected</text>
+
+              <line x1="612" y1="95" x2="436" y2="95" stroke="#9E3B24" stroke-width="2.2" stroke-dasharray="5 4" />
+              <polygon points="436,95 446,90 446,100" fill="#9E3B24" />
+              <rect x="462" y="64" width="146" height="22" rx="4" fill="#FEF2F2" stroke="#9E3B24" />
+              <text x="535" y="79" text-anchor="middle" font-family="JetBrains Mono" font-size="10" font-weight="700" fill="#9E3B24">BLOCKED DIRECT WRITE</text>
+            </svg>
+          `;
+        }
+      },
+      {
+        id: "abstraction",
+        group: "group-2",
+        groupLabel: "Group 2: Contracts & Abstraction",
+        num: "04",
+        name: "Abstraction",
+        metaphor: "Deploy Switch vs. Hidden Actuators & Sensors",
+        metaphorReason: "Exposes a clean caller operation while hiding motor ramping, latches, and limit switches.",
+        relationVerb: "delegates to",
+        cleanCode: `// Caller invokes essential operation only:
+solarArray.deploy();
+
+// Internal complexity stays hidden inside SolarArray:
+class SolarArray {
+  deploy() { this.releaseLatches(); this.driveStepperToLimit(); }
+}`,
+        trapCode: `// Trap: Leaking low-level hardware steps to every caller
+solarArray.unlatchPortA();
+solarArray.unlatchPortB();
+solarArray.setMotorPwm(142);
+solarArray.pollLimitSwitch3();`,
+        renderSvg() {
+          return `
+            <svg viewBox="0 0 640 190" class="w-full h-44 bg-[#F7F3E8] border border-[#C7BFA9] rounded-md" role="img" aria-label="Abstraction separates clean operation from hidden mechanics">
+              <rect x="28" y="44" width="184" height="102" rx="8" fill="#FCFBF7" stroke="#162B4D" stroke-width="2" />
+              <text x="120" y="72" text-anchor="middle" font-family="Chakra Petch" font-size="11" font-weight="700" fill="#1C5D58">CALLER SURFACE</text>
+              <text x="120" y="100" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#162B4D">deploy()</text>
+              <text x="120" y="122" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#475569">Essential capability</text>
+
+              <line x1="212" y1="95" x2="314" y2="95" stroke="#9E3B24" stroke-width="2.2" />
+              <polygon points="314,95 304,90 304,100" fill="#9E3B24" />
+              <rect x="222" y="68" width="82" height="18" rx="4" fill="#FCFBF7" stroke="#9E3B24" />
+              <text x="263" y="81" text-anchor="middle" font-family="JetBrains Mono" font-size="9.5" font-weight="700" fill="#9E3B24">delegates to</text>
+
+              <rect x="318" y="30" width="294" height="130" rx="8" fill="#F1ECE0" stroke="#9E3B24" stroke-width="2" />
+              <text x="465" y="54" text-anchor="middle" font-family="Chakra Petch" font-size="11.5" font-weight="700" fill="#9E3B24">HIDDEN IMPLEMENTATION DETAILS</text>
+              <rect x="338" y="68" width="116" height="32" rx="5" fill="#FCFBF7" stroke="#C7BFA9" />
+              <text x="396" y="88" text-anchor="middle" font-family="JetBrains Mono" font-size="10.5" fill="#1E242B">releaseLatches()</text>
+              <rect x="476" y="68" width="116" height="32" rx="5" fill="#FCFBF7" stroke="#C7BFA9" />
+              <text x="534" y="88" text-anchor="middle" font-family="JetBrains Mono" font-size="10.5" fill="#1E242B">stepperDrive()</text>
+              <rect x="406" y="112" width="118" height="32" rx="5" fill="#FCFBF7" stroke="#C7BFA9" />
+              <text x="465" y="132" text-anchor="middle" font-family="JetBrains Mono" font-size="10.5" fill="#1E242B">limitSensors()</text>
+            </svg>
+          `;
+        }
+      },
+      {
+        id: "interface",
+        group: "group-2",
+        groupLabel: "Group 2: Contracts & Abstraction",
+        num: "05",
+        name: "Interface",
+        metaphor: "Standardized Docking Port (IDockable)",
+        metaphorReason: "CargoTug and AutonomousDrone satisfy IDockable without sharing a concrete base class.",
+        relationVerb: "implements",
+        cleanCode: `interface IDockable {
+  dock(portId: string): DockResult;
+}
+
+class CargoTug implements IDockable { /* heavy thrusters */ }
+class AutonomousDrone implements IDockable { /* optical guidance */ }`,
+        trapCode: `// Trap: Coupling station controller to concrete vessel classes
+if (vessel instanceof CargoTug) vessel.dockCargo(port);
+else if (vessel instanceof AutonomousDrone) vessel.dockScout(port);`,
+        renderSvg() {
+          return `
+            <svg viewBox="0 0 640 190" class="w-full h-44 bg-[#F7F3E8] border border-[#C7BFA9] rounded-md" role="img" aria-label="CargoTug and AutonomousDrone implement IDockable">
+              <rect x="210" y="22" width="220" height="54" rx="8" fill="#162B4D" stroke="#162B4D" stroke-width="2" />
+              <text x="320" y="45" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="700" fill="#FFFFFF">IDockable</text>
+              <text x="320" y="64" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#A7F3D0">dock(portId)</text>
+
+              <line x1="135" y1="122" x2="265" y2="76" stroke="#1C5D58" stroke-width="2.2" />
+              <polygon points="265,76 254,75 257,84" fill="#1C5D58" />
+              <text x="165" y="92" font-family="JetBrains Mono" font-size="10" font-weight="700" fill="#1C5D58">implements</text>
+
+              <line x1="505" y1="122" x2="375" y2="76" stroke="#1C5D58" stroke-width="2.2" />
+              <polygon points="375,76 383,84 386,75" fill="#1C5D58" />
+              <text x="424" y="92" font-family="JetBrains Mono" font-size="10" font-weight="700" fill="#1C5D58">implements</text>
+
+              <rect x="40" y="122" width="190" height="48" rx="7" fill="#FCFBF7" stroke="#162B4D" stroke-width="2" />
+              <text x="135" y="144" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#162B4D">CargoTug</text>
+              <text x="135" y="160" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#475569">Heavy-hauler internals</text>
+
+              <rect x="410" y="122" width="190" height="48" rx="7" fill="#FCFBF7" stroke="#162B4D" stroke-width="2" />
+              <text x="505" y="144" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#162B4D">AutonomousDrone</text>
+              <text x="505" y="160" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#475569">Scout guidance internals</text>
+            </svg>
+          `;
+        }
+      },
+      {
+        id: "inheritance",
+        group: "group-3",
+        groupLabel: "Group 3: Code Reuse & Structure",
+        num: "06",
+        name: "Inheritance",
+        metaphor: "Botanical Specialization Lineage (Plant -> Tree -> FruitTree)",
+        metaphorReason: "Models type specialization and substitutability along a hierarchy rather than treating inheritance solely as copy-paste reuse.",
+        relationVerb: "specializes",
+        cleanCode: `class Plant { grow() { /* root & vascular baseline */ } }
+class Tree extends Plant { /* woody trunk specialization */ }
+class FruitTree extends Tree { /* seasonal fruit specialization */ }`,
+        trapCode: `// Trap: Inheriting just to borrow one method when subtype
+// violates base behavioral expectations (see Square/Rectangle)`,
+        renderSvg() {
+          return `
+            <svg viewBox="0 0 640 190" class="w-full h-44 bg-[#F7F3E8] border border-[#C7BFA9] rounded-md" role="img" aria-label="Plant specializes to Tree and FruitTree">
+              <rect x="24" y="62" width="150" height="66" rx="8" fill="#FCFBF7" stroke="#162B4D" stroke-width="2" />
+              <text x="99" y="92" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="700" fill="#162B4D">Plant</text>
+              <text x="99" y="112" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#475569">Base abstraction</text>
+
+              <line x1="174" y1="95" x2="242" y2="95" stroke="#1C5D58" stroke-width="2.2" />
+              <polygon points="242,95 232,90 232,100" fill="#1C5D58" />
+              <text x="208" y="86" text-anchor="middle" font-family="JetBrains Mono" font-size="9.5" font-weight="700" fill="#1C5D58">specializes</text>
+
+              <rect x="246" y="62" width="150" height="66" rx="8" fill="#F1ECE0" stroke="#162B4D" stroke-width="2" />
+              <text x="321" y="92" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="700" fill="#162B4D">Tree</text>
+              <text x="321" y="112" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#475569">Woody subtype</text>
+
+              <line x1="396" y1="95" x2="462" y2="95" stroke="#1C5D58" stroke-width="2.2" />
+              <polygon points="462,95 452,90 452,100" fill="#1C5D58" />
+              <text x="429" y="86" text-anchor="middle" font-family="JetBrains Mono" font-size="9.5" font-weight="700" fill="#1C5D58">specializes</text>
+
+              <rect x="466" y="62" width="150" height="66" rx="8" fill="#FCFBF7" stroke="#9E3B24" stroke-width="2" />
+              <text x="541" y="92" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="700" fill="#9E3B24">FruitTree</text>
+              <text x="541" y="112" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#475569">Specialized subtype</text>
+            </svg>
+          `;
+        }
+      },
+      {
+        id: "composition",
+        group: "group-3",
+        groupLabel: "Group 3: Code Reuse & Structure",
+        num: "07",
+        name: "Composition",
+        metaphor: "Modular Building with Swappable Subsystem Blocks",
+        metaphorReason: "Assembles behavior from collaborating component objects so parts can be swapped independently.",
+        relationVerb: "contains",
+        cleanCode: `class HabitatModule {
+  constructor(
+    private power: PowerSystem,
+    private thermal: ThermalSystem
+  ) {}
+  swapPower(nextPower: PowerSystem) { this.power = nextPower; }
+}`,
+        trapCode: `// Trap: Subclassing every combination of subsystems
+class SolarThermalModule extends HabitatModule {}
+class NuclearCryoModule extends HabitatModule {}
+// Explodes as new modules are added!`,
+        renderSvg() {
+          return `
+            <svg viewBox="0 0 640 190" class="w-full h-44 bg-[#F7F3E8] border border-[#C7BFA9] rounded-md" role="img" aria-label="HabitatModule contains PowerSystem and ThermalSystem">
+              <rect x="28" y="44" width="210" height="102" rx="8" fill="#FCFBF7" stroke="#162B4D" stroke-width="2" />
+              <text x="133" y="82" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="700" fill="#162B4D">HabitatModule</text>
+              <text x="133" y="106" text-anchor="middle" font-family="Inter" font-size="11" fill="#475569">Composed host object</text>
+
+              <line x1="238" y1="74" x2="366" y2="54" stroke="#162B4D" stroke-width="2.2" />
+              <polygon points="366,54 355,51 357,60" fill="#162B4D" />
+              <text x="300" y="54" text-anchor="middle" font-family="JetBrains Mono" font-size="10" font-weight="700" fill="#162B4D">contains</text>
+
+              <line x1="238" y1="116" x2="366" y2="136" stroke="#162B4D" stroke-width="2.2" />
+              <polygon points="366,136 357,130 355,139" fill="#162B4D" />
+              <text x="300" y="144" text-anchor="middle" font-family="JetBrains Mono" font-size="10" font-weight="700" fill="#162B4D">contains</text>
+
+              <rect x="370" y="28" width="242" height="52" rx="7" fill="#F1ECE0" stroke="#1C5D58" stroke-width="2" />
+              <text x="491" y="52" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#1C5D58">PowerSystem</text>
+              <text x="491" y="70" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#475569">Swappable module</text>
+
+              <rect x="370" y="110" width="242" height="52" rx="7" fill="#F1ECE0" stroke="#9E3B24" stroke-width="2" />
+              <text x="491" y="134" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#9E3B24">ThermalSystem</text>
+              <text x="491" y="152" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#475569">Swappable module</text>
+            </svg>
+          `;
+        }
+      },
+      {
+        id: "polymorphism-overriding",
+        group: "group-4",
+        groupLabel: "Group 4: Polymorphic Dispatch",
+        num: "08",
+        name: "Polymorphism & Runtime Overriding",
+        metaphor: "Geometric Shapes Responding to draw() via Dynamic Dispatch",
+        metaphorReason: "A common operation is invoked through Shape while runtime dispatch selects Circle, Square, or Triangle.",
+        relationVerb: "dispatches to",
+        cleanCode: `for (const shape of shapes) {
+  // Runtime type determines which draw() executes
+  shape.draw();
+}`,
+        trapCode: `// Trap: Manual type-branching everywhere instead of dispatch
+for (const shape of shapes) {
+  if (shape.kind === "circle") drawCircle(shape);
+  else if (shape.kind === "square") drawSquare(shape);
+}`,
+        renderSvg() {
+          return `
+            <svg viewBox="0 0 640 190" class="w-full h-44 bg-[#F7F3E8] border border-[#C7BFA9] rounded-md" role="img" aria-label="Shape draw dispatches at runtime to Circle, Square, and Triangle">
+              <rect x="215" y="16" width="210" height="44" rx="7" fill="#162B4D" stroke="#162B4D" stroke-width="2" />
+              <text x="320" y="35" text-anchor="middle" font-family="JetBrains Mono" font-size="12.5" font-weight="700" fill="#FFFFFF">Shape.draw()</text>
+              <text x="320" y="51" text-anchor="middle" font-family="Inter" font-size="10" fill="#E2E8F0">Runtime dispatch</text>
+
+              <line x1="255" y1="60" x2="112" y2="112" stroke="#9E3B24" stroke-width="2" />
+              <polygon points="112,112 123,112 119,103" fill="#9E3B24" />
+              <line x1="320" y1="60" x2="320" y2="112" stroke="#9E3B24" stroke-width="2" />
+              <polygon points="320,112 315,102 325,102" fill="#9E3B24" />
+              <line x1="385" y1="60" x2="528" y2="112" stroke="#9E3B24" stroke-width="2" />
+              <polygon points="528,112 521,103 517,112" fill="#9E3B24" />
+
+              <rect x="28" y="114" width="168" height="58" rx="7" fill="#FCFBF7" stroke="#162B4D" stroke-width="2" />
+              <circle cx="56" cy="143" r="14" fill="#2563EB" fill-opacity="0.2" stroke="#2563EB" stroke-width="2" />
+              <text x="128" y="138" text-anchor="middle" font-family="JetBrains Mono" font-size="11.5" font-weight="700" fill="#162B4D">Circle</text>
+              <text x="128" y="156" text-anchor="middle" font-family="JetBrains Mono" font-size="10.5" fill="#1C5D58">Circle.draw()</text>
+
+              <rect x="236" y="114" width="168" height="58" rx="7" fill="#FCFBF7" stroke="#162B4D" stroke-width="2" />
+              <rect x="250" y="129" width="28" height="28" fill="#16A34A" fill-opacity="0.2" stroke="#16A34A" stroke-width="2" />
+              <text x="338" y="138" text-anchor="middle" font-family="JetBrains Mono" font-size="11.5" font-weight="700" fill="#162B4D">Square</text>
+              <text x="338" y="156" text-anchor="middle" font-family="JetBrains Mono" font-size="10.5" fill="#1C5D58">Square.draw()</text>
+
+              <rect x="444" y="114" width="168" height="58" rx="7" fill="#FCFBF7" stroke="#162B4D" stroke-width="2" />
+              <polygon points="472,129 458,157 486,157" fill="#EA580C" fill-opacity="0.2" stroke="#EA580C" stroke-width="2" />
+              <text x="546" y="138" text-anchor="middle" font-family="JetBrains Mono" font-size="11.5" font-weight="700" fill="#162B4D">Triangle</text>
+              <text x="546" y="156" text-anchor="middle" font-family="JetBrains Mono" font-size="10.5" fill="#1C5D58">Triangle.draw()</text>
+            </svg>
+          `;
+        }
+      },
+      {
+        id: "method-overloading",
+        group: "group-4",
+        groupLabel: "Group 4: Polymorphic Dispatch",
+        num: "09",
+        name: "Method Overloading (Signature Selection)",
+        metaphor: "Parameter-Signature Mapping for translate(...)",
+        metaphorReason: "Shows same-named operations with distinct parameter signatures without implying runtime type selection.",
+        relationVerb: "matches",
+        cleanCode: `translate(float x, float y) { /* 2D offset */ }
+translate(float x, float y, float z) { /* 3D offset */ }
+
+// Overload resolution uses call signature (typically compile-time
+// in statically typed languages), not runtime object type.`,
+        trapCode: `// Trap: Assuming overloading is identical to runtime overriding
+// or available with identical rules in every OOP language`,
+        renderSvg() {
+          return `
+            <svg viewBox="0 0 640 190" class="w-full h-44 bg-[#F7F3E8] border border-[#C7BFA9] rounded-md" role="img" aria-label="translate signatures matched by parameter list">
+              <rect x="24" y="26" width="210" height="48" rx="7" fill="#FCFBF7" stroke="#162B4D" stroke-width="2" />
+              <text x="129" y="55" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#162B4D">translate(x, y)</text>
+
+              <line x1="234" y1="50" x2="318" y2="50" stroke="#1C5D58" stroke-width="2.2" />
+              <polygon points="318,50 308,45 308,55" fill="#1C5D58" />
+              <text x="276" y="42" text-anchor="middle" font-family="JetBrains Mono" font-size="10" font-weight="700" fill="#1C5D58">matches</text>
+
+              <rect x="322" y="26" width="294" height="48" rx="7" fill="#F1ECE0" stroke="#1C5D58" stroke-width="2" />
+              <text x="469" y="55" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#1C5D58">translate(float x, float y)</text>
+
+              <rect x="24" y="102" width="210" height="48" rx="7" fill="#FCFBF7" stroke="#162B4D" stroke-width="2" />
+              <text x="129" y="131" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#162B4D">translate(x, y, z)</text>
+
+              <line x1="234" y1="126" x2="318" y2="126" stroke="#1C5D58" stroke-width="2.2" />
+              <polygon points="318,126 308,121 308,131" fill="#1C5D58" />
+              <text x="276" y="118" text-anchor="middle" font-family="JetBrains Mono" font-size="10" font-weight="700" fill="#1C5D58">matches</text>
+
+              <rect x="322" y="102" width="294" height="48" rx="7" fill="#F1ECE0" stroke="#9E3B24" stroke-width="2" />
+              <text x="469" y="131" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#9E3B24">translate(float x, float y, float z)</text>
+
+              <text x="320" y="174" text-anchor="middle" font-family="Inter" font-size="11" font-weight="600" fill="#475569">Overload selected from call signature, not runtime object type</text>
+            </svg>
+          `;
+        }
+      }
+    ];
+
+    const TRAPS = [
+      {
+        id: "lsp-square-rect",
+        group: "group-3",
+        title: "Liskov Substitution: Square vs. Rectangle Behavioral Contract",
+        tag: "Behavioral Subtyping",
+        summary:
+          "If callers of Rectangle may modify width and height independently, a Square subtype cannot preserve both that contract and its own invariant that width equals height. The failure is behavioral substitutability, not geometry.",
+        code: `function resizeTo10x5(rect: Rectangle) {
+  rect.setWidth(10);
+  rect.setHeight(5);
+  // Expects independent width (10) and height (5)
+}`
+      },
+      {
+        id: "fragile-base",
+        group: "group-3",
+        title: "Fragile Base Class & Deep Inheritance Hierarchies",
+        tag: "Structural Coupling",
+        summary:
+          "Deep inheritance chains couple subclasses to internal fields, override ordering, and initialization assumptions of parent classes, making base changes risky across derived types.",
+        code: `// Deep chain: Base -> Mid -> Sub -> Leaf
+// Changing protected state or call order in Base can silently break Leaf.`
+      },
+      {
+        id: "diamond-problem",
+        group: "group-3",
+        title: "Diamond Inheritance Conflicts",
+        tag: "Multiple Lineage",
+        summary:
+          "When a type inherits along two paths from a common ancestor that defines overlapping members or state, ambiguity arises unless governed by explicit language resolution or composition.",
+        code: `//     Top.step()
+//     /        \\
+//  LeftA      RightB
+//     \\        /
+//     Bottom.step() // Ambiguous unless resolved or composed`
+      },
+      {
+        id: "subclass-explosion",
+        group: "group-3",
+        title: "Combinatorial Subclass Explosion vs. Composition",
+        tag: "Scaling Tradeoff",
+        summary:
+          "Subclassing every combination of orthogonal traits (propulsion, guidance, payload) multiplies classes combinatorially; composing independent parts keeps additions linear.",
+        code: `// Subclasses: N * M * K (multiplicative growth)
+// Composition: N + M + K components assembled at runtime`
+      },
+      {
+        id: "anemic-encapsulation",
+        group: "group-1",
+        title: "Anemic Encapsulation (Unchecked Getters & Setters)",
+        tag: "Invariant Protection",
+        summary:
+          "Marking fields private while exposing public getters and setters for every field bypasses invariant enforcement and pushes business rules out to callers.",
+        code: `// Prefer domain transition methods over raw setters:
+account.withdraw(amount); // validates balance & limits inside object`
+      },
+      {
+        id: "concrete-coupling",
+        group: "group-2",
+        title: "Concrete Implementation Coupling",
+        tag: "Dependency Inversion",
+        summary:
+          "Instantiating concrete external clients directly inside high-level modules ties core policy to specific implementations and complicates isolated testing.",
+        code: `// Depend on abstraction (interface) and inject implementation:
+constructor(private readonly gateway: PaymentGateway) {}`
+      }
+    ];
+
+    let activeTab = "groups";
+    let activeGroupFilter = "all";
+    let selectedConceptId = CONCEPTS[0].id;
+    let codeModeByConcept = {};
+    let fuelKg = 1200.0;
+    const maxFuelKg = 1500.0;
+    const burnRateKgPerSec = 50.0;
+    let fuelLogs = ["[INIT] RocketStage created with fuelKg = 1200.0, capacity = 1500.0, burnRate = 50.0 kg/s"];
+
+    function setActiveTab(tabName) {
+      activeTab = tabName;
+      const tabs = ["groups", "concepts", "traps", "lab"];
+      tabs.forEach((t) => {
+        const btn = document.getElementById(`tab-${t}`);
+        const sec = document.getElementById(`view-${t}`);
+        const isCurrent = t === tabName;
+        btn.setAttribute("aria-selected", String(isCurrent));
+        btn.className = `px-4 py-2 rounded-lg border font-display-graphic text-xs sm:text-sm font-bold uppercase transition cursor-pointer ${
+          isCurrent ? "nav-pill-active" : "nav-pill-idle"
+        }`;
+        sec.classList.toggle("hidden", !isCurrent);
+      });
+      renderAll();
+    }
+
+    function setGroupFilter(filterVal) {
+      activeGroupFilter = filterVal;
+      document.querySelectorAll(".filter-btn").forEach((btn) => {
+        const match = btn.getAttribute("data-filter") === filterVal;
+        btn.className = `filter-btn px-3 py-1.5 rounded-md border text-xs font-code font-semibold cursor-pointer ${
+          match ? "nav-pill-active" : "nav-pill-idle"
+        }`;
+      });
+      const filtered = getFilteredConcepts();
+      if (filtered.length > 0 && !filtered.some((c) => c.id === selectedConceptId)) {
+        selectedConceptId = filtered[0].id;
+      }
+      renderAll();
+    }
+
+    function getFilteredConcepts() {
+      if (activeGroupFilter === "all") return CONCEPTS;
+      return CONCEPTS.filter((c) => c.group === activeGroupFilter);
+    }
+
+    function getFilteredTraps() {
+      if (activeGroupFilter === "all") return TRAPS;
+      return TRAPS.filter((t) => t.group === activeGroupFilter);
+    }
+
+    function renderInspector() {
+      const listEl = document.getElementById("inspector-concept-list");
+      const detailEl = document.getElementById("inspector-detail-card");
+      const items = getFilteredConcepts();
+
+      listEl.innerHTML = items
+        .map((c) => {
+          const isSel = c.id === selectedConceptId;
+          return `
+            <button
+              type="button"
+              data-select-concept="${c.id}"
+              class="w-full text-left p-3 rounded-lg border transition cursor-pointer ${
+                isSel
+                  ? "bg-[#162B4D] text-white border-[#162B4D]"
+                  : "bg-[#FCFBF7] text-[#1E242B] border-[#C7BFA9] hover:bg-[#F1ECE0]"
+              }"
+            >
+              <div class="flex items-center justify-between text-xs font-code ${
+                isSel ? "text-[#A7F3D0]" : "text-[#9E3B24]"
+              }">
+                <span>CONCEPT ${c.num}</span>
+                <span>verb: ${c.relationVerb}</span>
+              </div>
+              <div class="font-display-graphic text-sm font-bold uppercase mt-0.5">${c.name}</div>
+              <div class="text-xs mt-1 ${isSel ? "text-[#E2E8F0]" : "text-[#475569]"}">${c.metaphor}</div>
+            </button>
+          `;
+        })
+        .join("");
+
+      const current = items.find((c) => c.id === selectedConceptId) || items[0] || CONCEPTS[0];
+      selectedConceptId = current.id;
+      const mode = codeModeByConcept[current.id] || "clean";
+
+      detailEl.innerHTML = `
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-[#C7BFA9] pb-3">
+          <div>
+            <div class="text-xs font-code font-semibold text-[#1C5D58] uppercase">${current.groupLabel}</div>
+            <h2 class="font-display-graphic text-2xl font-bold uppercase text-[#162B4D]">
+              ${current.num}. ${current.name}
+            </h2>
+          </div>
+          <span class="font-code text-xs px-2.5 py-1 rounded bg-[#F1ECE0] border border-[#C7BFA9] text-[#9E3B24] font-semibold">
+            Arrow Semantic: ${current.relationVerb}
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 bg-[#F1ECE0] border border-[#C7BFA9] rounded-lg p-3.5">
+          <div>
+            <div class="font-display-graphic text-xs font-bold uppercase text-[#162B4D]">Domain Metaphor</div>
+            <div class="text-sm font-semibold text-[#1E242B] mt-0.5">${current.metaphor}</div>
+          </div>
+          <div>
+            <div class="font-display-graphic text-xs font-bold uppercase text-[#9E3B24]">Why This Imagery Fits</div>
+            <div class="text-xs text-[#334155] mt-0.5 leading-relaxed">${current.metaphorReason}</div>
+          </div>
+        </div>
+
+        <div class="space-y-1.5">
+          <div class="font-display-graphic text-xs font-bold uppercase text-[#162B4D]">
+            Vector Structural Diagram (Zero Embedded Prompt Text)
+          </div>
+          ${current.renderSvg()}
+        </div>
+
+        <div class="space-y-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-display-graphic text-xs font-bold uppercase text-[#162B4D]">
+              Implementation vs. Pitfall
+            </span>
+            <div class="inline-flex rounded-md border border-[#C7BFA9] overflow-hidden font-code text-xs">
+              <button
+                type="button"
+                data-code-mode="clean"
+                class="px-3 py-1 cursor-pointer ${
+                  mode === "clean" ? "bg-[#1C5D58] text-white font-semibold" : "bg-[#FCFBF7] text-[#1E242B]"
+                }"
+              >
+                Clean Pattern
+              </button>
+              <button
+                type="button"
+                data-code-mode="trap"
+                class="px-3 py-1 cursor-pointer ${
+                  mode === "trap" ? "bg-[#9E3B24] text-white font-semibold" : "bg-[#FCFBF7] text-[#1E242B]"
+                }"
+              >
+                Common Trap
+              </button>
+            </div>
+          </div>
+          <pre class="${mode === "clean" ? "code-pane" : "trap-pane"}">${
+            mode === "clean" ? current.cleanCode : current.trapCode
+          }</pre>
+        </div>
+      `;
+
+      listEl.querySelectorAll("[data-select-concept]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          selectedConceptId = btn.getAttribute("data-select-concept");
+          renderInspector();
+        });
+      });
+
+      detailEl.querySelectorAll("[data-code-mode]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          codeModeByConcept[current.id] = btn.getAttribute("data-code-mode");
+          renderInspector();
+        });
+      });
+    }
+
+    function renderConceptsGrid() {
+      const grid = document.getElementById("concepts-grid");
+      const badge = document.getElementById("concept-count-badge");
+      const items = getFilteredConcepts();
+      badge.textContent = `Showing ${items.length} of ${CONCEPTS.length} concepts`;
+
+      grid.innerHTML = items
+        .map((c) => {
+          const mode = codeModeByConcept[c.id] || "clean";
+          return `
+            <article class="notebook-card p-5 space-y-3.5">
+              <div class="flex items-center justify-between gap-2 border-b border-[#C7BFA9] pb-2">
+                <div>
+                  <span class="text-xs font-code text-[#1C5D58] uppercase">${c.groupLabel}</span>
+                  <h3 class="font-display-graphic text-lg font-bold uppercase text-[#162B4D]">
+                    ${c.num}. ${c.name}
+                  </h3>
+                </div>
+                <span class="font-code text-xs px-2 py-0.5 rounded bg-[#F1ECE0] border border-[#C7BFA9] text-[#9E3B24]">
+                  ${c.relationVerb}
+                </span>
+              </div>
+              <p class="text-xs text-[#334155]"><strong>Metaphor:</strong> ${c.metaphor} — ${c.metaphorReason}</p>
+              ${c.renderSvg()}
+              <div class="flex items-center justify-between">
+                <span class="font-code text-xs text-[#475569]">${mode === "clean" ? "CLEAN CODE" : "TRAP CODE"}</span>
+                <button
+                  type="button"
+                  data-grid-toggle="${c.id}"
+                  class="px-2.5 py-1 rounded border border-[#C7BFA9] bg-[#F1ECE0] hover:bg-[#E6DFC8] font-code text-xs font-semibold text-[#162B4D] cursor-pointer"
+                >
+                  Toggle ${mode === "clean" ? "Trap" : "Clean"}
+                </button>
+              </div>
+              <pre class="${mode === "clean" ? "code-pane" : "trap-pane"}">${
+                mode === "clean" ? c.cleanCode : c.trapCode
+              }</pre>
+            </article>
+          `;
+        })
+        .join("");
+
+      grid.querySelectorAll("[data-grid-toggle]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.getAttribute("data-grid-toggle");
+          codeModeByConcept[id] = (codeModeByConcept[id] || "clean") === "clean" ? "trap" : "clean";
+          renderConceptsGrid();
+        });
+      });
+    }
+
+    function renderTraps() {
+      const list = document.getElementById("traps-list");
+      const items = getFilteredTraps();
+      list.innerHTML = items
+        .map(
+          (t) => `
+          <article class="notebook-card p-5 space-y-3">
+            <div class="flex items-start justify-between gap-2">
+              <h3 class="font-display-graphic text-base sm:text-lg font-bold uppercase text-[#9E3B24]">
+                ${t.title}
+              </h3>
+              <span class="shrink-0 font-code text-xs px-2 py-0.5 rounded bg-[#F1ECE0] border border-[#C7BFA9] text-[#162B4D]">
+                ${t.tag}
+              </span>
+            </div>
+            <p class="text-sm text-[#1E242B] leading-relaxed">${t.summary}</p>
+            <pre class="code-pane">${t.code}</pre>
+          </article>
+        `
+        )
+        .join("");
+    }
+
+    function updateFuelUI(message, ok = true) {
+      document.getElementById("sim-fuel-val").textContent = `${fuelKg.toFixed(1)} kg`;
+      const fb = document.getElementById("sim-fuel-feedback");
+      fb.className = `status-banner text-sm ${
+        ok ? "bg-[#ECFDF5] border-[#1C5D58] text-[#064E3B]" : "bg-[#FEF2F2] border-[#9E3B24] text-[#7F1D1D]"
+      }`;
+      fb.innerHTML = message;
+      document.getElementById("sim-fuel-log").textContent = fuelLogs.join("\n");
+    }
+
+    function computeScaling() {
+      const a = Math.max(1, parseInt(document.getElementById("axis-a").value, 10) || 1);
+      const b = Math.max(1, parseInt(document.getElementById("axis-b").value, 10) || 1);
+      const c = Math.max(1, parseInt(document.getElementById("axis-c").value, 10) || 1);
+      const subclassTotal = a * b * c;
+      const composedComponents = a + b + c;
+      const diff = subclassTotal - composedComponents;
+
+      document.getElementById("sim-comp-feedback").innerHTML =
+        `For <code>(${a} × ${b} × ${c})</code>, naive subclassing requires <strong>${subclassTotal}</strong> classes vs. <strong>${composedComponents}</strong> composable components (delta: <strong>${diff}</strong>).`;
+
+      document.getElementById("sim-comp-output").textContent = [
+        `Axis A variants: ${a}`,
+        `Axis B variants: ${b}`,
+        `Axis C variants: ${c}`,
+        `----------------------------------------`,
+        `Subclassing (A * B * C) = ${a} * ${b} * ${c} = ${subclassTotal} classes`,
+        `Composition (A + B + C) = ${a} + ${b} + ${c} = ${composedComponents} component classes`,
+        `Avoided extra classes   = ${diff}`
+      ].join("\n");
+    }
+
+    function renderAll() {
+      renderInspector();
+      renderConceptsGrid();
+      renderTraps();
+      updateFuelUI(
+        `Current state: <code>fuelKg = ${fuelKg.toFixed(1)}</code> within valid bounds <code>[0.0, ${maxFuelKg.toFixed(1)}]</code>.`,
+        true
+      );
+      computeScaling();
+    }
+
+    document.getElementById("tab-groups").addEventListener("click", () => setActiveTab("groups"));
+    document.getElementById("tab-concepts").addEventListener("click", () => setActiveTab("concepts"));
+    document.getElementById("tab-traps").addEventListener("click", () => setActiveTab("traps"));
+    document.getElementById("tab-lab").addEventListener("click", () => setActiveTab("lab"));
+
+    document.querySelectorAll(".filter-btn").forEach((btn) => {
+      btn.addEventListener("click", () => setGroupFilter(btn.getAttribute("data-filter")));
+    });
+
+    document.querySelectorAll("[data-group-jump]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const grp = btn.getAttribute("data-group-jump");
+        setActiveTab("groups");
+        setGroupFilter(grp);
+      });
+    });
+
+    document.querySelectorAll(".lab-subtab").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const target = btn.getAttribute("data-lab-tab");
+        document.querySelectorAll(".lab-subtab").forEach((b) => {
+          b.className = `lab-subtab px-3 py-1.5 rounded-md border text-xs font-code font-semibold cursor-pointer ${
+            b === btn ? "nav-pill-active" : "nav-pill-idle"
+          }`;
+        });
+        document.querySelectorAll(".lab-panel").forEach((panel) => {
+          panel.classList.toggle("hidden", panel.id !== `lab-panel-${target}`);
+        });
+      });
+    });
+
+    document.getElementById("btn-sim-burn").addEventListener("click", () => {
+      const dt = parseFloat(document.getElementById("sim-seconds-input").value);
+      if (Number.isNaN(dt) || dt < 0) {
+        fuelLogs.push(`[REJECTED] burn(${dt}) -> seconds must be >= 0`);
+        updateFuelUI("Rejected: <code>seconds</code> must be non-negative.", false);
+        return;
+      }
+      const needed = dt * burnRateKgPerSec;
+      if (needed > fuelKg) {
+        fuelLogs.push(`[REJECTED] burn(${dt}s) needs ${needed.toFixed(1)} kg, only ${fuelKg.toFixed(1)} kg available`);
+        updateFuelUI(
+          `Invariant protected: <code>burn(${dt})</code> needs <code>${needed.toFixed(1)} kg</code>, exceeding <code>${fuelKg.toFixed(1)} kg</code>.`,
+          false
+        );
+        return;
+      }
+      fuelKg = Number((fuelKg - needed).toFixed(2));
+      fuelLogs.push(`[OK] burn(${dt}s) consumed ${needed.toFixed(1)} kg -> fuelKg = ${fuelKg.toFixed(1)} kg`);
+      updateFuelUI(`Burned <code>${needed.toFixed(1)} kg</code>; remaining propellant is <code>${fuelKg.toFixed(1)} kg</code>.`, true);
+    });
+
+    document.getElementById("btn-sim-refuel").addEventListener("click", () => {
+      const amt = parseFloat(document.getElementById("sim-seconds-input").value);
+      if (Number.isNaN(amt) || amt <= 0) {
+        fuelLogs.push(`[REJECTED] refuel(${amt}) -> amount must be > 0`);
+        updateFuelUI("Rejected: refuel amount must be positive.", false);
+        return;
+      }
+      if (fuelKg + amt > maxFuelKg) {
+        fuelLogs.push(`[REJECTED] refuel(${amt} kg) would exceed capacity ${maxFuelKg.toFixed(1)} kg`);
+        updateFuelUI(
+          `Invariant protected: <code>${fuelKg.toFixed(1)} + ${amt.toFixed(1)}</code> exceeds capacity <code>${maxFuelKg.toFixed(1)} kg</code>.`,
+          false
+        );
+        return;
+      }
+      fuelKg = Number((fuelKg + amt).toFixed(2));
+      fuelLogs.push(`[OK] refuel(${amt} kg) -> fuelKg = ${fuelKg.toFixed(1)} kg`);
+      updateFuelUI(`Refueled <code>${amt.toFixed(1)} kg</code>; current propellant is <code>${fuelKg.toFixed(1)} kg</code>.`, true);
+    });
+
+    document.getElementById("btn-sim-raw-write").addEventListener("click", () => {
+      fuelLogs.push("[BLOCKED] Attempted direct assignment fuelKg = -200.0 -> denied by encapsulation boundary");
+      updateFuelUI(
+        "Direct write blocked: external code cannot assign <code>fuelKg = -200.0</code> directly.",
+        false
+      );
+    });
+
+    document.getElementById("btn-sim-reset-fuel").addEventListener("click", () => {
+      fuelKg = 1200.0;
+      fuelLogs.push("[RESET] fuelKg restored to 1200.0 kg");
+      updateFuelUI("Reset to <code>1200.0 kg</code>.", true);
+    });
+
+    document.getElementById("btn-lsp-rect").addEventListener("click", () => {
+      const w = 10, h = 5;
+      document.getElementById("sim-lsp-feedback").className =
+        "status-banner bg-[#ECFDF5] border-[#1C5D58] text-[#064E3B] text-sm";
+      document.getElementById("sim-lsp-feedback").innerHTML =
+        `<code>Rectangle</code> honors independent width (<code>${w}</code>) and height (<code>${h}</code>) updates.`;
+      document.getElementById("sim-lsp-trace").textContent = [
+        "rect.setWidth(10);",
+        "rect.setHeight(5);",
+        `getWidth()  -> ${w}`,
+        `getHeight() -> ${h}`,
+        `area()      -> ${w * h}`,
+        "Contract check: PASS (width and height updated independently)"
+      ].join("\n");
+    });
+
+    document.getElementById("btn-lsp-square-trap").addEventListener("click", () => {
+      document.getElementById("sim-lsp-feedback").className =
+        "status-banner bg-[#FEF2F2] border-[#9E3B24] text-[#7F1D1D] text-sm";
+      document.getElementById("sim-lsp-feedback").innerHTML =
+        "LSP Trap: forcing <code>width == height</code> breaks a caller expecting independent <code>width=10</code> and <code>height=5</code> on a <code>Rectangle</code>.";
+      document.getElementById("sim-lsp-trace").textContent = [
+        "squareAsRect.setWidth(10);  // sets width=10, height=10",
+        "squareAsRect.setHeight(5); // forces height=5 AND width=5!",
+        "getWidth()  -> 5 (expected 10 for mutable Rectangle)",
+        "getHeight() -> 5",
+        "area()      -> 25 (10 * 5 expected = 50)",
+        "Contract check: FAIL (behavioral substitutability violated)"
+      ].join("\n");
+    });
+
+    document.getElementById("btn-lsp-immutable").addEventListener("click", () => {
+      document.getElementById("sim-lsp-feedback").className =
+        "status-banner bg-[#F1ECE0] border-[#162B4D] text-[#1E242B] text-sm";
+      document.getElementById("sim-lsp-feedback").innerHTML =
+        "Design Fix: Separate mutable width/height contracts from immutable <code>Shape</code> area/perimeter queries.";
+      document.getElementById("sim-lsp-trace").textContent = [
+        "interface Shape { area(): number; perimeter(): number; }",
+        "Circle(r=1.5).area()      -> " + (Math.PI * 1.5 * 1.5).toFixed(4),
+        "Square(s=3.0).area()      -> " + (3.0 * 3.0).toFixed(4),
+        "Triangle(b=4,h=3.5).area()-> " + (0.5 * 4 * 3.5).toFixed(4),
+        "Contract check: PASS (read-only shape contract preserved)"
+      ].join("\n");
+    });
+
+    document.querySelectorAll(".draw-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const kind = btn.getAttribute("data-draw-type");
+        const detail =
+          kind === "Circle"
+            ? `Circle.draw() executed via Shape reference (r=1.5, area=${(Math.PI * 2.25).toFixed(4)})`
+            : kind === "Square"
+            ? "Square.draw() executed via Shape reference (s=3, area=9, perimeter=12)"
+            : "Triangle.draw() executed via Shape reference (b=4, h=3.5, area=7)";
+        document.getElementById("sim-dispatch-feedback").className =
+          "status-banner bg-[#ECFDF5] border-[#1C5D58] text-[#064E3B] text-sm";
+        document.getElementById("sim-dispatch-feedback").innerHTML =
+          `<strong>Runtime Subtype Dispatch:</strong> Dynamic dispatch selected <code>${kind}.draw()</code> at runtime.`;
+        document.getElementById("sim-dispatch-output").textContent = [
+          "Caller invokes: shape.draw()",
+          "Dispatch type : Runtime subtype polymorphism (dynamic dispatch)",
+          `Resolved to   : ${detail}`
+        ].join("\n");
+      });
+    });
+
+    document.querySelectorAll(".overload-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const mode = btn.getAttribute("data-overload");
+        const sig =
+          mode === "2d"
+            ? "translate(float x, float y) selected for 2 float arguments"
+            : "translate(float x, float y, float z) selected for 3 float arguments";
+        document.getElementById("sim-dispatch-feedback").className =
+          "status-banner bg-[#F1ECE0] border-[#9E3B24] text-[#1E242B] text-sm";
+        document.getElementById("sim-dispatch-feedback").innerHTML =
+          "<strong>Method Overloading:</strong> Overload selected from call signature (arity/types), not runtime object type.";
+        document.getElementById("sim-dispatch-output").textContent = [
+          mode === "2d" ? "Call site     : translate(2.5f, 4.0f)" : "Call site     : translate(2.5f, 4.0f, -1.5f)",
+          "Basis         : Parameter signature matching (typically compile-time in static languages)",
+          `Matched sig   : ${sig}`
+        ].join("\n");
+      });
+    });
+
+    document.getElementById("btn-calc-scaling").addEventListener("click", computeScaling);
+
+    renderAll();
+  </script>
+</body>
+</html>

@@ -421,117 +421,122 @@ GROUPS: tuple[GroupSpec, ...] = (
 CONCEPTS: tuple[ConceptSpec, ...] = (
     ConceptSpec(
         "class", "Class", "lifecycle",
-        "A class is a blueprint: it declares the state an object will hold and "
-        "the operations allowed on that state. It is a type definition, not a "
-        "running thing.",
-        "Class FuelTank instantiates Object tank_a and tank_b; each object gets "
-        "its own state.",
-        "class FuelTank:\n    capacity_kg: float\n    fuel_kg: float\n"
-        "    def burn(self, dt: float) -> None: ...\n"
-        "    def refuel(self, kg: float) -> None: ...",
-        "Trap: treating a class as a bag of static helpers with shared mutable "
-        "globals. Every instance then shares one state and invariants leak.",
+        "A Solution class defines the shared state and operations for a chemical "
+        "solution model. Its concentration is derived from solute amount and "
+        "volume; it is not the physical solution itself.",
+        "Solution contains a ChemicalSpecies and stores amount (mol), volume (L), "
+        "and temperature (K); concentration is amount / volume.",
+        "class Solution:\n"
+        "    def __init__(self, solute, concentration_mol_l, volume_l, temperature_k): ...\n"
+        "    def dilute(self, final_volume_l): ...\n"
+        "    def add_solute(self, amount_mol): ...",
+        "Trap: using an object-shaped label without scientific state or behavior. "
+        "A software model is not the physical system.",
     ),
     ConceptSpec(
         "object", "Object", "lifecycle",
-        "An object encapsulates state and behavior behind a defined interaction "
-        "boundary. It maintains its invariants only because every state change "
-        "goes through controlled operations - the language itself guarantees "
-        "nothing about domain rules.",
-        "Caller sends burn(dt); the object checks the invariant, then updates "
-        "fuel_kg.",
-        "tank = FuelTank(capacity_kg=1000, fuel_kg=600)\n"
-        "tank.burn(4)      # 600 - 25*4 = 500 kg\n"
-        "tank.refuel(200)  # 700 kg",
-        "Trap: tank.fuel_kg = -50 from outside. If the field is reachable, the "
-        "invariant 0 <= fuel <= capacity is a hope, not a guarantee.",
+        "Each Solution object has independent amount, volume, and temperature "
+        "state even when two solutions reference the same ChemicalSpecies value.",
+        "Diluting Solution A changes its concentration while a separate Solution "
+        "B containing the same solute remains unchanged.",
+        "a = Solution(NACL, 0.100, 0.500, 298.15)\n"
+        "b = Solution(NACL, 0.250, 0.200, 298.15)\n"
+        "a.dilute(1.000)  # A: 0.050 mol/L; B unchanged",
+        "Trap: confusing a shared species definition with shared mutable solution "
+        "state; separate solution objects must remain independent.",
     ),
     ConceptSpec(
         "constructor", "Constructor / Initialization", "lifecycle",
         "Initialization establishes the initial state, binds required "
-        "dependencies, and validates invariants before the object is usable. "
-        "Languages differ: Java/C# constructors, C++ member-initializer lists, "
-        "Python __init__ (after __new__), Rust/Go factory functions.",
-        "Constructor checks 0 <= fuel <= capacity and binds the Engine "
-        "dependency before returning the object.",
-        "def __init__(self, engine: Engine, capacity_kg: float, fuel_kg: float):\n"
-        "    if not 0 <= fuel_kg <= capacity_kg:\n"
-        "        raise ValueError('fuel outside bounds')\n"
-        "    self._engine = engine",
-        "Trap: a no-arg constructor followed by init() or setters. Between the "
-        "two calls the object exists in an invalid, half-built state.",
+        "dependencies, and validates invariants before the Solution can be "
+        "used. Languages differ in constructor and initialization semantics.",
+        "C >= 0 mol/L; V > 0 L; T > 0 K. These are software model constraints, "
+        "not physical laws enforced by OOP.",
+        "solution = Solution(NACL, concentration_mol_l=0.100,\n"
+        "                    volume_l=0.500, temperature_k=298.15)",
+        "Trap: allowing a partially initialized object or claiming the "
+        "constructor's validation enforces a law of nature.",
     ),
     ConceptSpec(
         "encapsulation", "Encapsulation", "lifecycle",
         "Encapsulation is access control in service of invariant protection: "
-        "internal fields are hidden so that only the object's own operations "
-        "can change them.",
-        "A boundary surrounds _fuel_kg; only burn() and refuel() cross it.",
-        "class FuelTank:\n    def __init__(self, ...): self._fuel_kg = ...\n"
-        "    @property\n    def fuel_kg(self) -> float: return self._fuel_kg",
-        "Trap: a private field with a public setter for every field. Access "
-        "is technically controlled, but nothing is protected.",
+        "the Solution keeps amount and volume behind domain operations such "
+        "as dilute(), add_solute(), and remove_volume().",
+        "A dilution call validates final volume, conserves amount, updates "
+        "volume, and derives the new concentration.",
+        "solution.dilute(final_volume_l=1.000)\n"
+        "# C2 = C1 V1 / V2 = 0.050 mol/L",
+        "Trap: independently setting concentration while amount and volume "
+        "remain unchanged creates contradictory model state.",
     ),
     ConceptSpec(
         "abstraction", "Abstraction", "contracts",
-        "Abstraction exposes the essential capabilities a caller needs while "
-        "hiding implementation details. It is about what is visible to the "
-        "caller, distinct from encapsulation's job of guarding state.",
-        "Navigator delegates to Propulsion.thrust(); the burn-rate maths stay "
-        "hidden.",
-        "class Propulsion(ABC):\n    @abstractmethod\n"
-        "    def thrust(self, dt: float) -> float: ...",
-        "Trap: leaky abstraction - thrust() that requires callers to pre-heat "
-        "the catalyst bed first. Hidden details have escaped into the contract.",
+        "Abstraction exposes the essential capability and hides implementation "
+        "details: AnalysisPipeline needs Detector.measure(sample), not "
+        "instrument-specific calibration fields or equations.",
+        "The pipeline can analyze a sample using Beer-Lambert absorbance, "
+        "linear fluorescence, or calibrated electrochemical response.",
+        "class AnalysisPipeline:\n"
+        "    def __init__(self, detector: Detector): self._detector = detector\n"
+        "    def analyze(self, sample): return self._detector.measure(sample)",
+        "Trap: a leaky contract that forces the pipeline to inspect detector "
+        "types or apply instrument-specific calibration itself.",
     ),
     ConceptSpec(
         "interface", "Interface", "contracts",
-        "An interface is an explicit contract of operations with no committed "
-        "implementation. Multiple classes implement it, and clients depend on "
-        "the contract instead of a concrete class.",
-        "ChemicalEngine and IonThruster implement Propulsion; Navigator depends "
-        "only on Propulsion.",
-        "interface Propulsion { double thrust(double dt); }\n"
-        "class IonThruster implements Propulsion { ... }",
-        "Trap: a 20-method 'god interface'. Implementers stub half the methods "
-        "and throw UnsupportedOperationException at runtime.",
+        "Detector.measure(sample) is a behavioral contract returning a "
+        "Measurement with a finite value, units, implementation, and equation. "
+        "The pipeline depends on this contract, not one instrument.",
+        "AbsorbanceDetector, FluorescenceDetector, and ElectrochemicalSensor "
+        "implement the measurement operation with distinct simplified models.",
+        "interface Detector { Measurement measure(AnalyticalSample sample); }\n"
+        "final class AnalysisPipeline {\n"
+        "  private final Detector detector;\n"
+        "  Measurement analyze(AnalyticalSample s) { return detector.measure(s); }\n"
+        "}",
+        "Trap: sharing a method name without honoring its output, units, and "
+        "failure contract does not make implementations interchangeable.",
     ),
     ConceptSpec(
         "inheritance", "Inheritance", "reuse",
-        "Inheritance models specialization: a subtype must be behaviorally "
-        "substitutable for its base type wherever the base is expected "
-        "(Liskov). Code reuse is a side effect, not the justification.",
-        "Square specializes Rectangle - and fails the substitutability check.",
-        "class Rectangle:\n    def set_width(self, w): ...\n"
-        "    def set_height(self, h): ...\nclass Square(Rectangle): ...",
-        "Trap: inheriting only to reuse code. Square narrows Rectangle's "
-        "contract: set_width(5); set_height(4) gives area 16, not 20.",
+        "A biochemical rate subtype must be behaviorally substitutable wherever "
+        "EnzymeRateModel is expected. Biological relatedness alone does not "
+        "prove software substitutability.",
+        "MichaelisMentenEnzyme and CompetitiveInhibitionEnzyme both return "
+        "finite, non-negative rates bounded by Vmax and zero at [S] = 0.",
+        "class EnzymeRateModel(ABC):\n"
+        "    @abstractmethod\n"
+        "    def rate(self, substrate_mol_l: float) -> float: ...\n"
+        "rate = enzyme.rate(substrate_mol_l)  # test subtype contract",
+        "Trap: assuming a biological subtype is valid because of its taxonomy. "
+        "A negative rate or a violated base promise fails substitutability.",
     ),
     ConceptSpec(
         "composition", "Composition", "reuse",
-        "Composition is has-a: an object assembles behavior from collaborating "
-        "components it contains and delegates to. Components can be swapped "
-        "without touching a class hierarchy.",
-        "Spacecraft contains Engine, Guidance and Comms and delegates to each.",
-        "class Spacecraft:\n    def __init__(self, engine: Propulsion,\n"
-        "                 guidance: Guidance, comms: Comms): ...",
-        "Trap: composing then exposing every component publicly "
-        "(craft.engine.tank.valve.open()) - a Law of Demeter violation.",
+        "A Reactor has kinetic and mixing components and delegates to both. "
+        "Swapping either model changes the calculation without adding a host "
+        "subclass for each combination.",
+        "First-order CSTR and plug-flow models predict distinct outlet "
+        "concentrations for the same feed, k, and residence time.",
+        "reactor = Reactor(ArrheniusFirstOrderKinetics(A, Ea), CSTRMixing())\n"
+        "result = reactor.outlet(Cin_mol_l, tau_s, temperature_k)",
+        "Trap: subclassing Reactor for every pair of kinetic and mixing models "
+        "duplicates configuration instead of composing behavior.",
     ),
     ConceptSpec(
         "polymorphism", "Polymorphism", "dispatch",
-        "Subtype polymorphism selects an overriding method from the receiver's "
-        "runtime type (dynamic dispatch). Overloading is different: the "
-        "compiler selects among signatures from the call's argument types. "
-        "Python and JavaScript have no signature overloading.",
-        "Figure 4.1: Shape.draw() dispatches to Circle, Square or Triangle. "
-        "Figure 4.2: a call matches translate(x, y) or translate(x, y, z).",
-        "for s in shapes:\n    s.draw()            # runtime dispatch\n"
-        "translate(1.0, 2.0)      # matches (float, float)\n"
-        "translate(1.0, 2.0, 3.0) # matches (float, float, float)",
-        "Trap: expecting an overload to dispatch on runtime type. With "
-        "Shape s = new Circle(), describe(s) picks describe(Shape) even though "
-        "s.draw() runs Circle.draw().",
+        "Calling model.rate(state) dispatches by the receiver's runtime type "
+        "to the kinetic model override. "
+        "Overriding is distinct from overloading: Java resolves overloads at "
+        "compile time; Python has no native signature-based overload dispatch; "
+        "TypeScript overload signatures describe one JavaScript implementation.",
+        "Zero-, first-, and second-order laws and the simplified "
+        "Michaelis-Menten model predict different rates from substrate state.",
+        "model: ReactionRateModel = FirstOrderReaction(k1_s_inv=0.10)\n"
+        "rate = model.rate(ReactionState(substrate_mol_l=0.050))\n"
+        "# runtime override returns 0.005 mol/(L s)",
+        "Trap: treating override dispatch as overload resolution, or assuming "
+        "a method name alone determines which scientific rate law applies.",
     ),
 )
 

@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import math
 import re
+import shutil
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -272,6 +274,12 @@ def test_pdf_is_valid_and_non_empty(built) -> None:
     assert built.pages >= 8
 
 
+def test_pdf_includes_materials_worksheet(built) -> None:
+    text = " ".join(built.texts)
+    for phrase in ("Materials Lab", "Fine mesh", "sample.glyph()", "Print / Save session as PDF"):
+        assert phrase in text
+
+
 def test_pdf_typography_rules(built) -> None:
     assert built.fonts_used <= ALLOWED_FONTS
     assert built.min_font_size >= MIN_FONT_SIZE
@@ -332,3 +340,44 @@ def test_web_workbench_mirrors_catalog() -> None:
     assert "TODO" not in html
     assert not re.search(r"(src|href)\s*=\s*[\"']https?://", html)
     assert "@import" not in html and "url(http" not in html
+
+
+def test_materials_experiment_logic() -> None:
+    node = shutil.which("node")
+    if node is None:
+        pytest.skip("Node.js is required to exercise the inline browser model")
+    html = WEB_INDEX.read_text(encoding="utf-8")
+    model = html.split('<script id="materials-model">', 1)[1].split("</script>", 1)[0]
+    checks = """
+    const assert = require("node:assert/strict");
+    const run = (key, changes = {}) => runMaterialExperiment(key, {
+      material: "salt", amount: "12", delta: "-4", filter: "fine", instrument: "scale",
+      ...changes,
+    });
+    const amounts = result => result.views.map(view => view.amount);
+    assert.deepEqual(Object.keys(MATERIAL_LESSONS).sort(), ["abstraction", "class", "composition",
+      "constructor", "encapsulation", "inheritance", "interface", "object", "polymorphism"]);
+    assert.match(run("class").message, /A === B is false/);
+    assert.deepEqual(amounts(run("object")), [8, 12]);
+    for (const amount of ["", "-1", "25", "1.5"]) {
+      assert.equal(run("constructor", { amount }).ok, false);
+    }
+    assert.equal(run("constructor", { amount: "24" }).ok, true);
+    const rejected = run("encapsulation", { delta: "-13" });
+    assert.equal(rejected.ok, false);
+    assert.deepEqual(amounts(rejected), [12, 12]);
+    assert.deepEqual(amounts(run("abstraction")), [12, 0]);
+    assert.match(run("interface", { instrument: "counter" }).message, /12 particle unit/);
+    assert.match(run("interface").message, /24 demo mass unit/);
+    assert.deepEqual(amounts(run("composition", { material: "dye" })), [12, 12]);
+    assert.match(run("composition", { material: "quartz", filter: "open" }).message, /36 demo mass unit/);
+    for (const material of ["salt", "quartz", "dye"]) {
+      assert.deepEqual(amounts(run("inheritance", { material })), [12, 11]);
+      assert.equal(run("inheritance", { material, amount: "0" }).ok, true);
+    }
+    assert.equal(run("polymorphism", { material: "dye" }).right, "DyeSample.glyph()");
+    assert.equal(run("polymorphism", { material: "quartz" }).views[0].glyph, "grain");
+    """
+    result = subprocess.run([node, "-"], input=model + checks, text=True,
+                            capture_output=True, timeout=10)
+    assert result.returncode == 0, result.stderr

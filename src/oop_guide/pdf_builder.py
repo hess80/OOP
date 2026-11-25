@@ -705,6 +705,40 @@ def _checks_page(doc: GuideDocument) -> None:
     doc.table(("Call", "Selected by", "Target"), rows["dispatch"], (195, 135, 200))
 
 
+def _materials_page(doc: GuideDocument) -> None:
+    doc.start_page("Practice worksheet", "Materials Lab",
+                   "Run the experiments in the web workbench and save your own guide")
+    doc.y = doc.para(MARGIN, doc.y, CONTENT_W,
+                     "Open web/index.html and choose Materials Lab. Follow the four groups "
+                     "below, using salt crystals, quartz grains, and dye particles. The "
+                     "amounts, masses, and filter rules are illustrative, not measurements.") - 12
+    exercises = (
+        ("1. Object Lifecycle & State",
+         "Create two salt samples at 12 units. Apply a change of -4 to A: A becomes 8 "
+         "and B stays at 12. Try starting at 25 or subtracting 13 from a fresh 12-unit "
+         "sample. The constructor rejects the first; the guarded operation rejects the second."),
+        ("2. Contracts & Abstraction",
+         "Keep inspect(sample) fixed and compare Open channel with Fine mesh. Then swap "
+         "the Particle counter for the Sample scale. Both implement the reading contract, "
+         "but report different quantities."),
+        ("3. Code Reuse & Structure",
+         "Check each material subtype against the same Sample contract at 0 and 12 units. "
+         "Then compare salt and dye with Fine mesh and Sample scale: the mesh passes dye "
+         "but blocks salt. Swap the filter without creating a new Sample subclass."),
+        ("4. Polymorphic Dispatch",
+         "Call sample.glyph() on each material. The runtime class selects a crystal, "
+         "grain, or dot. Contrast this with the two translate signatures in Figure 4.2."),
+    )
+    for heading, instructions in exercises:
+        doc.heading(heading)
+        doc.y = doc.para(MARGIN, doc.y, CONTENT_W, instructions) - 12
+    doc.heading("Take your guide with you")
+    doc.y = doc.para(MARGIN, doc.y, CONTENT_W,
+                     "In the Materials Lab, choose Print / Save session as PDF and select "
+                     "the PDF destination in your browser. The guide records each run's "
+                     "parameters, result, and diagrams, including rejected runs.")
+
+
 def _case_pages(doc: GuideDocument) -> None:
     doc.start_page("Production failures", "Case studies",
                    "Behavioral failures and their structural fixes")
@@ -742,6 +776,7 @@ def build_pdf(output: Path | str = DEFAULT_OUTPUT) -> BuildReport:
     _cover(doc)
     _group_pages(doc)
     _checks_page(doc)
+    _materials_page(doc)
     _case_pages(doc)
     return doc.save()
 

@@ -1,10 +1,10 @@
 # OOP Visual Study Guide & Architecture Workbench
 
-A runnable study guide for object-oriented design. It has two outputs, both built from one deterministic Python model (`src/oop_guide/models.py`):
+A runnable study guide for object-oriented design. The PDF uses the deterministic Python model in `src/oop_guide/models.py`. The offline web app mirrors its core lessons and adds an interactive Materials Lab:
 
 | Output | What it is | How to open |
 | --- | --- | --- |
-| `web/index.html` | Self-contained interactive workbench: filters, concept cards with *Narrative* / *Conceptual Diagram* / *Code vs. Trap* toggles, case studies, and the **Break It / Invariant Lab** | Open the file directly in any modern browser (no server or network needed) |
+| `web/index.html` | Self-contained interactive workbench with concept cards, case studies, the **Break It / Invariant Lab**, and a **Materials Lab** with session export | Open the file directly in any modern browser (no server or network needed) |
 | `dist/oop_visual_study_guide.pdf` | Deterministic multi-page PDF on warm graph paper, with vector diagrams and deterministic check tables | Open in any PDF viewer; rebuild with the command below |
 
 ---
@@ -153,4 +153,19 @@ python -m http.server 8000 -d web   # then visit http://localhost:8000/
   - Animate the `for s in shapes` loop.
   - Resolve `translate(...)` overloads by argument count.
 
-The web lab mirrors `oop_guide.models` exactly. `test_web_workbench_mirrors_catalog` keeps the two in sync.
+The original Invariant Lab follows the examples in `oop_guide.models`. `test_web_workbench_mirrors_catalog` checks catalog names, arrow labels, and palette.
+
+### Materials Lab and your session guide
+
+Choose **Materials Lab**, or open an experiment from a concept card. Each of the nine lessons runs code and shows both the OOP relationship and the resulting particle chambers.
+
+1. **Lifecycle & State:** create distinct sample instances, try out-of-range starting amounts, and change one sample through a guarded operation.
+2. **Contracts & Abstraction:** run `inspect(sample)` without managing its internals, then swap instruments that implement the same reading contract.
+3. **Reuse & Structure:** check each material subtype against the base `Sample` contract, then mix a material, filter, and instrument without creating new subclasses.
+4. **Polymorphic Dispatch:** call `glyph()` on different material types. Compare the runtime-selected silhouettes with signature-based `translate(...)` overloading in the Invariant Lab.
+
+Try **Composition** with 12 units, **Fine mesh**, and **Sample scale**. Switching from salt crystals to dye particles changes the number of units that pass from 0 to 12. The rules and units are illustrative. Each run starts with fresh samples; the session notebook keeps the results so you can compare runs.
+
+Select **Print / Save session as PDF** and choose your browser's PDF destination to export the notebook. The export includes parameters, diagrams, and accepted or rejected results for every Materials Lab run. The notebook stays in the current tab and is not saved across reloads. The checked-in PDF remains a separate, reproducible reference and includes a Materials Lab worksheet.
+
+The notebook layout, group inspector, and dark code/trap panels adapt the [uploaded HTML template](https://github.com/hess80/OOP/blob/0fba08790346b024264af66f431db324d39dc6ab/oop_visual_study_guide_architecture_workbench.html). The [uploaded PDF](https://github.com/hess80/OOP/blob/0fba08790346b024264af66f431db324d39dc6ab/OOP%20Visual%20Assets%20%26%20Study%20Guide.pdf) inspired the lesson-specific visual metaphors: guarded chambers, instrument contracts, modular parts, and dispatch silhouettes. The workbench redraws these as SVG rather than depending on external images or fonts.

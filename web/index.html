@@ -11,8 +11,10 @@
     --navy: #162B4D;
     --rust: #9E3B24;
     --teal: #1C5D58;
-    --card: #FFFDF7;
-    --display: "Futura", "Avenir Next", "Century Gothic", "Trebuchet MS", "Segoe UI", Helvetica, Arial, sans-serif;
+    --card: #FCFBF7;
+    --panel: #F1ECE0;
+    --border: #C7BFA9;
+    --display: "Chakra Petch", "Trebuchet MS", "Segoe UI", Helvetica, Arial, sans-serif;
     --sans: "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif;
     --mono: "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", "Courier New", monospace;
   }
@@ -40,7 +42,10 @@
   code, pre, .mono { font-family: var(--mono); font-size: 13px; }
   .wrap { max-width: 1220px; margin: 0 auto; padding: 0 24px; }
 
-  header.masthead { padding: 36px 0 18px; border-bottom: 3px solid var(--navy); }
+  header.masthead { padding: 24px 0 18px; }
+  .masthead .card { display: grid; grid-template-columns: minmax(0, 3fr) minmax(220px, 1fr); gap: 20px; }
+  .masthead aside { background: var(--panel); padding: 12px; border: 1px solid var(--border); border-radius: 8px; }
+  .masthead aside p { font-style: normal; color: inherit; margin-top: 6px; }
   .kicker { color: var(--rust); font: 800 12px var(--display); letter-spacing: .22em; text-transform: uppercase; }
   .masthead h1 { font-size: clamp(26px, 4vw, 44px); line-height: 1.05; margin-top: 6px; border-left: 10px solid var(--navy); padding-left: 14px; }
   .masthead p { max-width: 860px; margin: 12px 0 0; color: var(--teal); font-style: italic; }
@@ -84,7 +89,7 @@
 
   .concepts { display: grid; grid-template-columns: repeat(auto-fit, minmax(520px, 1fr)); gap: 18px; }
   @media (max-width: 600px) { .concepts { grid-template-columns: 1fr; } }
-  .card { background: var(--card); border: 1.5px solid var(--navy); border-radius: 6px; padding: 16px 18px; box-shadow: 4px 4px 0 rgba(22,43,77,.12); }
+  .card { background: var(--card); border: 1.5px solid var(--border); border-radius: 10px; padding: 16px 18px; box-shadow: 0 2px 0 rgba(22,43,77,.12); }
   .card header { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
   .card h3 { font-size: 17px; }
   .tag { font: 700 11px var(--display); letter-spacing: .12em; text-transform: uppercase; color: var(--rust); white-space: nowrap; }
@@ -94,8 +99,8 @@
   .caption { color: var(--teal); font-style: italic; font-size: 13px; margin-top: 4px; }
   .code-trap { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   @media (max-width: 700px) { .code-trap { grid-template-columns: 1fr; } }
-  .code-trap pre { margin: 0; padding: 10px 12px; white-space: pre-wrap; background: #fff; border-left: 4px solid var(--teal); border-top: 1px solid var(--grid); border-right: 1px solid var(--grid); border-bottom: 1px solid var(--grid); }
-  .code-trap .trap pre { border-left-color: var(--rust); }
+  .code-trap pre { margin: 0; padding: 10px 12px; white-space: pre-wrap; overflow-wrap: anywhere; background: #131B26; color: #E2E8F0; border-left: 4px solid var(--teal); border-radius: 8px; }
+  .code-trap .trap pre { background: #241312; color: #FDECEC; border-left-color: var(--rust); }
   .code-trap h4 { font-size: 11px; margin-bottom: 4px; color: var(--teal); letter-spacing: .14em; }
   .code-trap .trap h4 { color: var(--rust); }
   .trap-note { color: var(--rust); font-size: 14px; margin: 8px 0 0; border-left: 4px solid var(--rust); padding-left: 10px; }
@@ -147,6 +152,27 @@
   .bar .fill { height: 100%; transition: width .35s; }
   #tank-fill, #tank-level { transition: y .45s, height .45s, fill .3s; }
   .hidden { display: none !important; }
+  button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+  .materials-inspector { display: grid; grid-template-columns: minmax(185px, 1fr) minmax(0, 3fr); gap: 16px; }
+  .materials-lessons { display: flex; flex-direction: column; align-items: stretch; gap: 6px; }
+  .materials-lessons button { text-align: left; }
+  .materials-lessons h4 { margin: 8px 0 0; font-size: 12px; }
+  .material-controls { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+  .material-controls label { display: grid; align-content: start; gap: 3px; font-size: 13px; }
+  .materials-output { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+  #session-guide { display: none; }
+  .session-entry { margin: 14px 0; padding: 12px; border: 1px solid var(--border); border-radius: 8px; break-inside: avoid; }
+  .session-entry p { margin: 6px 0; }
+  @media (max-width: 720px) {
+    .masthead .card, .materials-inspector, .materials-output { grid-template-columns: 1fr; }
+  }
+  @media print {
+    body.print-session > :not(#session-guide) { display: none !important; }
+    body.print-session { background: white; font-size: 10.5pt; }
+    body.print-session #session-guide { display: block; }
+    #session-guide .fig { print-color-adjust: exact; max-height: 36mm; }
+    #session-guide h1, #session-guide h2 { break-after: avoid; }
+  }
   footer { margin: 40px 0 30px; padding-top: 12px; border-top: 1.5px solid var(--navy); font: 700 11px var(--display); letter-spacing: .14em; text-transform: uppercase; display: flex; justify-content: space-between; color: var(--navy); }
   footer span:last-child { color: var(--rust); }
   :focus-visible { outline: 3px solid var(--rust); outline-offset: 2px; }
@@ -155,11 +181,18 @@
 <body>
 <header class="masthead">
   <div class="wrap">
+    <div class="card">
+    <div>
     <div class="kicker">Architecture Workbench &middot; Four-Group Framework</div>
     <h1>OOP Visual Study Guide &amp; Architecture Workbench</h1>
     <p>Every concept sits in one of four structure groups. Every diagram is drawn in two layers:
       Layer 1 is vector structure (boxes, boundaries, arrows), Layer 2 is deterministic text
-      (display titles, monospace signatures, semantic arrow labels). Break things in the Invariant Lab.</p>
+      (display titles, monospace signatures, semantic arrow labels).</p>
+    </div>
+    <aside><h3>Why imagery shifts</h3>
+      <p>Sample chambers show guarded state, instrument ports show contracts, cartridges show modular assembly,
+        and particle silhouettes show runtime dispatch.</p></aside>
+    </div>
   </div>
 </header>
 
@@ -172,6 +205,7 @@
     <button class="chip" data-filter="dispatch" aria-pressed="false">4 &middot; Dispatch</button>
     <button class="chip rust" data-filter="cases" aria-pressed="false">Case Studies</button>
     <button class="chip teal" data-filter="lab" aria-pressed="false">Invariant Lab</button>
+    <button class="chip teal" data-filter="materials" aria-pressed="false">Materials Lab</button>
     <input class="search" id="search" type="search" placeholder="filter: e.g. liskov, burn" aria-label="Search concepts and case studies">
   </div>
 </nav>
@@ -190,6 +224,44 @@
   <section class="block" id="cases-section">
     <div class="section-head"><h2>Production Failure &amp; Behavioral Case Studies</h2><span class="count" id="case-count"></span></div>
     <div class="cases" id="cases"></div>
+  </section>
+
+  <section class="block" id="materials-section">
+    <div class="section-head"><h2>Materials Lab</h2><span class="count">4 groups · 9 experiments</span></div>
+    <p>Follow the lessons or combine a material, filter and instrument in any order. Units and filter rules are illustrative, not physical measurements.</p>
+    <div class="materials-inspector">
+      <nav class="card materials-lessons" id="material-lessons" aria-label="Materials Lab lessons"></nav>
+      <article class="card lab">
+        <h3 id="material-lesson-title"></h3>
+        <p id="material-instruction"></p>
+        <form id="material-form" novalidate>
+          <div class="material-controls">
+            <label>Material<select name="material" id="material-kind">
+              <option value="salt">Salt crystals</option>
+              <option value="quartz">Quartz grains</option>
+              <option value="dye">Dye particles</option>
+            </select></label>
+            <label>Starting amount (units)<input name="amount" type="number" step="1" value="12"></label>
+            <label>Change to sample A (units)<input name="delta" type="number" step="1" value="-4"></label>
+            <label>Filter<select name="filter">
+              <option value="open">Open channel</option>
+              <option value="fine">Fine mesh</option>
+            </select></label>
+            <label>Instrument<select name="instrument">
+              <option value="counter">Particle counter</option>
+              <option value="scale">Sample scale</option>
+            </select></label>
+          </div>
+          <button type="submit" class="btn teal" id="material-run"></button>
+          <button type="button" class="btn" id="material-print" disabled>Print / Save session as PDF</button>
+        </form>
+        <p class="readout" id="material-result" role="status">No experiment run yet.</p>
+        <div class="materials-output" id="material-visuals"></div>
+        <h4>Session notebook</h4>
+        <p class="sub">Runs are recorded in this tab, including rejected changes. Save before closing or reloading.</p>
+        <ol id="material-history"></ol>
+      </article>
+    </div>
   </section>
 
   <section class="block" id="lab-section">
@@ -284,6 +356,164 @@
   <footer><span>OOP Visual Study Guide</span><span>Layer 1: vector structure &middot; Layer 2: deterministic text</span></footer>
 </main>
 
+<section id="session-guide" class="wrap" aria-labelledby="session-title">
+  <h1 id="session-title">Materials Lab · Session Study Guide</h1>
+  <p>OOP Visual Study Guide &amp; Architecture Workbench · Illustrative sample units</p>
+  <div id="session-entries"></div>
+</section>
+<script id="materials-model">
+class Sample {
+  #amount;
+  constructor(amount) {
+    if (!Number.isInteger(amount) || amount < 0 || amount > 24) {
+      throw new RangeError("Amount must be a whole number from 0 to 24.");
+    }
+    this.#amount = amount;
+  }
+  get amount() { return this.#amount; }
+  adjust(delta) {
+    const next = this.#amount + delta;
+    if (!Number.isInteger(delta) || next < 0 || next > 24) {
+      throw new RangeError("Change rejected: the result must be a whole number from 0 to 24.");
+    }
+    this.#amount = next;
+  }
+}
+
+class SaltSample extends Sample {
+  static label = "Salt crystals";
+  get massPerUnit() { return 2; }
+  get grainSize() { return 2; }
+  glyph() { return "crystal"; }
+}
+class QuartzSample extends Sample {
+  static label = "Quartz grains";
+  get massPerUnit() { return 3; }
+  get grainSize() { return 3; }
+  glyph() { return "grain"; }
+}
+class DyeSample extends Sample {
+  static label = "Dye particles";
+  get massPerUnit() { return 1; }
+  get grainSize() { return 1; }
+  glyph() { return "dot"; }
+}
+
+class ParticleCounter {
+  read(sample, count) { return `${count} particle unit(s)`; }
+}
+class SampleScale {
+  read(sample, count) { return `${count * sample.massPerUnit} demo mass unit(s)`; }
+}
+class SampleBench {
+  constructor(filter, instrument) {
+    this.filter = filter;
+    this.instrument = instrument;
+  }
+  inspect(sample) {
+    const passed = this.filter(sample);
+    return { passed, reading: this.instrument.read(sample, passed) };
+  }
+}
+
+const MATERIAL_TYPES = new Map([["salt", SaltSample], ["quartz", QuartzSample], ["dye", DyeSample]]);
+const FILTERS = new Map([
+  ["open", { label: "Open channel", pass: sample => sample.amount }],
+  ["fine", { label: "Fine mesh", pass: sample => sample.grainSize === 1 ? sample.amount : 0 }],
+]);
+const INSTRUMENTS = new Map([
+  ["counter", { label: "Particle counter", Type: ParticleCounter }],
+  ["scale", { label: "Sample scale", Type: SampleScale }],
+]);
+const MATERIAL_LESSONS = {
+  class: ["Build two samples", "Pick a material. Instantiate A and B from the same class and inspect their shared type.", ""],
+  object: ["Change only A", "Change sample A, then compare its state with the unchanged sample B.", "delta"],
+  constructor: ["Validate starting state", "Try starting amounts of 0, 24 and 25. Invalid arguments produce no usable sample.", ""],
+  encapsulation: ["Apply guarded change", "Try a change that would cross the 0–24 unit boundary. The public operation rejects it without changing A.", "delta"],
+  abstraction: ["Inspect through one control", "Switch from Open channel to Fine mesh. The caller still uses inspect(sample); the bench hides the filtering and measurement steps.", "filter instrument"],
+  interface: ["Swap instrument", "Switch from Particle counter to Sample scale. Both accept read(sample, count) and return a reading with units; their measurements differ.", "instrument"],
+  inheritance: ["Check base behavior", "Run the same Sample contract check against each material subtype. The operation must consume one unit if possible, otherwise reject without mutation.", ""],
+  composition: ["Run mixed assembly", "Combine any material, filter and instrument. Fine mesh passes only the smallest demo particles. Change one component and compare your results.", "filter instrument"],
+  polymorphism: ["Dispatch glyph()", "Switch materials and call the same glyph() signature. The sample’s runtime class selects the particle silhouette. For overloading, compare the translate demo in the Invariant Lab.", ""],
+};
+
+function runMaterialExperiment(key, inputs) {
+  const lesson = MATERIAL_LESSONS[key];
+  const Type = MATERIAL_TYPES.get(inputs.material);
+  const filter = FILTERS.get(inputs.filter);
+  const instrument = INSTRUMENTS.get(inputs.instrument);
+  const uses = name => lesson[2].split(" ").includes(name);
+  const value = raw => raw.trim() === "" ? NaN : Number(raw);
+  const parameters = [
+    Type.label, `start: ${inputs.amount || "(empty)"}`,
+    uses("delta") && `change: ${inputs.delta || "(empty)"}`,
+    uses("filter") && filter.label, uses("instrument") && instrument.label,
+  ].filter(Boolean).join(" · ");
+  const result = { key, parameters, ok: true, material: Type.label, type: Type.name };
+  let sample;
+  try {
+    sample = new Type(value(inputs.amount));
+  } catch (error) {
+    return { ...result, ok: false, message: error.message, left: "Initialization", right: "Invariant gate", relation: "checks" };
+  }
+  const view = (label, amount) => ({ label, amount, glyph: sample.glyph() });
+  const finish = (message, left, relation, right, ...views) => ({
+    ...result, message, left, relation, right, views,
+  });
+  const initial = sample.amount;
+  const a = () => view("Sample A", sample.amount);
+  switch (key) {
+    case "class": {
+      const b = new Type(initial);
+      return finish(`A and B share the ${sample.constructor.name} class but are separate instances: A === B is ${sample === b}.`,
+        Type.name, "instantiates", "Samples A & B", a(), view("Sample B", b.amount));
+    }
+    case "object":
+    case "encapsulation": {
+      const b = new Type(initial);
+      let message;
+      try {
+        sample.adjust(value(inputs.delta));
+        message = `Accepted: A changed from ${initial} to ${sample.amount}; B stayed at ${b.amount}.`;
+      } catch (error) {
+        result.ok = false;
+        message = `${error.message} A and B are still at ${sample.amount} and ${b.amount}.`;
+      }
+      return finish(message, "adjust(delta)", result.ok ? "updates" : "checks",
+        result.ok ? "Sample A" : "State boundary", a(), view("Sample B", b.amount));
+    }
+    case "constructor":
+      return finish(`Created a valid ${Type.name} with ${initial} unit(s).`, "Constructor", "instantiates", "Sample A", a());
+    case "abstraction":
+    case "interface":
+    case "composition": {
+      const activeFilter = uses("filter") ? filter : FILTERS.get("open");
+      const bench = new SampleBench(activeFilter.pass, new instrument.Type());
+      const { passed, reading } = bench.inspect(sample);
+      const [left, relation, right] = {
+        abstraction: ["inspect(sample)", "delegates to", "Sample bench"],
+        interface: [instrument.Type.name, "implements", "Reading contract"],
+        composition: ["Sample bench", "contains", "Filter + instrument"],
+      }[key];
+      return finish(`${activeFilter.label}: ${passed} of ${initial} unit(s) passed. ${instrument.label}: ${reading}.`,
+        left, relation, right, a(), view("After filter", passed));
+    }
+    case "inheritance": {
+      let rejected = false;
+      try { sample.adjust(-1); } catch (error) {
+        if (!(error instanceof RangeError)) throw error;
+        rejected = true;
+      }
+      result.ok = sample instanceof Sample && rejected === (initial === 0) && sample.amount === Math.max(0, initial - 1);
+      return finish(`${Type.name} ${result.ok ? "honors" : "breaks"} the Sample contract: request to consume one unit was ${rejected ? "rejected" : "accepted"} (${initial} → ${sample.amount}).`,
+        Type.name, "specializes", "Sample", view("Before", initial), view("After", sample.amount));
+    }
+    case "polymorphism":
+      return finish(`sample.glyph() ran ${Type.name}.glyph() and returned “${sample.glyph()}”. The call signature did not change.`,
+        "sample.glyph()", "dispatches to", `${Type.name}.glyph()`, a());
+  }
+}
+</script>
 <script>
 "use strict";
 
@@ -678,6 +908,7 @@ function renderConcepts() {
         </div>
         <p class="trap-note">${esc(c.trap)}</p>
       </div>
+      <button class="chip teal" data-material-lesson="${c.key}">Try ${esc(c.name)} in Materials Lab</button>
     </article>`;
   }).join("");
 }
@@ -730,6 +961,7 @@ function applyFilters() {
   $("case-count").textContent = `${nCases} of ${CASE_STUDIES.length} case studies`;
 
   $("lab-section").classList.toggle("hidden", !(f === "all" || f === "lab") || q.length > 0);
+  $("materials-section").classList.toggle("hidden", !(f === "all" || f === "materials") || q.length > 0);
 }
 
 function setView(card, view) {
@@ -742,6 +974,9 @@ function bindCatalog() {
     const b = ev.target.closest("[data-filter]");
     if (!b) return;
     state.filter = b.dataset.filter;
+    if (state.filter === "materials" || state.filter === "lab") {
+      state.query = ""; $("search").value = "";
+    }
     applyFilters();
   });
   $("search").addEventListener("input", ev => { state.query = ev.target.value; applyFilters(); });
@@ -755,6 +990,13 @@ function bindCatalog() {
   $("concepts").addEventListener("click", ev => {
     const b = ev.target.closest(".views .chip");
     if (b) setView(b.closest(".concept"), b.dataset.view);
+    const lesson = ev.target.closest("[data-material-lesson]");
+    if (lesson) {
+      state.filter = "materials"; state.query = ""; $("search").value = "";
+      applyFilters();
+      selectMaterialLesson(lesson.dataset.materialLesson);
+      $("material-lesson-" + lesson.dataset.materialLesson).focus();
+    }
   });
   $("cases").addEventListener("click", ev => {
     const b = ev.target.closest("[data-concept]");
@@ -987,12 +1229,105 @@ function bindLab() {
   $("translate-args").addEventListener("keydown", ev => { if (ev.key === "Enter") runTranslate(); });
 }
 
+/* ---- Materials Lab: guided inspector and session export ---- */
+function materialVisuals(result) {
+  const diagram = renderFigure({
+    h: 66,
+    title: `${result.left} ${result.relation} ${result.right}`,
+    nodes: [n("from", 8, 12, 168, result.left), n("to", 344, 12, 168, result.right, [], result.ok ? TEAL : RUST)],
+    edges: [e("from", "to", result.relation, result.ok ? TEAL : RUST)],
+  });
+  if (!result.views) return diagram;
+  const colors = { crystal: TEAL, grain: RUST, dot: NAVY };
+  const chambers = result.views.map(({ label, amount, glyph }, i) => {
+    const left = 14 + i * 254;
+    const particles = Array.from({ length: amount }, (_, j) => {
+      const x = left + 27 + (j % 8) * 26, y = 31 + Math.floor(j / 8) * 18;
+      if (glyph === "crystal") return `<rect x="${x - 5}" y="${y - 5}" width="10" height="10" transform="rotate(45 ${x} ${y})"/>`;
+      if (glyph === "grain") return `<polygon points="${x},${y - 7} ${x + 7},${y + 5} ${x - 7},${y + 5}"/>`;
+      return `<circle cx="${x}" cy="${y}" r="5"/>`;
+    }).join("");
+    return {
+      geometry: `<rect x="${left}" y="12" width="238" height="70" rx="8" fill="none" stroke="${NAVY}"/>` +
+        `<g fill="${colors[glyph]}">${particles}</g>`,
+      label: `<text class="l2-sig" x="${left + 6}" y="100">${esc(label)}: ${amount} unit(s)</text>`,
+    };
+  });
+  const width = chambers.length === 1 ? 266 : 520;
+  const description = result.views.map(v => `${v.label}: ${v.amount} unit(s)`).join("; ");
+  return diagram + `<svg class="fig" viewBox="0 0 ${width} 112" role="img" aria-label="${esc(description)}">` +
+    `<g class="layer1">${chambers.map(c => c.geometry).join("")}</g>` +
+    `<g class="layer2">${chambers.map(c => c.label).join("")}</g></svg>`;
+}
+
+let materialLesson = "class";
+const materialRuns = [];
+
+function selectMaterialLesson(key) {
+  materialLesson = key;
+  const [action, instruction, inputs] = MATERIAL_LESSONS[key];
+  $("material-lesson-title").textContent = conceptOf(key).name;
+  $("material-instruction").textContent = instruction;
+  $("material-run").textContent = action;
+  for (const name of ["delta", "filter", "instrument"]) {
+    $("material-form").elements.namedItem(name).disabled = !inputs.split(" ").includes(name);
+  }
+  $("material-lessons").querySelectorAll("button").forEach(button => {
+    button.setAttribute("aria-pressed", String(button.dataset.lesson === key));
+  });
+  $("material-result").textContent = "Run this lesson to see its result.";
+  $("material-result").className = "readout";
+  $("material-visuals").replaceChildren();
+}
+
+function bindMaterials() {
+  const lessons = $("material-lessons"), form = $("material-form");
+  lessons.innerHTML = GROUPS.map(group => `<h4>${esc(group.title)}</h4>` +
+    group.concepts.map(key => `<button type="button" class="chip" data-lesson="${key}" id="material-lesson-${key}">${esc(conceptOf(key).name)}</button>`).join("")
+  ).join("");
+  lessons.addEventListener("click", event => {
+    const button = event.target.closest("[data-lesson]");
+    if (button) selectMaterialLesson(button.dataset.lesson);
+  });
+  form.addEventListener("submit", event => {
+    event.preventDefault();
+    const inputs = Object.fromEntries(["material", "amount", "delta", "filter", "instrument"].map(name =>
+      [name, form.elements.namedItem(name).value]));
+    const result = runMaterialExperiment(materialLesson, inputs);
+    materialRuns.push(result);
+    const text = `${result.ok ? "Passed" : "Rejected / failed"} · ${result.message}`;
+    $("material-result").textContent = text;
+    $("material-result").className = "readout " + (result.ok ? "ok" : "bad");
+    $("material-visuals").innerHTML = materialVisuals(result);
+    const entry = document.createElement("li");
+    entry.textContent = `${conceptOf(materialLesson).name} · ${result.parameters} · ${text}`;
+    $("material-history").append(entry);
+    $("material-print").disabled = false;
+  });
+  $("material-print").addEventListener("click", () => {
+    $("session-entries").innerHTML = materialRuns.map((result, i) => {
+      const concept = conceptOf(result.key);
+      const group = GROUPS.find(g => g.key === concept.group);
+      return `<article class="session-entry"><h2>${i + 1}. ${esc(concept.name)}</h2>` +
+        `<p><strong>${esc(group.title)}</strong> · ${esc(result.parameters)}</p>` +
+        `<p>${esc(MATERIAL_LESSONS[result.key][1])}</p>` +
+        `<p><strong>${result.ok ? "Passed" : "Rejected / failed"}</strong> · ${esc(result.message)}</p>` +
+        `<div class="materials-output">${materialVisuals(result)}</div></article>`;
+    }).join("");
+    document.body.classList.add("print-session");
+    window.print();
+  });
+  window.addEventListener("afterprint", () => document.body.classList.remove("print-session"));
+  selectMaterialLesson(materialLesson);
+}
+
 /* ---- Boot ---- */
 renderGroups();
 renderConcepts();
 renderCases();
 bindCatalog();
 bindLab();
+bindMaterials();
 applyFilters();
 logLine("FuelTank(ChemicalEngine, capacity_kg=1000, fuel_kg=600)  constructed", true);
 drawTank();

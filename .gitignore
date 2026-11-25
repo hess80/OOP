@@ -4,4 +4,5 @@ __pycache__/
 .pytest_cache/
 .venv/
 build/
-dist/
+dist/*
+!dist/oop_visual_study_guide.pdf

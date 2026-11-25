@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OOP Visual Study Guide &amp; Architecture Workbench</title>
+<style>
+  :root {
+    --paper: #F7F3E8;
+    --grid: #E6DFC8;
+    --navy: #162B4D;
+    --rust: #9E3B24;
+    --teal: #1C5D58;
+    --card: #FFFDF7;
+    --display: "Futura", "Avenir Next", "Century Gothic", "Trebuchet MS", "Segoe UI", Helvetica, Arial, sans-serif;
+    --sans: "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif;
+    --mono: "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", "Courier New", monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    color: var(--navy);
+    font: 15px/1.55 var(--sans);
+    background-color: var(--paper);
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+      linear-gradient(rgba(230,223,200,.55) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(230,223,200,.55) 1px, transparent 1px);
+    background-size: 60px 60px, 60px 60px, 12px 12px, 12px 12px;
+  }
+  h1, h2, h3, h4, .display {
+    font-family: var(--display);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    margin: 0;
+  }
+  code, pre, .mono { font-family: var(--mono); font-size: 13px; }
+  .wrap { max-width: 1220px; margin: 0 auto; padding: 0 24px; }
+
+  header.masthead { padding: 36px 0 18px; border-bottom: 3px solid var(--navy); }
+  .kicker { color: var(--rust); font: 800 12px var(--display); letter-spacing: .22em; text-transform: uppercase; }
+  .masthead h1 { font-size: clamp(26px, 4vw, 44px); line-height: 1.05; margin-top: 6px; border-left: 10px solid var(--navy); padding-left: 14px; }
+  .masthead p { max-width: 860px; margin: 12px 0 0; color: var(--teal); font-style: italic; }
+
+  nav.toolbar {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(247,243,232,.95);
+    border-bottom: 1.5px solid var(--navy);
+    backdrop-filter: blur(3px);
+  }
+  nav.toolbar .wrap { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding-top: 10px; padding-bottom: 10px; }
+  .chip {
+    font: 700 12px var(--display); letter-spacing: .1em; text-transform: uppercase;
+    color: var(--navy); background: var(--card);
+    border: 1.5px solid var(--navy); border-radius: 3px;
+    padding: 7px 11px; cursor: pointer;
+  }
+  .chip:hover { background: #efe9d8; }
+  .chip[aria-pressed="true"] { background: var(--navy); color: var(--paper); }
+  .chip.rust { border-color: var(--rust); color: var(--rust); }
+  .chip.rust[aria-pressed="true"] { background: var(--rust); color: var(--paper); }
+  .chip.teal { border-color: var(--teal); color: var(--teal); }
+  .chip.teal[aria-pressed="true"] { background: var(--teal); color: var(--paper); }
+  .search { margin-left: auto; font: 14px var(--mono); padding: 7px 10px; border: 1.5px solid var(--navy); background: var(--card); color: var(--navy); min-width: 220px; }
+
+  section.block { padding: 30px 0 10px; }
+  .section-head { display: flex; align-items: baseline; gap: 14px; border-bottom: 1.5px solid var(--navy); padding-bottom: 6px; margin-bottom: 18px; }
+  .section-head h2 { font-size: 22px; }
+  .section-head .count { font: 13px var(--mono); color: var(--teal); }
+
+  .groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+  .group-card { display: flex; flex-direction: column; justify-content: flex-start; background: var(--card); border: 2px solid var(--navy); border-radius: 6px; overflow: hidden; cursor: pointer; text-align: left; padding: 0; color: inherit; font: inherit; }
+  .group-card .band { display: flex; gap: 10px; align-items: center; padding: 10px 14px; color: var(--paper); }
+  .group-card .band .num { font: 800 22px var(--display); }
+  .group-card .band h3 { font-size: 13px; }
+  .group-card .body { padding: 10px 14px 14px; }
+  .group-card .body p { margin: 0 0 6px; font-style: italic; color: var(--teal); font-size: 14px; }
+  .group-card ul { margin: 0; padding-left: 18px; font: 600 13px var(--mono); }
+  .c-navy { --accent: var(--navy); } .c-teal { --accent: var(--teal); } .c-rust { --accent: var(--rust); }
+  .group-card { border-color: var(--accent); } .group-card .band { background: var(--accent); }
+
+  .concepts { display: grid; grid-template-columns: repeat(auto-fit, minmax(520px, 1fr)); gap: 18px; }
+  @media (max-width: 600px) { .concepts { grid-template-columns: 1fr; } }
+  .card { background: var(--card); border: 1.5px solid var(--navy); border-radius: 6px; padding: 16px 18px; box-shadow: 4px 4px 0 rgba(22,43,77,.12); }
+  .card header { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .card h3 { font-size: 17px; }
+  .tag { font: 700 11px var(--display); letter-spacing: .12em; text-transform: uppercase; color: var(--rust); white-space: nowrap; }
+  .views { display: flex; gap: 6px; margin: 12px 0; flex-wrap: wrap; }
+  .views .chip { font-size: 11px; padding: 5px 9px; }
+  .view p { margin: 0 0 8px; }
+  .caption { color: var(--teal); font-style: italic; font-size: 13px; margin-top: 4px; }
+  .code-trap { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 700px) { .code-trap { grid-template-columns: 1fr; } }
+  .code-trap pre { margin: 0; padding: 10px 12px; white-space: pre-wrap; background: #fff; border-left: 4px solid var(--teal); border-top: 1px solid var(--grid); border-right: 1px solid var(--grid); border-bottom: 1px solid var(--grid); }
+  .code-trap .trap pre { border-left-color: var(--rust); }
+  .code-trap h4 { font-size: 11px; margin-bottom: 4px; color: var(--teal); letter-spacing: .14em; }
+  .code-trap .trap h4 { color: var(--rust); }
+  .trap-note { color: var(--rust); font-size: 14px; margin: 8px 0 0; border-left: 4px solid var(--rust); padding-left: 10px; }
+
+  svg.fig { width: 100%; height: auto; display: block; background: var(--paper); border: 1px solid var(--navy); border-radius: 5px; }
+  svg.fig .l2-title { font: 700 12px var(--display); letter-spacing: .03em; fill: var(--card); }
+  svg.fig .l2-sig { font: 11px var(--mono); fill: var(--navy); }
+  svg.fig .l2-label { font: italic 10.5px var(--sans); }
+  svg.fig .l2-boundary { font: 700 10px var(--display); letter-spacing: .12em; }
+  svg.fig .shaft { stroke-width: 1.5; transition: stroke-width .2s; }
+  svg.fig rect.frame { stroke-width: 1.6; transition: stroke-width .2s; }
+  svg.fig .edge { transition: opacity .2s; }
+  svg.fig .edge.hot .shaft { stroke-width: 3.4; }
+  svg.fig .pill.hot { font-weight: 700; }
+  svg.fig .node.hot rect.frame { stroke-width: 3.4; }
+  svg.fig.dim .edge:not(.hot), svg.fig.dim .pill:not(.hot) { opacity: .25; }
+
+  .cases { display: grid; grid-template-columns: repeat(auto-fit, minmax(520px, 1fr)); gap: 18px; }
+  @media (max-width: 600px) { .cases { grid-template-columns: 1fr; } }
+  .case { border-left: 6px solid var(--rust); }
+  .case dl { display: grid; grid-template-columns: 110px 1fr; gap: 4px 10px; margin: 10px 0; font-size: 14px; }
+  .case dt { font: 800 11px var(--display); letter-spacing: .12em; text-transform: uppercase; padding-top: 3px; }
+  .case dd { margin: 0; }
+  .case dt.symptom { color: var(--rust); } .case dt.fix { color: var(--teal); }
+  .related { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .related .chip { font-size: 10px; padding: 4px 8px; }
+
+  .lab-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(520px, 1fr)); gap: 18px; }
+  @media (max-width: 600px) { .lab-grid { grid-template-columns: 1fr; } }
+  .lab h3 { font-size: 15px; margin-bottom: 4px; }
+  .lab .sub { margin: 0 0 10px; color: var(--teal); font-size: 13px; font-style: italic; }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; }
+  .controls label { font: 700 11px var(--display); letter-spacing: .1em; text-transform: uppercase; }
+  .controls input, .controls select { font: 13px var(--mono); padding: 5px 7px; border: 1.5px solid var(--navy); background: #fff; color: var(--navy); }
+  .controls input[type=number] { width: 84px; }
+  .btn { font: 700 12px var(--display); letter-spacing: .08em; text-transform: uppercase; padding: 7px 12px; border: 0; border-radius: 3px; background: var(--navy); color: var(--paper); cursor: pointer; }
+  .btn.teal { background: var(--teal); } .btn.rust { background: var(--rust); }
+  .btn.ghost { background: transparent; color: var(--navy); border: 1.5px solid var(--navy); }
+  .readout { font: 13px var(--mono); background: #fff; border: 1px solid var(--grid); border-left: 4px solid var(--navy); padding: 8px 10px; margin: 8px 0; white-space: pre-wrap; }
+  .readout.ok { border-left-color: var(--teal); } .readout.bad { border-left-color: var(--rust); color: var(--rust); }
+  .log { font: 12px var(--mono); max-height: 150px; overflow: auto; background: #fff; border: 1px solid var(--grid); padding: 6px 10px; margin: 0; list-style: none; }
+  .log li { padding: 2px 0; border-bottom: 1px dashed var(--grid); }
+  .log li.bad { color: var(--rust); } .log li.ok { color: var(--teal); }
+  .split { display: grid; grid-template-columns: 170px 1fr; gap: 14px; align-items: start; }
+  @media (max-width: 600px) { .split { grid-template-columns: 1fr; } }
+  .bars { display: grid; gap: 6px; margin-top: 8px; }
+  .bar { display: grid; grid-template-columns: 150px 1fr 40px; align-items: center; gap: 8px; font: 12px var(--mono); }
+  .bar .track { height: 14px; background: #fff; border: 1px solid var(--navy); }
+  .bar .fill { height: 100%; transition: width .35s; }
+  #tank-fill, #tank-level { transition: y .45s, height .45s, fill .3s; }
+  .hidden { display: none !important; }
+  footer { margin: 40px 0 30px; padding-top: 12px; border-top: 1.5px solid var(--navy); font: 700 11px var(--display); letter-spacing: .14em; text-transform: uppercase; display: flex; justify-content: space-between; color: var(--navy); }
+  footer span:last-child { color: var(--rust); }
+  :focus-visible { outline: 3px solid var(--rust); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap">
+    <div class="kicker">Architecture Workbench &middot; Four-Group Framework</div>
+    <h1>OOP Visual Study Guide &amp; Architecture Workbench</h1>
+    <p>Every concept sits in one of four structure groups. Every diagram is drawn in two layers:
+      Layer 1 is vector structure (boxes, boundaries, arrows), Layer 2 is deterministic text
+      (display titles, monospace signatures, semantic arrow labels). Break things in the Invariant Lab.</p>
+  </div>
+</header>
+
+<nav class="toolbar" aria-label="Filter">
+  <div class="wrap" id="filters">
+    <button class="chip" data-filter="all" aria-pressed="true">All</button>
+    <button class="chip" data-filter="lifecycle" aria-pressed="false">1 &middot; Lifecycle</button>
+    <button class="chip" data-filter="contracts" aria-pressed="false">2 &middot; Contracts</button>
+    <button class="chip" data-filter="reuse" aria-pressed="false">3 &middot; Reuse</button>
+    <button class="chip" data-filter="dispatch" aria-pressed="false">4 &middot; Dispatch</button>
+    <button class="chip rust" data-filter="cases" aria-pressed="false">Case Studies</button>
+    <button class="chip teal" data-filter="lab" aria-pressed="false">Invariant Lab</button>
+    <input class="search" id="search" type="search" placeholder="filter: e.g. liskov, burn" aria-label="Search concepts and case studies">
+  </div>
+</nav>
+
+<main class="wrap">
+  <section class="block" id="groups-section">
+    <div class="section-head"><h2>4 Structure Groups</h2><span class="count">click a group to filter</span></div>
+    <div class="groups" id="groups"></div>
+  </section>
+
+  <section class="block" id="concepts-section">
+    <div class="section-head"><h2>Core Concepts</h2><span class="count" id="concept-count"></span></div>
+    <div class="concepts" id="concepts"></div>
+  </section>
+
+  <section class="block" id="cases-section">
+    <div class="section-head"><h2>Production Failure &amp; Behavioral Case Studies</h2><span class="count" id="case-count"></span></div>
+    <div class="cases" id="cases"></div>
+  </section>
+
+  <section class="block" id="lab-section">
+    <div class="section-head"><h2>Break It / Invariant Lab</h2><span class="count">live, deterministic, mirrors oop_guide.models</span></div>
+    <div class="lab-grid">
+
+      <article class="card lab" id="lab-fuel">
+        <h3>Propellant Tank &middot; burn(dt) / refuel(kg)</h3>
+        <p class="sub">Invariant: 0 &lt;= fuel_kg &lt;= capacity_kg. Rejected operations leave state unchanged.</p>
+        <div class="split">
+          <svg id="tank-svg" viewBox="0 0 170 260" class="fig" role="img" aria-label="Fuel tank gauge"></svg>
+          <div>
+            <div class="controls">
+              <label for="burn-dt">dt (s)</label><input id="burn-dt" type="number" value="4" step="any">
+              <button class="btn" id="btn-burn">burn(dt)</button>
+            </div>
+            <div class="controls">
+              <label for="refuel-kg">kg</label><input id="refuel-kg" type="number" value="200" step="any">
+              <button class="btn teal" id="btn-refuel">refuel(kg)</button>
+            </div>
+            <div class="controls">
+              <button class="btn rust" id="btn-bypass">Break it: tank._fuel_kg = -50</button>
+              <button class="btn ghost" id="btn-reset">Reset</button>
+            </div>
+            <div class="readout" id="tank-readout"></div>
+            <ul class="log" id="tank-log" aria-live="polite"></ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="card lab" id="lab-liskov">
+        <h3>Liskov &middot; Rectangle vs. Square</h3>
+        <p class="sub">Client code written against Rectangle: set_width(w); set_height(h); expect area == w * h.</p>
+        <div class="controls">
+          <label for="lsp-type">runtime type</label>
+          <select id="lsp-type"><option>Rectangle</option><option>Square</option></select>
+          <label for="lsp-w">w</label><input id="lsp-w" type="number" value="5" step="any">
+          <label for="lsp-h">h</label><input id="lsp-h" type="number" value="4" step="any">
+          <button class="btn" id="btn-lsp">Run client contract</button>
+        </div>
+        <svg id="lsp-svg" viewBox="0 0 520 190" class="fig" role="img" aria-label="Rectangle contract result"></svg>
+        <div class="readout" id="lsp-readout"></div>
+      </article>
+
+      <article class="card lab" id="lab-compose">
+        <h3>Composition &middot; Modular Component Swapping</h3>
+        <p class="sub">Swap collaborators at runtime. The engine you pick here is also bound into the propellant tank.</p>
+        <div class="controls">
+          <label for="sel-engine">Engine</label><select id="sel-engine"></select>
+          <label for="sel-guidance">Guidance</label><select id="sel-guidance"></select>
+          <label for="sel-comms">Comms</label><select id="sel-comms"></select>
+        </div>
+        <div id="compose-fig"></div>
+        <div class="controls">
+          <label for="n-engine">engine variants</label><input id="n-engine" type="number" min="1" max="8" value="3">
+          <label for="n-guidance">guidance</label><input id="n-guidance" type="number" min="1" max="8" value="2">
+          <label for="n-comms">comms</label><input id="n-comms" type="number" min="1" max="8" value="2">
+        </div>
+        <div class="bars" id="explosion-bars"></div>
+        <div class="readout" id="compose-readout"></div>
+      </article>
+
+      <article class="card lab" id="lab-dispatch">
+        <h3>Runtime Dispatch vs. Signature Overloading</h3>
+        <p class="sub">Overriding is chosen by the receiver's runtime type; overloading by the call signature (and declared types).</p>
+        <div class="controls">
+          <label for="disp-static">declared</label>
+          <select id="disp-static"><option>Shape</option><option>Circle</option></select>
+          <label for="disp-runtime">s = new</label>
+          <select id="disp-runtime"><option>Circle</option><option>Square</option><option>Triangle</option></select>
+          <button class="btn" id="btn-dispatch">s.draw() + describe(s)</button>
+          <button class="btn teal" id="btn-animate">Animate for s in shapes</button>
+        </div>
+        <div id="dispatch-fig"></div>
+        <div class="split">
+          <svg id="shape-svg" viewBox="0 0 170 150" class="fig" role="img" aria-label="Drawn shape"></svg>
+          <div class="readout" id="dispatch-readout"></div>
+        </div>
+        <div class="controls">
+          <label for="translate-args">translate(</label>
+          <input id="translate-args" type="text" value="1.0, 2.0, 3.0" style="width:160px">
+          <label>)</label>
+          <button class="btn" id="btn-translate">Resolve overload</button>
+        </div>
+        <div id="overload-fig"></div>
+        <div class="readout" id="translate-readout"></div>
+      </article>
+
+    </div>
+  </section>
+
+  <footer><span>OOP Visual Study Guide</span><span>Layer 1: vector structure &middot; Layer 2: deterministic text</span></footer>
+</main>
+
+<script>
+"use strict";
+
+/* ---- Catalog: mirrors src/oop_guide/models.py ---- */
+const NAVY = "#162B4D", RUST = "#9E3B24", TEAL = "#1C5D58", PAPER = "#F7F3E8", CARD = "#FFFDF7";
+const ARROW_LABELS = ["instantiates", "checks", "updates", "delegates to", "implements",
+  "specializes", "contains", "dispatches to", "matches"];
+
+const GROUPS = [
+  { key: "lifecycle", number: 1, title: "Object Lifecycle & State", color: "c-navy",
+    summary: "How state comes into existence and stays valid.",
+    concepts: ["class", "object", "constructor", "encapsulation"] },
+  { key: "contracts", number: 2, title: "Contracts & Abstraction", color: "c-teal",
+    summary: "What a caller may rely on, separated from how it is done.",
+    concepts: ["abstraction", "interface"] },
+  { key: "reuse", number: 3, title: "Code Reuse & Structure", color: "c-rust",
+    summary: "Specialization (is-a) versus assembly from parts (has-a).",
+    concepts: ["inheritance", "composition"] },
+  { key: "dispatch", number: 4, title: "Polymorphic Dispatch", color: "c-navy",
+    summary: "Which implementation runs: runtime type vs call signature.",
+    concepts: ["polymorphism"] },
+];
+
+/* Figure helpers: n(key, x, top, width, title, signatures, color) */
+const n = (k, x, y, w, title, sigs = [], color = NAVY) => ({ k, x, y, w, title, sigs, color });
+const e = (from, to, label, color = NAVY, opts = {}) => Object.assign({ from, to, label, color }, opts);
+
+const FIGURES = {
+  class: { h: 165, nodes: [
+      n("cls", 10, 25, 180, "Class FuelTank", ["_fuel_kg: float", "_capacity_kg: float", "burn(dt) / refuel(kg)"]),
+      n("a", 330, 12, 180, "Object tank_a", ["_fuel_kg = 600.0"]),
+      n("b", 330, 108, 180, "Object tank_b", ["_fuel_kg = 250.0"]) ],
+    edges: [e("cls", "a", "instantiates"), e("cls", "b", "instantiates")],
+    caption: "One class, many objects: each instance owns its own state." },
+  object: { h: 215, boundary: { x: 160, y: 8, w: 352, h: 198, label: "ENCAPSULATION BOUNDARY" },
+    nodes: [
+      n("caller", 5, 20, 130, "Caller", ["tank.burn(4)"], TEAL),
+      n("burn", 175, 120, 128, "Operation", ["burn(dt: float)"], TEAL),
+      n("state", 360, 32, 145, "State", ["_fuel_kg = 500.0"]),
+      n("inv", 360, 150, 145, "Invariant", ["0 <= fuel <= 1000"], RUST) ],
+    edges: [e("caller", "burn", "delegates to", TEAL), e("burn", "inv", "checks", RUST), e("burn", "state", "updates", TEAL)],
+    caption: "The caller hands the request to the object; burn() checks the invariant, then updates state." },
+  constructor: { h: 210, nodes: [
+      n("ctor", 10, 75, 190, "Constructor", ["__init__(engine, cap, fuel)"], TEAL),
+      n("inv", 290, 8, 220, "Invariant", ["0 <= fuel <= capacity"], RUST),
+      n("obj", 290, 78, 220, "Object tank_a", ["_engine = IonThruster", "_fuel_kg = 600.0"]),
+      n("eng", 290, 160, 220, "Engine dependency", ["IonThruster(rate=0.5)"], TEAL) ],
+    edges: [e("ctor", "inv", "checks", RUST), e("ctor", "obj", "instantiates"), e("obj", "eng", "contains", TEAL)],
+    caption: "Initialization validates the invariant and binds dependencies before anyone can call the object." },
+  encapsulation: { h: 205, boundary: { x: 200, y: 8, w: 312, h: 190, label: "ENCAPSULATION BOUNDARY" },
+    nodes: [
+      n("outside", 5, 40, 170, "Outside caller", ["tank._fuel_kg = -50"], RUST),
+      n("state", 290, 38, 140, "Private state", ["_fuel_kg = 600.0"]),
+      n("burn", 215, 132, 135, "burn(dt)", ["dt >= 0"], TEAL),
+      n("refuel", 370, 132, 135, "refuel(kg)", ["kg > 0"], TEAL) ],
+    edges: [e("burn", "state", "updates", TEAL), e("refuel", "state", "updates", TEAL),
+      e("outside", "state", "updates", RUST, { dashed: true, blocked: true })],
+    caption: "Only the object's own operations cross the boundary; direct field writes are blocked." },
+  abstraction: { h: 175, boundary: { x: 300, y: 8, w: 212, h: 159, label: "HIDDEN" },
+    nodes: [
+      n("nav", 10, 12, 145, "Navigator", ["plan_burn(dv)"]),
+      n("prop", 10, 110, 145, "Propulsion", ["thrust(dt)"], TEAL),
+      n("hidden", 330, 82, 160, "Internals", ["valve_timing()", "catalyst_temp", "rate_kg_s"]) ],
+    edges: [e("nav", "prop", "delegates to"), e("prop", "hidden", "delegates to", TEAL)],
+    caption: "The caller sees thrust(); burn-rate maths and valve timing stay hidden." },
+  interface: { h: 185, nodes: [
+      n("nav", 5, 30, 110, "Navigator", ["plan_burn(dv)"]),
+      n("prop", 205, 25, 230, "<<interface>> Propulsion", ["thrust(dt: float) -> float"], TEAL),
+      n("chem", 70, 125, 175, "ChemicalEngine", ["rate = 25.0 kg/s"]),
+      n("ion", 300, 125, 175, "IonThruster", ["rate = 0.5 kg/s"]) ],
+    edges: [e("nav", "prop", "delegates to"), e("chem", "prop", "implements", TEAL, { dashed: true }),
+      e("ion", "prop", "implements", TEAL, { dashed: true })],
+    caption: "Clients depend on the contract; implementations are interchangeable." },
+  inheritance: { h: 190, nodes: [
+      n("rect", 10, 10, 210, "Rectangle", ["set_width(w: float)", "set_height(h: float)", "area() -> float"]),
+      n("square", 10, 128, 210, "Square", ["invariant: width == height"], RUST),
+      n("client", 300, 62, 210, "Client (expects Rectangle)", ["set_width(5); set_height(4)", "assert area() == 20"], RUST) ],
+    edges: [e("square", "rect", "specializes", RUST), e("client", "square", "checks", RUST)],
+    caption: "Square specializes Rectangle but is not substitutable: the client gets 16, not 20." },
+  composition: { h: 195, nodes: [
+      n("craft", 160, 12, 200, "Spacecraft", ["thrust() / navigate() / send()"], TEAL),
+      n("engine", 15, 130, 150, "Engine", ["thrust(dt)"]),
+      n("guidance", 185, 130, 150, "Guidance", ["heading()"]),
+      n("comms", 355, 130, 150, "Comms", ["send(msg)"]) ],
+    edges: [e("craft", "engine", "contains", TEAL), e("craft", "guidance", "contains", TEAL), e("craft", "comms", "contains", TEAL)],
+    caption: "has-a: behavior is assembled from collaborators that can be swapped independently." },
+  fig41: { h: 180, title: "Figure 4.1 - Dynamic dispatch through Shape.draw()", nodes: [
+      n("shape", 170, 12, 180, "<<abstract>> Shape", ["draw()"]),
+      n("Circle", 10, 120, 150, "Circle", ["draw()"], TEAL),
+      n("Square", 185, 120, 150, "Square", ["draw()"], TEAL),
+      n("Triangle", 360, 120, 150, "Triangle", ["draw()"], TEAL) ],
+    edges: [e("shape", "Circle", "dispatches to", NAVY, { at: 0.62 }), e("shape", "Square", "dispatches to", NAVY, { at: 0.62 }),
+      e("shape", "Triangle", "dispatches to", NAVY, { at: 0.62 })],
+    caption: "s.draw() runs the override chosen by the runtime type of s." },
+  fig42: { h: 150, title: "Figure 4.2 - Overload resolution by call signature", nodes: [
+      n("call2", 5, 15, 175, "Call site", ["translate(1.0, 2.0)"]),
+      n("call3", 5, 92, 175, "Call site", ["translate(1.0, 2.0, 3.0)"]),
+      n("sig2", 272, 15, 243, "Overload", ["translate(float x, float y)"], TEAL),
+      n("sig3", 272, 92, 243, "Overload", ["translate(float x, float y, float z)"], TEAL) ],
+    edges: [e("call2", "sig2", "matches"), e("call3", "sig3", "matches")],
+    caption: "Overload resolution depends on the call signature, not on the runtime object type." },
+
+  /* Case-study figures */
+  "case-liskov": { h: 170, nodes: [
+      n("rect", 10, 10, 200, "Rectangle", ["set_width(w)", "set_height(h)"]),
+      n("square", 10, 112, 200, "Square", ["width == height"], RUST),
+      n("client", 300, 55, 210, "Layout client", ["set_w(5); set_h(4)", "area 16 != 20"], RUST) ],
+    edges: [e("square", "rect", "specializes", RUST), e("client", "square", "checks", RUST)] },
+  "case-fragile-base": { h: 265, nodes: [
+      n("base", 10, 8, 200, "BaseVehicle", ["update()  # edited"], RUST),
+      n("ground", 10, 75, 200, "GroundVehicle", ["update() -> super()"]),
+      n("car", 10, 142, 200, "Car", ["update() -> super()"]),
+      n("sports", 10, 209, 200, "SportsCar", ["relies on call order"], RUST),
+      n("ripple", 290, 95, 220, "Ripple effect", ["1 base edit", "7 subclasses break", "3 levels down"], RUST) ],
+    edges: [e("ground", "base", "specializes"), e("car", "ground", "specializes"), e("sports", "car", "specializes", RUST)] },
+  "case-diamond": { h: 230, nodes: [
+      n("vehicle", 175, 8, 170, "Vehicle", ["_state (shared?)"]),
+      n("car", 15, 92, 150, "Car", ["move()"]),
+      n("boat", 355, 92, 150, "Boat", ["move()"]),
+      n("amph", 175, 172, 170, "Amphibian", ["move() -> which?"], RUST) ],
+    edges: [e("car", "vehicle", "specializes"), e("boat", "vehicle", "specializes"),
+      e("amph", "car", "specializes", RUST), e("amph", "boat", "specializes", RUST)] },
+  "case-explosion": { h: 200, nodes: [
+      n("inh", 5, 10, 200, "Subclasses: 12", ["ChemStarRadioCraft", "ChemStarLaserCraft", "ChemGpsRadioCraft", "... 9 more"], RUST),
+      n("craft", 290, 10, 200, "Spacecraft", ["3 + 2 + 2 = 7 parts"], TEAL),
+      n("engine", 205, 135, 90, "Engine", ["x3"]),
+      n("guidance", 315, 135, 90, "Guidance", ["x2"]),
+      n("comms", 425, 135, 90, "Comms", ["x2"]) ],
+    edges: [e("craft", "engine", "contains", TEAL, { at: 0.7 }), e("craft", "guidance", "contains", TEAL, { at: 0.7 }),
+      e("craft", "comms", "contains", TEAL, { at: 0.7 })] },
+  "case-anemic": { h: 205, nodes: [
+      n("caller", 5, 12, 150, "Caller", ["setFuelKg(-50)"], RUST),
+      n("setter", 185, 75, 150, "Public setter", ["no validation"], RUST),
+      n("state", 360, 12, 150, "_fuel_kg", ["= -50.0"], RUST),
+      n("op", 5, 155, 160, "Fix: operation", ["refuel(kg: float)"], TEAL),
+      n("inv", 290, 155, 220, "Invariant", ["0 <= fuel <= capacity"], TEAL) ],
+    edges: [e("caller", "setter", "delegates to", RUST), e("setter", "state", "updates", RUST), e("op", "inv", "checks", TEAL)] },
+  "case-coupling": { h: 180, nodes: [
+      n("nav", 10, 15, 160, "Navigator", ["new ChemicalEngine()"], RUST),
+      n("chem", 320, 15, 190, "ChemicalEngine", ["concrete class"], RUST),
+      n("nav2", 10, 110, 160, "Navigator", ["engine: Propulsion"], TEAL),
+      n("prop", 320, 110, 190, "<<interface>> Propulsion", ["injected via __init__"], TEAL) ],
+    edges: [e("nav", "chem", "instantiates", RUST), e("nav2", "prop", "delegates to", TEAL)] },
+};
+
+const CONCEPTS = [
+  { key: "class", name: "Class", group: "lifecycle",
+    narrative: "A class is a blueprint: it declares the state an object will hold and the operations allowed on that state. It is a type definition, not a running thing.",
+    code: "class FuelTank:\n    capacity_kg: float\n    fuel_kg: float\n    def burn(self, dt: float) -> None: ...\n    def refuel(self, kg: float) -> None: ...",
+    trapCode: "class FuelTank:\n    fuel_kg = 0.0          # class attribute!\n    @staticmethod\n    def burn(dt): FuelTank.fuel_kg -= 25 * dt",
+    trap: "Trap: treating a class as a bag of static helpers with shared mutable globals. Every instance then shares one state and invariants leak." },
+  { key: "object", name: "Object", group: "lifecycle",
+    narrative: "An object encapsulates state and behavior behind a defined interaction boundary. It maintains its invariants only because every state change goes through controlled operations - the language itself guarantees nothing about domain rules.",
+    code: "tank = FuelTank(capacity_kg=1000, fuel_kg=600)\ntank.burn(4)      # 600 - 25*4 = 500 kg\ntank.refuel(200)  # 700 kg",
+    trapCode: "tank.fuel_kg = -50   # reachable field\nassert 0 <= tank.fuel_kg  # fails",
+    trap: "Trap: tank.fuel_kg = -50 from outside. If the field is reachable, the invariant 0 <= fuel <= capacity is a hope, not a guarantee." },
+  { key: "constructor", name: "Constructor / Initialization", group: "lifecycle",
+    narrative: "Initialization establishes the initial state, binds required dependencies, and validates invariants before the object is usable. Languages differ: Java/C# constructors, C++ member-initializer lists, Python __init__ (after __new__), Rust/Go factory functions.",
+    code: "def __init__(self, engine: Engine, capacity_kg: float, fuel_kg: float):\n    if not 0 <= fuel_kg <= capacity_kg:\n        raise ValueError('fuel outside bounds')\n    self._engine = engine",
+    trapCode: "tank = FuelTank()        # half-built\ntank.burn(4)             # engine is None\ntank.init(engine, 1000, 600)",
+    trap: "Trap: a no-arg constructor followed by init() or setters. Between the two calls the object exists in an invalid, half-built state." },
+  { key: "encapsulation", name: "Encapsulation", group: "lifecycle",
+    narrative: "Encapsulation is access control in service of invariant protection: internal fields are hidden so that only the object's own operations can change them.",
+    code: "class FuelTank:\n    def __init__(self, ...): self._fuel_kg = ...\n    @property\n    def fuel_kg(self) -> float: return self._fuel_kg",
+    trapCode: "private double fuelKg;\npublic void setFuelKg(double v) { fuelKg = v; }",
+    trap: "Trap: a private field with a public setter for every field. Access is technically controlled, but nothing is protected." },
+  { key: "abstraction", name: "Abstraction", group: "contracts",
+    narrative: "Abstraction exposes the essential capabilities a caller needs while hiding implementation details. It is about what is visible to the caller, distinct from encapsulation's job of guarding state.",
+    code: "class Propulsion(ABC):\n    @abstractmethod\n    def thrust(self, dt: float) -> float: ...",
+    trapCode: "engine.preheat_catalyst(450)\nengine.open_valve(0.3)\nengine.thrust(dt)   # caller must know internals",
+    trap: "Trap: leaky abstraction - thrust() that requires callers to pre-heat the catalyst bed first. Hidden details have escaped into the contract." },
+  { key: "interface", name: "Interface", group: "contracts",
+    narrative: "An interface is an explicit contract of operations with no committed implementation. Multiple classes implement it, and clients depend on the contract instead of a concrete class.",
+    code: "interface Propulsion { double thrust(double dt); }\nclass IonThruster implements Propulsion { ... }",
+    trapCode: "interface Vehicle { fly(); dive(); drive(); dock(); ... }\nclass Car implements Vehicle {\n  void fly() { throw new UnsupportedOperationException(); }\n}",
+    trap: "Trap: a 20-method 'god interface'. Implementers stub half the methods and throw UnsupportedOperationException at runtime." },
+  { key: "inheritance", name: "Inheritance", group: "reuse",
+    narrative: "Inheritance models specialization: a subtype must be behaviorally substitutable for its base type wherever the base is expected (Liskov). Code reuse is a side effect, not the justification.",
+    code: "class Rectangle:\n    def set_width(self, w): ...\n    def set_height(self, h): ...\nclass Square(Rectangle): ...",
+    trapCode: "r: Rectangle = Square(1)\nr.set_width(5); r.set_height(4)\nassert r.area() == 20   # 16 -> fails",
+    trap: "Trap: inheriting only to reuse code. Square narrows Rectangle's contract: set_width(5); set_height(4) gives area 16, not 20." },
+  { key: "composition", name: "Composition", group: "reuse",
+    narrative: "Composition is has-a: an object assembles behavior from collaborating components it contains and delegates to. Components can be swapped without touching a class hierarchy.",
+    code: "class Spacecraft:\n    def __init__(self, engine: Propulsion,\n                 guidance: Guidance, comms: Comms): ...",
+    trapCode: "craft.engine.tank.valve.open()   # reaching through parts",
+    trap: "Trap: composing then exposing every component publicly (craft.engine.tank.valve.open()) - a Law of Demeter violation." },
+  { key: "polymorphism", name: "Polymorphism", group: "dispatch",
+    narrative: "Subtype polymorphism selects an overriding method from the receiver's runtime type (dynamic dispatch). Overloading is different: the compiler selects among signatures from the call's argument types. Python and JavaScript have no signature overloading.",
+    code: "for s in shapes:\n    s.draw()            # runtime dispatch\ntranslate(1.0, 2.0)      # matches (float, float)\ntranslate(1.0, 2.0, 3.0) # matches (float, float, float)",
+    trapCode: "Shape s = new Circle();\ndescribe(s);   // describe(Shape s), not describe(Circle c)\ns.draw();      // Circle.draw()",
+    trap: "Trap: expecting an overload to dispatch on runtime type. With Shape s = new Circle(), describe(s) picks describe(Shape) even though s.draw() runs Circle.draw().",
+    figures: ["fig41", "fig42"] },
+];
+
+const CASE_STUDIES = [
+  { key: "liskov", title: "Liskov Substitution: Rectangle vs. Square",
+    symptom: "Layout code resizes a shape with set_width(5); set_height(4) and the area comes back 16 instead of 20.",
+    rootCause: "Rectangle promises independent width/height mutation; Square enforces width == height and silently breaks that promise.",
+    fix: "Make shapes immutable or give Square and Rectangle a common Shape abstraction instead of an is-a link.",
+    related: ["inheritance", "polymorphism"] },
+  { key: "fragile-base", title: "Fragile Base Classes & Deep Hierarchies",
+    symptom: "A one-line change in BaseVehicle.update() breaks seven subclasses three levels down.",
+    rootCause: "Subclasses depend on undocumented call order inside base methods; a five-level tree couples every layer to every other.",
+    fix: "Keep hierarchies shallow, mark extension points explicitly (template method / final), prefer composition for variation.",
+    related: ["inheritance", "encapsulation"] },
+  { key: "diamond", title: "Diamond Inheritance Conflicts",
+    symptom: "Amphibian inherits from Car and Boat; Amphibian.move() calls the wrong parent and the shared Vehicle state is initialized twice.",
+    rootCause: "Two inheritance paths reach one base; method resolution order and shared-state ownership become ambiguous.",
+    fix: "Use interfaces for capability, composition for behavior, and C++ virtual inheritance or Python MRO + super() only deliberately.",
+    related: ["inheritance", "interface"] },
+  { key: "explosion", title: "Combinatorial Subclass Explosion vs. Composition",
+    symptom: "3 engines x 2 guidance x 2 comms requires 12 concrete Spacecraft subclasses; adding one engine adds 4 more.",
+    rootCause: "Independent axes of variation were encoded in a single inheritance tree, so classes multiply instead of add.",
+    fix: "Compose traits: 3 + 2 + 2 = 7 component classes, swapped at runtime.",
+    related: ["composition", "inheritance"] },
+  { key: "anemic", title: "Anemic Encapsulation (Getters/Setters Everywhere)",
+    symptom: "Callers set fuel_kg = -50 through setFuelKg() and the tank reports negative propellant.",
+    rootCause: "Every field has a public setter, so business rules live in callers and the object guards nothing.",
+    fix: "Replace setters with intention-revealing operations (burn, refuel) that validate the invariant.",
+    related: ["encapsulation", "object"] },
+  { key: "coupling", title: "Concrete Implementation Coupling",
+    symptom: "Swapping ChemicalEngine for IonThruster requires edits in 40 call sites and a full regression test.",
+    rootCause: "Clients construct and type against the concrete class instead of the Propulsion contract.",
+    fix: "Depend on the interface and inject the implementation through the constructor.",
+    related: ["interface", "abstraction", "constructor"] },
+];
+
+const ENGINES = [
+  { name: "ChemicalEngine", rate: 25.0 },
+  { name: "ColdGasThruster", rate: 2.0 },
+  { name: "IonThruster", rate: 0.5 },
+];
+const TRAITS = { Engine: ENGINES.map(x => x.name), Guidance: ["StarTracker", "GpsGuidance"], Comms: ["RadioLink", "LaserLink"] };
+
+/* ---- Deterministic model mirror (same rules as oop_guide.models) ---- */
+class InvariantViolation extends Error {}
+const r6 = x => Math.round(x * 1e6) / 1e6;
+const fmt = x => String(parseFloat(Number(x).toFixed(4)));
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+function makeTank(fuel, capacity = 1000, engine = ENGINES[0]) {
+  if (!(capacity > 0)) throw new InvariantViolation("capacity_kg must be > 0");
+  if (!(fuel >= 0 && fuel <= capacity)) throw new InvariantViolation(`fuel_kg=${fmt(fuel)} outside [0, ${fmt(capacity)}]`);
+  return { fuel, capacity, engine };
+}
+function tankBurn(t, dt) {
+  if (!Number.isFinite(dt) || dt < 0) throw new InvariantViolation("burn(dt) requires dt >= 0");
+  const required = r6(t.engine.rate * dt);
+  if (required > t.fuel) throw new InvariantViolation(`burn(${fmt(dt)}) needs ${fmt(required)} kg but only ${fmt(t.fuel)} kg remain`);
+  return Object.assign({}, t, { fuel: r6(t.fuel - required) });
+}
+function tankRefuel(t, kg) {
+  if (!Number.isFinite(kg) || kg <= 0) throw new InvariantViolation("refuel(kg) requires kg > 0");
+  if (t.fuel + kg > t.capacity) throw new InvariantViolation(`refuel(${fmt(kg)}) would exceed capacity (${fmt(t.fuel)} + ${fmt(kg)} > ${fmt(t.capacity)})`);
+  return Object.assign({}, t, { fuel: r6(t.fuel + kg) });
+}
+const invariantHolds = t => t.fuel >= 0 && t.fuel <= t.capacity;
+
+const SHAPES = {
+  Circle:   { dims: "r=1.5",         area: Math.PI * 1.5 * 1.5, perimeter: 2 * Math.PI * 1.5 },
+  Square:   { dims: "s=3",           area: 3 * 3,               perimeter: 4 * 3 },
+  Triangle: { dims: "b=4, h=3.5",    area: 0.5 * 4 * 3.5,       perimeter: null },
+};
+
+function checkRectangleContract(type, w, h) {
+  let width, height;
+  const setWidth = v => { width = v; if (type === "Square") height = v; };
+  const setHeight = v => { height = v; if (type === "Square") width = v; };
+  width = height = 1;
+  setWidth(w); setHeight(h);
+  const expected = w * h, actual = width * height;
+  return { type, w, h, width, height, expected, actual, holds: Math.abs(expected - actual) < 1e-9 };
+}
+
+const product = xs => xs.reduce((a, b) => a * b, 1);
+const sum = xs => xs.reduce((a, b) => a + b, 0);
+
+const TRANSLATE_SIGNATURES = { 2: "translate(float x, float y)", 3: "translate(float x, float y, float z)" };
+const NUMERIC = /^[-+]?(\d+\.?\d*|\.\d+)([eE][-+]?\d+)?$/;
+function resolveTranslate(argText) {
+  const args = argText.split(",").map(s => s.trim()).filter(s => s.length);
+  for (const a of args) if (!NUMERIC.test(a)) throw new TypeError(`no translate overload accepts ${a}`);
+  const sig = TRANSLATE_SIGNATURES[args.length];
+  if (!sig) throw new TypeError(`no translate overload takes ${args.length} argument(s)`);
+  return { args, sig };
+}
+
+/* ---- Two-layer SVG renderer ---- */
+const nodeH = nd => 22 + 13 * nd.sigs.length + (nd.sigs.length ? 6 : 0);
+const centerOf = nd => [nd.x + nd.w / 2, nd.y + nodeH(nd) / 2];
+function boundaryPoint(nd, toward) {
+  const [cx, cy] = centerOf(nd);
+  const dx = toward[0] - cx, dy = toward[1] - cy;
+  if (!dx && !dy) return [cx, cy];
+  const tx = dx ? (nd.w / 2) / Math.abs(dx) : Infinity;
+  const ty = dy ? (nodeH(nd) / 2) / Math.abs(dy) : Infinity;
+  const t = Math.min(tx, ty);
+  return [cx + dx * t, cy + dy * t];
+}
+
+/* Deterministic fit: long Layer 2 strings are compressed into their box instead of overflowing. */
+const fitText = (s, charW, maxW) => s.length * charW > maxW ? ` textLength="${maxW}" lengthAdjust="spacingAndGlyphs"` : "";
+
+function renderFigure(spec, extraClass = "") {
+  const byKey = Object.fromEntries(spec.nodes.map(nd => [nd.k, nd]));
+  const L1 = [], L2 = [];
+  const b = spec.boundary;
+  if (b) {
+    L1.push(`<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" rx="8" fill="none" stroke="${TEAL}" stroke-width="1.4" stroke-dasharray="6 4"/>`);
+    L2.push(`<text class="l2-boundary" x="${b.x + b.w - 8}" y="${b.y + 14}" text-anchor="end" fill="${TEAL}">${esc(b.label)}</text>`);
+  }
+  for (const ed of spec.edges) {
+    if (!ARROW_LABELS.includes(ed.label)) throw new Error(`unknown arrow label ${ed.label}`);
+    const s = byKey[ed.from], d = byKey[ed.to];
+    const p1 = boundaryPoint(s, centerOf(d)), p2 = boundaryPoint(d, centerOf(s));
+    const ang = Math.atan2(p2[1] - p1[1], p2[0] - p1[0]), sz = 9, sp = 0.42;
+    const head = [p2, [p2[0] - sz * Math.cos(ang - sp), p2[1] - sz * Math.sin(ang - sp)],
+      [p2[0] - sz * Math.cos(ang + sp), p2[1] - sz * Math.sin(ang + sp)]].map(p => p.map(v => v.toFixed(1)).join(",")).join(" ");
+    const at = ed.at || 0.5;
+    const mx = p1[0] + (p2[0] - p1[0]) * at, my = p1[1] + (p2[1] - p1[1]) * at;
+    const pw = ed.label.length * 5.9 + 12;
+    let cross = "";
+    if (ed.blocked) {
+      const bx = p1[0] + (p2[0] - p1[0]) * 0.8, by = p1[1] + (p2[1] - p1[1]) * 0.8;
+      cross = `<path d="M${bx - 7},${by - 7}L${bx + 7},${by + 7}M${bx + 7},${by - 7}L${bx - 7},${by + 7}" stroke="${RUST}" stroke-width="3"/>`;
+    }
+    L1.push(`<g class="edge" data-from="${esc(ed.from)}" data-to="${esc(ed.to)}">` +
+      `<line class="shaft" x1="${p1[0].toFixed(1)}" y1="${p1[1].toFixed(1)}" x2="${p2[0].toFixed(1)}" y2="${p2[1].toFixed(1)}" stroke="${ed.color}"${ed.dashed ? ' stroke-dasharray="5 4"' : ""}/>` +
+      `<polygon points="${head}" fill="${ed.color}"/>${cross}` +
+      `<rect x="${(mx - pw / 2).toFixed(1)}" y="${(my - 8).toFixed(1)}" width="${pw.toFixed(1)}" height="16" rx="4" fill="${PAPER}" stroke="${ed.color}" stroke-width=".8"/></g>`);
+    L2.push(`<text class="l2-label pill" data-from="${esc(ed.from)}" data-to="${esc(ed.to)}" x="${mx.toFixed(1)}" y="${(my + 3.6).toFixed(1)}" text-anchor="middle" fill="${ed.color}">${esc(ed.label)}</text>`);
+  }
+  for (const nd of spec.nodes) {
+    const h = nodeH(nd);
+    L1.push(`<g class="node" data-k="${esc(nd.k)}"><rect class="frame" x="${nd.x}" y="${nd.y}" width="${nd.w}" height="${h}" rx="4" fill="${CARD}" stroke="${nd.color}"/>` +
+      `<rect x="${nd.x}" y="${nd.y}" width="${nd.w}" height="22" fill="${nd.color}"/></g>`);
+    L2.push(`<text class="l2-title" x="${nd.x + nd.w / 2}" y="${nd.y + 15}" text-anchor="middle"${fitText(nd.title, 7.4, nd.w - 12)}>${esc(nd.title)}</text>`);
+    nd.sigs.forEach((sig, i) => L2.push(`<text class="l2-sig" x="${nd.x + 7}" y="${nd.y + 37 + i * 13}" xml:space="preserve"${fitText(sig, 6.7, nd.w - 14)}>${esc(sig)}</text>`));
+  }
+  const label = spec.title ? `aria-label="${esc(spec.title)}"` : 'aria-label="Conceptual diagram"';
+  return `<svg class="fig ${extraClass}" viewBox="0 0 520 ${spec.h}" role="img" ${label}>` +
+    `<g class="layer1">${L1.join("")}</g><g class="layer2">${L2.join("")}</g></svg>`;
+}
+
+function highlight(container, keys) {
+  const svg = container.querySelector("svg.fig");
+  if (!svg) return;
+  svg.querySelectorAll(".hot").forEach(el => el.classList.remove("hot"));
+  svg.classList.toggle("dim", keys.length > 0);
+  for (const k of keys) {
+    svg.querySelectorAll(`[data-to="${CSS.escape(k)}"], .node[data-k="${CSS.escape(k)}"]`).forEach(el => el.classList.add("hot"));
+  }
+}
+
+/* ---- Catalog UI ---- */
+const groupOf = key => GROUPS.find(g => g.key === key);
+const conceptOf = key => CONCEPTS.find(c => c.key === key);
+const $ = id => document.getElementById(id);
+
+function renderGroups() {
+  $("groups").innerHTML = GROUPS.map(g => `
+    <button class="group-card ${g.color}" data-goto="${g.key}">
+      <div class="band"><span class="num">${String(g.number).padStart(2, "0")}</span><h3>${esc(g.title)}</h3></div>
+      <div class="body"><p>${esc(g.summary)}</p><ul>${g.concepts.map(k => `<li>${esc(conceptOf(k).name)}</li>`).join("")}</ul></div>
+    </button>`).join("");
+}
+
+function figureBlock(key) {
+  const f = FIGURES[key];
+  return `${f.title ? `<h4 class="display" style="font-size:12px;margin:8px 0 4px;color:${RUST}">${esc(f.title)}</h4>` : ""}` +
+    renderFigure(f) + (f.caption ? `<div class="caption">${esc(f.caption)}</div>` : "");
+}
+
+function renderConcepts() {
+  $("concepts").innerHTML = CONCEPTS.map(c => {
+    const g = groupOf(c.group);
+    const figs = c.figures || [c.key];
+    return `
+    <article class="card concept" id="concept-${c.key}" data-group="${c.group}" data-key="${c.key}">
+      <header><h3>${esc(c.name)}</h3><span class="tag">Group ${g.number} &middot; ${esc(g.title)}</span></header>
+      <div class="views" role="tablist" aria-label="${esc(c.name)} views">
+        <button class="chip" role="tab" data-view="narrative" aria-pressed="true">Narrative</button>
+        <button class="chip teal" role="tab" data-view="diagram" aria-pressed="false">Conceptual Diagram</button>
+        <button class="chip rust" role="tab" data-view="code" aria-pressed="false">Code vs. Trap</button>
+      </div>
+      <div class="view" data-view="narrative"><p>${esc(c.narrative)}</p></div>
+      <div class="view hidden" data-view="diagram">${figs.map(figureBlock).join("")}</div>
+      <div class="view hidden" data-view="code">
+        <div class="code-trap">
+          <div><h4 class="display">Code</h4><pre>${esc(c.code)}</pre></div>
+          <div class="trap"><h4 class="display">Trap</h4><pre>${esc(c.trapCode)}</pre></div>
+        </div>
+        <p class="trap-note">${esc(c.trap)}</p>
+      </div>
+    </article>`;
+  }).join("");
+}
+
+function renderCases() {
+  $("cases").innerHTML = CASE_STUDIES.map(cs => `
+    <article class="card case" id="case-${cs.key}" data-key="${cs.key}">
+      <header><h3>${esc(cs.title)}</h3><span class="tag">Case study</span></header>
+      <div style="margin-top:10px">${renderFigure(FIGURES["case-" + cs.key])}</div>
+      <dl>
+        <dt class="symptom">Symptom</dt><dd>${esc(cs.symptom)}</dd>
+        <dt>Root cause</dt><dd>${esc(cs.rootCause)}</dd>
+        <dt class="fix">Fix</dt><dd>${esc(cs.fix)}</dd>
+      </dl>
+      <div class="related">${cs.related.map(k => `<button class="chip teal" data-concept="${k}">${esc(conceptOf(k).name)}</button>`).join("")}</div>
+    </article>`).join("");
+}
+
+const state = { filter: "all", query: "" };
+
+function searchText(el) {
+  if (!el.dataset.search) el.dataset.search = el.textContent.toLowerCase().replace(/\s+/g, " ");
+  return el.dataset.search;
+}
+
+function applyFilters() {
+  const f = state.filter, q = state.query.trim().toLowerCase();
+  const isGroup = GROUPS.some(g => g.key === f);
+  document.querySelectorAll("#filters .chip").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.filter === f)));
+  $("groups-section").classList.toggle("hidden", !(f === "all" || isGroup) || q.length > 0);
+
+  let nConcepts = 0;
+  document.querySelectorAll(".concept").forEach(el => {
+    const show = (f === "all" || el.dataset.group === f) && (!q || searchText(el).includes(q));
+    el.classList.toggle("hidden", !show);
+    nConcepts += show;
+  });
+  $("concepts-section").classList.toggle("hidden", nConcepts === 0);
+  $("concept-count").textContent = `${nConcepts} of ${CONCEPTS.length} concepts`;
+
+  let nCases = 0;
+  document.querySelectorAll(".case").forEach(el => {
+    const cs = CASE_STUDIES.find(c => c.key === el.dataset.key);
+    const inScope = f === "all" || f === "cases" || (isGroup && cs.related.some(k => conceptOf(k).group === f));
+    const show = inScope && (!q || searchText(el).includes(q));
+    el.classList.toggle("hidden", !show);
+    nCases += show;
+  });
+  $("cases-section").classList.toggle("hidden", nCases === 0);
+  $("case-count").textContent = `${nCases} of ${CASE_STUDIES.length} case studies`;
+
+  $("lab-section").classList.toggle("hidden", !(f === "all" || f === "lab") || q.length > 0);
+}
+
+function setView(card, view) {
+  card.querySelectorAll(".views .chip").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.view === view)));
+  card.querySelectorAll(".view").forEach(v => v.classList.toggle("hidden", v.dataset.view !== view));
+}
+
+function bindCatalog() {
+  $("filters").addEventListener("click", ev => {
+    const b = ev.target.closest("[data-filter]");
+    if (!b) return;
+    state.filter = b.dataset.filter;
+    applyFilters();
+  });
+  $("search").addEventListener("input", ev => { state.query = ev.target.value; applyFilters(); });
+  $("groups").addEventListener("click", ev => {
+    const b = ev.target.closest("[data-goto]");
+    if (!b) return;
+    state.filter = b.dataset.goto;
+    applyFilters();
+    $("concepts-section").scrollIntoView();
+  });
+  $("concepts").addEventListener("click", ev => {
+    const b = ev.target.closest(".views .chip");
+    if (b) setView(b.closest(".concept"), b.dataset.view);
+  });
+  $("cases").addEventListener("click", ev => {
+    const b = ev.target.closest("[data-concept]");
+    if (!b) return;
+    const c = conceptOf(b.dataset.concept);
+    state.filter = c.group; state.query = ""; $("search").value = "";
+    applyFilters();
+    const card = $("concept-" + c.key);
+    setView(card, "diagram");
+    card.scrollIntoView();
+  });
+}
+
+/* ---- Invariant Lab: propellant tank ---- */
+const lab = { tank: makeTank(600), broken: false };
+
+function logLine(text, ok) {
+  const li = document.createElement("li");
+  li.className = ok ? "ok" : "bad";
+  li.textContent = text;
+  $("tank-log").prepend(li);
+}
+
+function drawTank() {
+  const t = lab.tank, top = 20, height = 200, bottom = top + height;
+  const frac = Math.max(0, Math.min(1, t.fuel / t.capacity));
+  const fillH = height * frac;
+  const neg = t.fuel < 0 ? Math.min(32, height * (-t.fuel / t.capacity)) : 0;
+  const ok = invariantHolds(t);
+  $("tank-svg").innerHTML =
+    `<g class="layer1">` +
+    `<rect x="45" y="${top}" width="80" height="${height}" rx="6" fill="${CARD}" stroke="${NAVY}" stroke-width="2"/>` +
+    `<rect id="tank-fill" x="47" y="${bottom - fillH}" width="76" height="${fillH}" fill="${ok ? TEAL : RUST}" opacity=".85"/>` +
+    (neg ? `<rect x="47" y="${bottom}" width="76" height="${neg}" fill="${RUST}"/>` : "") +
+    `<line x1="30" y1="${top}" x2="140" y2="${top}" stroke="${RUST}" stroke-width="1.2" stroke-dasharray="4 3"/>` +
+    `<line x1="30" y1="${bottom}" x2="140" y2="${bottom}" stroke="${RUST}" stroke-width="1.2" stroke-dasharray="4 3"/>` +
+    `</g><g class="layer2">` +
+    `<text class="l2-sig" x="85" y="${top - 6}" text-anchor="middle" fill="${RUST}">${fmt(t.capacity)} kg</text>` +
+    `<text class="l2-sig" x="85" y="${bottom + 14 + (neg ? neg : 0)}" text-anchor="middle" fill="${RUST}">0 kg</text>` +
+    `<text class="l2-title" x="85" y="${Math.min(bottom - 6, bottom - fillH + 16)}" text-anchor="middle" style="fill:${ok ? CARD : RUST}">${fmt(t.fuel)} kg</text>` +
+    `</g>`;
+  const r = $("tank-readout");
+  r.className = "readout " + (ok ? "ok" : "bad");
+  r.textContent =
+    `engine        ${t.engine.name} (${fmt(t.engine.rate)} kg/s)\n` +
+    `fuel_kg       ${fmt(t.fuel)} / ${fmt(t.capacity)}\n` +
+    `headroom      ${fmt(r6(t.capacity - t.fuel))} kg\n` +
+    `max burn      ${ok ? fmt(t.fuel / t.engine.rate) + " s" : "n/a"}\n` +
+    `invariant     ${ok ? "HOLDS  0 <= fuel <= capacity" : "BROKEN 0 <= fuel <= capacity"}`;
+}
+
+function runTankOp(op, arg) {
+  const before = lab.tank.fuel;
+  try {
+    lab.tank = op === "burn" ? tankBurn(lab.tank, arg) : tankRefuel(lab.tank, arg);
+    logLine(`${op}(${fmt(arg)})  ${fmt(before)} -> ${fmt(lab.tank.fuel)} kg  OK`, true);
+  } catch (err) {
+    if (!(err instanceof InvariantViolation)) throw err;
+    logLine(`${op}(${Number.isFinite(arg) ? fmt(arg) : "?"})  REJECTED: ${err.message}`, false);
+  }
+  drawTank();
+}
+
+function bindTank() {
+  $("btn-burn").addEventListener("click", () => runTankOp("burn", parseFloat($("burn-dt").value)));
+  $("btn-refuel").addEventListener("click", () => runTankOp("refuel", parseFloat($("refuel-kg").value)));
+  $("btn-bypass").addEventListener("click", () => {
+    lab.tank = Object.assign({}, lab.tank, { fuel: -50 });
+    logLine("tank._fuel_kg = -50  bypassed encapsulation -> INVARIANT BROKEN", false);
+    drawTank();
+  });
+  $("btn-reset").addEventListener("click", () => {
+    lab.tank = makeTank(600, 1000, lab.tank.engine);
+    $("tank-log").innerHTML = "";
+    logLine(`FuelTank(${lab.tank.engine.name}, capacity_kg=1000, fuel_kg=600)  constructed`, true);
+    drawTank();
+  });
+}
+
+/* ---- Invariant Lab: Liskov ---- */
+function runLiskov() {
+  const type = $("lsp-type").value, w = parseFloat($("lsp-w").value), h = parseFloat($("lsp-h").value);
+  const out = $("lsp-readout");
+  if (!(w > 0 && h > 0)) {
+    out.className = "readout bad";
+    out.textContent = "width and height must be positive numbers";
+    $("lsp-svg").innerHTML = "";
+    return;
+  }
+  const res = checkRectangleContract(type, w, h);
+  const scale = Math.min(150 / Math.max(res.w, res.width), 140 / Math.max(res.h, res.height));
+  const ox = 30, oy = 25;
+  const color = res.holds ? TEAL : RUST;
+  $("lsp-svg").innerHTML =
+    `<g class="layer1">` +
+    `<rect x="${ox}" y="${oy}" width="${res.w * scale}" height="${res.h * scale}" fill="none" stroke="${NAVY}" stroke-width="1.5" stroke-dasharray="6 4"/>` +
+    `<rect x="${ox}" y="${oy}" width="${res.width * scale}" height="${res.height * scale}" fill="${color}" fill-opacity=".18" stroke="${color}" stroke-width="2.2"/>` +
+    `</g><g class="layer2">` +
+    `<text class="l2-sig" x="260" y="45">r: Rectangle = ${esc(type)}(1, 1)</text>` +
+    `<text class="l2-sig" x="260" y="65">r.set_width(${fmt(w)}); r.set_height(${fmt(h)})</text>` +
+    `<text class="l2-sig" x="260" y="95">expected  ${fmt(res.w)} x ${fmt(res.h)} = ${fmt(res.expected)}</text>` +
+    `<text class="l2-sig" x="260" y="115" fill="${color}">actual    ${fmt(res.width)} x ${fmt(res.height)} = ${fmt(res.actual)}</text>` +
+    `<text class="l2-boundary" x="260" y="150" fill="${color}">CONTRACT ${res.holds ? "HOLDS" : "FAILS"}</text>` +
+    `<text class="l2-label" x="260" y="172" fill="${NAVY}">dashed: what the Rectangle client expects</text>` +
+    `</g>`;
+  out.className = "readout " + (res.holds ? "ok" : "bad");
+  out.textContent = res.holds
+    ? `${type} is substitutable here: area ${fmt(res.actual)} == ${fmt(res.expected)}.`
+    : `${type} breaks Liskov: it preserves its own invariant (width == height) by violating Rectangle's promise that set_width and set_height are independent. area ${fmt(res.actual)} != ${fmt(res.expected)}.`;
+}
+
+/* ---- Invariant Lab: composition ---- */
+function fillSelect(sel, options) { sel.innerHTML = options.map(o => `<option>${esc(o)}</option>`).join(""); }
+
+function runCompose() {
+  const engine = ENGINES.find(x => x.name === $("sel-engine").value);
+  const guidance = $("sel-guidance").value, comms = $("sel-comms").value;
+  const spec = { h: 195, nodes: [
+      n("craft", 160, 12, 200, "Spacecraft", ["thrust() / navigate() / send()"], TEAL),
+      n("engine", 15, 130, 150, "Engine", [engine.name, `rate = ${fmt(engine.rate)} kg/s`]),
+      n("guidance", 185, 130, 150, "Guidance", [guidance]),
+      n("comms", 355, 130, 150, "Comms", [comms]) ],
+    edges: FIGURES.composition.edges };
+  $("compose-fig").innerHTML = renderFigure(spec);
+  if (lab.tank.engine.name !== engine.name) {
+    lab.tank = Object.assign({}, lab.tank, { engine });
+    logLine(`swap_engine(${engine.name})  tank keeps ${fmt(lab.tank.fuel)} kg`, true);
+    drawTank();
+  }
+  const clamp = v => Math.max(1, Math.min(8, Math.round(Number(v) || 1)));
+  const sizes = ["n-engine", "n-guidance", "n-comms"].map(id => clamp($(id).value));
+  const subclasses = product(sizes), components = sum(sizes);
+  const max = Math.max(subclasses, components);
+  $("explosion-bars").innerHTML = [
+    ["inheritance subclasses", subclasses, RUST], ["composed components", components, TEAL],
+  ].map(([label, v, color]) => `<div class="bar"><span>${label}</span><div class="track"><div class="fill" style="width:${(100 * v / max).toFixed(1)}%;background:${color}"></div></div><b>${v}</b></div>`).join("");
+  const plusOne = [sizes[0] + 1, sizes[1], sizes[2]];
+  $("compose-readout").className = "readout";
+  $("compose-readout").textContent =
+    `inheritance: ${sizes.join(" x ")} = ${subclasses} concrete subclasses\n` +
+    `composition: ${sizes.join(" + ")} = ${components} component classes\n` +
+    `one more engine: +${product(plusOne) - subclasses} subclasses vs +1 component`;
+}
+
+/* ---- Invariant Lab: dispatch vs overloading ---- */
+let animTimer = null;
+
+function drawShape(type) {
+  const L1 = {
+    Circle: `<circle cx="85" cy="62" r="45" fill="${TEAL}" fill-opacity=".18" stroke="${TEAL}" stroke-width="2"/>`,
+    Square: `<rect x="40" y="17" width="90" height="90" fill="${TEAL}" fill-opacity=".18" stroke="${TEAL}" stroke-width="2"/>`,
+    Triangle: `<polygon points="25,115 145,115 85,10" fill="${TEAL}" fill-opacity=".18" stroke="${TEAL}" stroke-width="2"/>`,
+  }[type];
+  const s = SHAPES[type];
+  $("shape-svg").innerHTML = `<g class="layer1">${L1}</g><g class="layer2">` +
+    `<text class="l2-sig" x="85" y="138" text-anchor="middle">${type} ${s.dims}  area=${fmt(s.area)}</text></g>`;
+}
+
+function runDispatch() {
+  if (animTimer) { clearTimeout(animTimer); animTimer = null; }
+  const declared = $("disp-static").value, runtime = $("disp-runtime").value;
+  const out = $("dispatch-readout");
+  if (declared === "Circle" && runtime !== "Circle") {
+    out.className = "readout bad";
+    out.textContent = `Circle s = new ${runtime}();\ncompile error: ${runtime} is not assignable to Circle`;
+    highlight($("dispatch-fig"), []);
+    return;
+  }
+  highlight($("dispatch-fig"), [runtime]);
+  drawShape(runtime);
+  const s = SHAPES[runtime];
+  out.className = "readout ok";
+  out.textContent =
+    `${declared} s = new ${runtime}();\n` +
+    `s.draw()     -> ${runtime}.draw()      [runtime type]\n` +
+    `describe(s)  -> describe(${declared} ${declared === "Shape" ? "s" : "c"})  [declared type]\n` +
+    `area         = ${fmt(s.area)}` + (s.perimeter !== null ? `   perimeter = ${fmt(s.perimeter)}` : "");
+}
+
+function animateDispatch() {
+  if (animTimer) clearTimeout(animTimer);
+  const order = ["Circle", "Square", "Triangle"], lines = ["for s in shapes: s.draw()"];
+  let i = 0;
+  const step = () => {
+    if (i >= order.length) { highlight($("dispatch-fig"), []); animTimer = null; return; }
+    const t = order[i++];
+    highlight($("dispatch-fig"), [t]);
+    drawShape(t);
+    lines.push(`  s: ${t.padEnd(8)} -> ${t}.draw()   area=${fmt(SHAPES[t].area)}`);
+    $("dispatch-readout").className = "readout ok";
+    $("dispatch-readout").textContent = lines.join("\n");
+    animTimer = setTimeout(step, 900);
+  };
+  step();
+}
+
+function runTranslate() {
+  const out = $("translate-readout");
+  const raw = $("translate-args").value;
+  try {
+    const { args, sig } = resolveTranslate(raw);
+    const callKey = args.length === 2 ? "call2" : "call3";
+    const spec = Object.assign({}, FIGURES.fig42, {
+      nodes: FIGURES.fig42.nodes.map(nd => nd.k === callKey ? Object.assign({}, nd, { sigs: [`translate(${args.join(", ")})`.slice(0, 30)] }) : nd) });
+    $("overload-fig").innerHTML = renderFigure(spec);
+    highlight($("overload-fig"), [args.length === 2 ? "sig2" : "sig3"]);
+    out.className = "readout ok";
+    out.textContent = `translate(${args.join(", ")})  matches  ${sig}\nselected by call signature (${args.length} float args), independent of any runtime object type`;
+  } catch (err) {
+    $("overload-fig").innerHTML = renderFigure(FIGURES.fig42);
+    out.className = "readout bad";
+    out.textContent = `translate(${raw})\n${err.message}`;
+  }
+}
+
+function bindLab() {
+  bindTank();
+  $("btn-lsp").addEventListener("click", runLiskov);
+  ["lsp-type", "lsp-w", "lsp-h"].forEach(id => $(id).addEventListener("change", runLiskov));
+  fillSelect($("sel-engine"), TRAITS.Engine);
+  fillSelect($("sel-guidance"), TRAITS.Guidance);
+  fillSelect($("sel-comms"), TRAITS.Comms);
+  ["sel-engine", "sel-guidance", "sel-comms", "n-engine", "n-guidance", "n-comms"]
+    .forEach(id => ["input", "change"].forEach(ev => $(id).addEventListener(ev, runCompose)));
+  $("dispatch-fig").innerHTML = renderFigure(FIGURES.fig41);
+  $("btn-dispatch").addEventListener("click", runDispatch);
+  ["disp-static", "disp-runtime"].forEach(id => $(id).addEventListener("change", runDispatch));
+  $("btn-animate").addEventListener("click", animateDispatch);
+  $("btn-translate").addEventListener("click", runTranslate);
+  $("translate-args").addEventListener("keydown", ev => { if (ev.key === "Enter") runTranslate(); });
+}
+
+/* ---- Boot ---- */
+renderGroups();
+renderConcepts();
+renderCases();
+bindCatalog();
+bindLab();
+applyFilters();
+logLine("FuelTank(ChemicalEngine, capacity_kg=1000, fuel_kg=600)  constructed", true);
+drawTank();
+runLiskov();
+runCompose();
+runDispatch();
+runTranslate();
+</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "oop-guide"
+version = "1.0.0"
+description = "OOP Visual Study Guide & Architecture Workbench: deterministic PDF generator and interactive web workbench"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["reportlab>=4.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+oop-guide-pdf = "oop_guide.pdf_builder:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
